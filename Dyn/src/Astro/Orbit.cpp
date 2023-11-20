@@ -17,6 +17,18 @@ int COrbit::TwoBod(double Ts)
 	}
 }
 
+int COrbit::Rv2Orbit()
+{
+	if (IsRV(J2000Inertial) == false)
+	{
+		printf("轨道RV不合法，R:%f(m) V:%f(m/s)\n", J2000Inertial.Pos.norm(), J2000Inertial.Vel.norm());
+		return -1;
+	}
+
+
+	return 0;
+}
+
 std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 {
 	_cout << "J2000 Pos(km) " << j2000.Pos(0) / 1000 << " " << j2000.Pos(1) / 1000 << " " << j2000.Pos(2) / 1000 << std::endl;
