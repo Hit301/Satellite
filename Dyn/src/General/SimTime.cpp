@@ -24,6 +24,7 @@ unsigned __stdcall SimCountManage(void* arg)
 		instance->ReleaseSimCountMute();
 		NexTime += static_cast<int64_t>(instance->SampleTime * 1e3);
 	}
+	_endthreadex(0);
 	return 0;
 }
 

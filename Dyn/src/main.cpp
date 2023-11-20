@@ -6,6 +6,7 @@ int main()
 	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
+
 	pSimTime->InitSimSpeedManage(SampleTime, 5);
 	while (1)
 	{
