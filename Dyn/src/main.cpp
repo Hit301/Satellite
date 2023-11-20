@@ -6,7 +6,7 @@
 
 int main()
 {
-	//这是一次更改NingWang  zhanln test6
+	//这是一次更改NingWang  zhanln test5
 	SatTime ST_Amadeus{ 0 };
 	ST_Amadeus.SampleTime = 0.5;
 	ST_Amadeus.SpeedTimes = 10;
