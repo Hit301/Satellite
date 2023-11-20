@@ -1,14 +1,32 @@
 #pragma once
-
 #include"SatelliteMath/Quaternions.h"
 
-//姿态动力学递推角速度,形式是Iw_dot+wX(Iw+hw)=T_sum  Tsum=Tf+TB-Tw
-//I：惯量矩阵 w：本体系角速度 hw：飞轮本体系角动量 Tf：干扰力矩：TB 磁力矩：Tw：飞轮本体系力矩
-Eigen::Vector3d Omega_bRK4(Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Omega_b, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s, double Ts);
 
-#if 0
-//姿态运动学递推四元数
-//Quat QibRK4(Quat& Quat_k, Eigen::Vector3d& Omega_b, double Ts);
-#endif
-//四元数乘法递推四元数(可保证归一性)
-Quat QibIntegrate(Quat& Quat_k, Eigen::Vector3d& Omega_b, double Ts);
+class CAttitude
+{
+public:
+
+	Eigen::Vector3d Omega_b;//本体系角速度，单位rad/s
+	Quat Qib;//惯性系到本体系四元数
+	Eigen::Matrix3d SatInaMat;//本体系惯量矩阵，单位kgm2
+	Eigen::Vector3d WheelMomentum_b;//飞轮组在本体系下的角动量，单位Nms
+	Eigen::Vector3d TotalTorque;//Tf：干扰力矩：TB 磁力矩：Tw：飞轮本体系力矩 TotalTorque=TB+Tf-Tw
+
+	//
+	// brief  : 默认姿态类构造函数
+	//
+	CAttitude();
+
+	//
+	// brief  : 姿态动力学递推角速度
+	//
+	int AttitudeDynamicsRk4(double Ts);
+
+	//
+	// brief  : 姿态运动递推四元数
+	//
+	int AttitudeKinematics(double Ts);
+
+};
+
+

@@ -1,5 +1,5 @@
 #pragma once
-#include "SatelliteMath/SatelliteEigen.h"
+#include"SatelliteMath/BaseMath.h"
 
 class Quat
 {

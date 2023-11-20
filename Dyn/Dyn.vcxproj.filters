@@ -33,13 +33,16 @@
     <ClCompile Include="src\Satellite\Satellite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\General\SatTime.cpp">
+    <ClCompile Include="src\General\SimTime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Satellite\Gyro.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Astro\Environment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SatelliteMath\BaseMath.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,13 +65,16 @@
     <ClInclude Include="include\Satellite\Satellite.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\General\SatTime.h">
+    <ClInclude Include="include\General\SimTime.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Satellite\Gyro.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Astro\Environment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SatelliteMath\BaseMath.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

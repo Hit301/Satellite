@@ -1,14 +1,23 @@
 #include "Astro/Orbit.h"
 
-Inl_t TwoBod(Inl_t& J2000, double Ts)
+int COrbit::TwoBod(double Ts)
 {
-	double tmp = 1/J2000.Pos.norm();
+	if (IsRV(J2000Inertial) == false)
+	{
+		printf("轨道RV不合法，R:%f(m) V:%f(m/s)\n", J2000Inertial.Pos.norm(), J2000Inertial.Vel.norm());
+		return -1;
+	}
+	else
+	{
+	double tmp = 1/J2000Inertial.Pos.norm();
 	double tmp2 = -EARTH_GRAVITATIONAL * tmp * tmp * tmp;
-	Inl_t result(Ts*J2000.Vel+ J2000.Pos, Ts * tmp2 * J2000.Pos + J2000.Vel);
-	return result;
+	J2000Inertial.Vel += Ts * tmp2 * J2000Inertial.Pos;
+	J2000Inertial.Pos += Ts * J2000Inertial.Vel;
+	return 0;
+	}
 }
 
-std::ostream& operator<<(std::ostream& _cout, const Inl_t& j2000)
+std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 {
 	_cout << "J2000 Pos(km) " << j2000.Pos(0) / 1000 << " " << j2000.Pos(1) / 1000 << " " << j2000.Pos(2) / 1000 << std::endl;
 	_cout << "J2000 Vel(km/s) " << j2000.Vel(0) / 1000 << " " << j2000.Vel(1) / 1000 << " " << j2000.Vel(2) / 1000 << std::endl;

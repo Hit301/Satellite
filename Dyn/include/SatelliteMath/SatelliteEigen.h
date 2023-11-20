@@ -2,8 +2,6 @@
 #include <Eigen/Dense>
 #include<cmath>
 #include <iostream>
-//#include"eigen-3.3.8/Eigen/Dense"
-
 
 
 //定义数学常量

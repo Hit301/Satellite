@@ -1,26 +1,20 @@
-#include <iostream>
-#include"General/SatTime.h"
+#include"General/SimTime.h"
 #include "Satellite/Satellite.h"
-#include<windows.h>
-#include<process.h>
 
 int main()
 {
-	//这是一次更改NingWang  zhanln test6 
-	SatTime ST_Amadeus{ 0 };
-	ST_Amadeus.SampleTime = 0.5;
-	ST_Amadeus.SpeedTimes = 10;
-	_beginthreadex(NULL, 0, SimCountManage, &ST_Amadeus, 0, NULL);
+	double SampleTime{ 0.1 };
 	Satellite Amadeus;
+	CSimTime* pSimTime = CSimTime::GetInstance();
+	pSimTime->InitSimSpeedManage(SampleTime, 5);
 	while (1)
 	{
-		WaitForSingleObject(hSimCountMute, INFINITE);
-		if (SimCount > 0)
+		pSimTime->WaitForSimCountMute();
+		if (pSimTime->SimCountJudge())
 		{
-			SimCount--;
-			Amadeus.StateRenew(ST_Amadeus.SampleTime);
+			Amadeus.StateRenew(SampleTime);
 			std::cout << Amadeus;
 		}
-		ReleaseMutex(hSimCountMute);
+		pSimTime->ReleaseSimCountMute();
 	}
 }
