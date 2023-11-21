@@ -5,7 +5,7 @@ int main()
 {
 	// zhanln
 	double SampleTime{ 0.1 };
-	Satellite Amadeus;
+	Satellite satellite;
 	CSimTime* pSimTime = CSimTime::GetInstance();
 
 	pSimTime->InitSimSpeedManage(SampleTime, 5);
@@ -14,8 +14,8 @@ int main()
 		pSimTime->WaitForSimCountMute();
 		if (pSimTime->SimCountJudge())
 		{
-			Amadeus.StateRenew(SampleTime);
-			std::cout << Amadeus;
+			satellite.StateRenew(SampleTime);
+			std::cout << satellite;
 		}
 		pSimTime->ReleaseSimCountMute();
 	}

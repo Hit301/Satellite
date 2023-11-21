@@ -9,11 +9,11 @@ int COrbit::TwoBod(double Ts)
 	}
 	else
 	{
-	double tmp = 1/J2000Inertial.Pos.norm();
-	double tmp2 = -EARTH_GRAVITATIONAL * tmp * tmp * tmp;
-	J2000Inertial.Vel += Ts * tmp2 * J2000Inertial.Pos;
-	J2000Inertial.Pos += Ts * J2000Inertial.Vel;
-	return 0;
+		double tmp = 1/J2000Inertial.Pos.norm();
+		double tmp2 = -EARTH_GRAVITATIONAL * tmp * tmp * tmp;
+		J2000Inertial.Vel += Ts * tmp2 * J2000Inertial.Pos;
+		J2000Inertial.Pos += Ts * J2000Inertial.Vel;
+		return 0;
 	}
 }
 
@@ -31,7 +31,8 @@ int COrbit::Rv2Orbit()
 
 std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 {
-	_cout << "J2000 Pos(km) " << j2000.Pos(0) / 1000 << " " << j2000.Pos(1) / 1000 << " " << j2000.Pos(2) / 1000 << std::endl;
+	_cout << "J2000 Pos(km) " << j2000.Pos(0) / 1000 << 
+		" " << j2000.Pos(1) / 1000 << " " << j2000.Pos(2) / 1000 << std::endl;
 	_cout << "J2000 Vel(km/s) " << j2000.Vel(0) / 1000 << " " << j2000.Vel(1) / 1000 << " " << j2000.Vel(2) / 1000 << std::endl;
 	return _cout;
 }
