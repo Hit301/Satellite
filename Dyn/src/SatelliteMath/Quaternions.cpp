@@ -224,7 +224,7 @@ Eigen::Matrix3d Quat::ToDcm() const
 	Eigen::Matrix3d _Dcm;
 	_Dcm<<	A00, A01, A02,
 			A10, A11, A12,
-			A00, A01, A02;
+			A20, A21, A22;
 
 	return _Dcm;
 }
