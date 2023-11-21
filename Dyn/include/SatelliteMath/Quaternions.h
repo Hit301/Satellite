@@ -16,6 +16,7 @@ public:
 	//此处可以补充其他形式
 	~Quat()=default;
 
+	//运算符重载  Quat q1,q2; 
 	Quat operator+(const Quat& _Quat) const;//四元数加法
 	Quat operator-(const Quat& _Quat) const;//四元数减法
 	Quat operator*(const Quat& _Quat) const;//四元数乘法
