@@ -25,7 +25,7 @@ struct OrbitElement
     double w;               //轨道平均角速度（rad/s）(Palstance  2PI/Period)
     double T;               //轨道周期（s）(Period)
     OrbitElement():
-        a(6678137), e(0), i(28.5),
+        a(6678137), e(0), i(RAD(28.5)),
         RAAN(0), omega(0), M(0)
     {
         double Epre = M;

@@ -6,7 +6,6 @@
 #include <Eigen/Dense>
 
 
-
 //定义数学常量
 #define M_PI   3.14159265358979323846
 #define ZERO        (1e-12)
