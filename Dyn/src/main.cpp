@@ -14,6 +14,7 @@ int main()
 		{
 			Amadeus.StateRenew(SampleTime);
 			std::cout << Amadeus;
+			std::cout << "testttttttttttttttttt";
 		}
 		pSimTime->ReleaseSimCountMute();
 	}
