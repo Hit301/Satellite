@@ -3,6 +3,7 @@
 
 int main()
 {
+	//check rpz
 	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
