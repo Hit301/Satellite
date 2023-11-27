@@ -3,7 +3,7 @@
 
 class Quat
 {
-private:
+private://为什么要定义在私有成员里？
 	double QuatData[4];//JPL四元数，实部在前
 	void QuatRectify();//标量修正，保持为正
 	void SelfNormalize();//自我归一化
