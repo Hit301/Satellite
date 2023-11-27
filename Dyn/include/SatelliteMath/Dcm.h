@@ -13,15 +13,8 @@ public:
 	Eigen::Matrix3d DcmData;
 
 public:
-	//@brief: 以单位阵初始化DcmData
-	//@para : none
-	//@return : none
-	CDcm();
-
-	//@brief: 以给定值初始化DcmData
-	//@para : none
-	//@return : none
-	CDcm(double A00, double A01, double A02,
+	CDcm();//以单位阵初始化DcmData
+	CDcm(double A00, double A01, double A02,//以给定值初始化DcmData
 		 double A10, double A11, double A12,
 		 double A20, double A21, double A22);
 	
