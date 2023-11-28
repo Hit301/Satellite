@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\SatelliteMath\EulerAgl.cpp" />
     <ClCompile Include="src\SatelliteMath\BaseMath.cpp" />
     <ClCompile Include="src\Astro\Attitude.cpp" />
     <ClCompile Include="src\Astro\Environment.cpp" />
@@ -31,6 +32,7 @@
     <ClCompile Include="src\Satellite\Satellite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\SatelliteMath\EulerAgl.h" />
     <ClInclude Include="include\Astro\Attitude.h" />
     <ClInclude Include="include\Astro\Environment.h" />
     <ClInclude Include="include\Astro\Orbit.h" />
@@ -40,7 +42,6 @@
     <ClInclude Include="include\Satellite\Satellite.h" />
     <ClInclude Include="include\SatelliteMath\Dcm.h" />
     <ClInclude Include="include\SatelliteMath\Quaternions.h" />
-    <ClInclude Include="include\SatelliteMath\SatelliteEigen.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -3,6 +3,9 @@
 Satellite::Satellite():Orbit(),Attitude()
 {
 	SatelliteTime = 1640966400000;
+
+	//初始化敏感器开机时间
+	_Gyro.LastRenewTime = SatelliteTime;
 }
 
 void Satellite::StateRenew(double SampleTime)
@@ -12,6 +15,7 @@ void Satellite::StateRenew(double SampleTime)
 	Orbit.TwoBod(SampleTime);
 	Attitude.AttitudeDynamicsRk4(SampleTime);
 	Attitude.AttitudeKinematics(SampleTime);
+	_Gyro.StateRenew(SatelliteTime, Attitude.Omega_b);
 }
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
