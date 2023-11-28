@@ -17,12 +17,7 @@ public:
 	CDcm(double A00, double A01, double A02,//以给定值初始化DcmData
 		 double A10, double A11, double A12,
 		 double A20, double A21, double A22);
-	
-	//@brief: 以单轴旋转初始化DcmData
-	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)：转轴(查BaseMath)
-	//		  Theta(rad)：转角
-	//@return : none
-	CDcm(unsigned Axis, double Theta);
+	CDcm(const Eigen::Vector3d& Axis, double Theta);//以单轴旋转初始化DcmData
 
 	////@brief: 以欧拉角初始化DcmData
 	////		  Agl(rad):欧拉角结构体
@@ -34,10 +29,7 @@ public:
 	////@return : none
 	//CDcm(Quat quat);
 
-	//@brief: 以其他方向余弦矩阵初始化DcmData
-	//@para : _Dcm：另一个方向余弦矩阵
-	//@return : none
-	CDcm(CDcm& _Dcm);
+	CDcm(CDcm& _Dcm);//以其他方向余弦矩阵初始化DcmData
 
 	//@brief: 重载赋值运算符
 	//@para : _Dcm：另一个方向余弦矩阵

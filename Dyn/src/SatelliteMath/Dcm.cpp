@@ -21,12 +21,20 @@ CDcm::CDcm(double A00, double A01, double A02, double A10, double A11, double A1
 		       A20, A21, A22;
 }
 
-CDcm::CDcm(unsigned Axis, double Theta)
+CDcm::CDcm(const Eigen::Vector3d& Axis, double Theta)
 {
 	//@brief: 以单轴旋转初始化DcmData
 	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)：转轴(查BaseMath)
 	//		  Theta(rad)：转角
 	//@return : none
+	//@remark : 未测试
+	Eigen::Vector3d axis_normalize = Axis.normalized();
+	Eigen::Matrix3d Identity = Eigen::Matrix3d::Identity();
+	Eigen::Matrix3d anti_symmetric_Axis;
+	anti_symmetric_Axis << 0,            -axis_normalize(0),  axis_normalize(1),
+		             axis_normalize(2),          0,          -axis_normalize(0), 
+	                -axis_normalize(1),   axis_normalize(0),          0 ;
+	DcmData = cos(Theta) * Identity + (1 - cos(Theta)) * axis_normalize * axis_normalize.transpose() - sin(Theta) * anti_symmetric_Axis;
 }
 
 //CDcm::CDcm(CEulerAgl Agl)
@@ -39,10 +47,18 @@ CDcm::CDcm(unsigned Axis, double Theta)
 
 CDcm::CDcm(CDcm& _Dcm)
 {
+	//@brief: 以其他方向余弦矩阵初始化DcmData
+	//@para : _Dcm：另一个方向余弦矩阵
+	//@return : none
+	//@remark : 未测试
+	DcmData = _Dcm.DcmData;
 }
 
 CDcm& CDcm::operator=(CDcm _Dcm)
 {
+	//@brief: 重载赋值运算符
+	//@para : _Dcm：另一个方向余弦矩阵
+	//@return : none
 	return *this;
 }
 
