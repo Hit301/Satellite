@@ -59,6 +59,8 @@ CDcm& CDcm::operator=(CDcm _Dcm)
 	//@brief: 重载赋值运算符
 	//@para : _Dcm：另一个方向余弦矩阵
 	//@return : none
+	//@remark : 未测试
+	DcmData = _Dcm.DcmData;
 	return *this;
 }
 
