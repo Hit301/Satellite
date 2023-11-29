@@ -17,7 +17,7 @@ public:
 	CDcm(double A00, double A01, double A02,//以给定值初始化DcmData
 		 double A10, double A11, double A12,
 		 double A20, double A21, double A22);
-	CDcm(const Eigen::Vector3d& Axis, double Theta);//以单轴旋转初始化DcmData
+	CDcm(unsigned Axis, double Theta);//以单轴旋转初始化DcmData
 	CDcm(CDcm& _Dcm);//以其他方向余弦矩阵初始化DcmData
 
 	////@brief: 以欧拉角初始化DcmData
@@ -30,19 +30,9 @@ public:
 	////@return : none
 	//CDcm(Quat quat);
 
-	//@brief: 重载赋值运算符
-	//@para : _Dcm：另一个方向余弦矩阵
-	//@return : none
-	CDcm& operator=(CDcm _Dcm);
+	CDcm& operator=(CDcm _Dcm);//重载赋值运算符
 
 public:
-	//@brief:  方向余弦矩阵转欧拉角
-	//@para : Sequence:转序(查BaseMath)
-	//@return : 指定转序的欧拉角
-	CEulerAgl ToEulerAgl(unsigned Sequence);
-
-	//@brief:  方向余弦矩阵转四元数
-	//@para : none
-	//@return : 转换得到的四元数
-	Quat ToQuat();
+	CEulerAgl ToEulerAgl(unsigned Sequence);//方向余弦矩阵转欧拉角
+	Quat ToQuat();//方向余弦矩阵转四元数
 };

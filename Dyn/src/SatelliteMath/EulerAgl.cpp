@@ -4,6 +4,7 @@
 
 CEulerAgl::CEulerAgl()
 {
+
 }
 
 CEulerAgl::CEulerAgl(double R1, double R2, double R3, unsigned Seq)

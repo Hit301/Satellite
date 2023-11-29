@@ -32,7 +32,8 @@ public:
 public:
 	Quat QuatNormalize() const;//四元数标准化
 	Quat QuatInv() const;//四元数求逆
-	CDcm ToDcm() const;//四元数转方向余弦矩阵
+	CDcm ToDcm() const;//四元数转方向余弦矩阵 
+	/*const*/
 	CEulerAgl ToEulerAgl(unsigned Seq) const;//四元数转指定转序欧拉角
 };
 

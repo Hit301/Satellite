@@ -1,4 +1,6 @@
 #pragma once
+#include"SatelliteMath/EulerAgl.h"
+#include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/Quaternions.h"
 
 
