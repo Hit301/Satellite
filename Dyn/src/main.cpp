@@ -6,14 +6,17 @@ int main()
 	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
-	pSimTime->InitSimSpeedManage(SampleTime, 5);
+	pSimTime->InitSimSpeedManage(SampleTime, 1);
 	while (1)
 	{
 		pSimTime->WaitForSimCountMute();
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew(SampleTime);
-			std::cout << Amadeus;
+			std::cout << Amadeus << std::endl;
+			std::cout << "Gyro: " << Amadeus._Gyro.Data << std::endl;
+
+			//std::cout << Amadeus;
 		}
 		pSimTime->ReleaseSimCountMute();
 	}

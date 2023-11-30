@@ -165,6 +165,28 @@
 #define NOT_NULL(v) (NULL!=(v))
 
 
+
+//方向余弦矩阵转轴
+#define Dcm_X_AXIS 0U
+#define Dcm_Y_AXIS 1U
+#define Dcm_Z_AXIS 2U
+
+
+//欧拉角转序
+#define EUL_SQE_ZYX  (0x00U)
+#define EUL_SQE_ZYZ  (0x11U)
+#define EUL_SQE_ZXY  (0x22U)
+#define EUL_SQE_ZXZ  (0x33U)
+#define EUL_SQE_YXZ  (0x44U)
+#define EUL_SQE_YXY  (0x55U)
+#define EUL_SQE_YZX  (0x66U)
+#define EUL_SQE_YZY  (0x77U)
+#define EUL_SQE_XYZ  (0x88U)
+#define EUL_SQE_XYX  (0x99U)
+#define EUL_SQE_XZY  (0xAAU)
+#define EUL_SQE_XZX  (0xBBU)
+#define EUL_SQE_DEFAULT (0x00U)
+
 //
 // brief  : 弧度调整到0 ~ 2pi
 //
