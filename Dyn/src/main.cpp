@@ -3,6 +3,7 @@
 
 int main()
 {
+	// huhu
 	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
