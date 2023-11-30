@@ -45,11 +45,11 @@
     <ClCompile Include="src\SatelliteMath\BaseMath.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\SatelliteMath\EulerAgl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\SatelliteMath\SatelliteEigen.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\SatelliteMath\Quaternions.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -75,6 +75,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\SatelliteMath\BaseMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SatelliteMath\EulerAgl.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
