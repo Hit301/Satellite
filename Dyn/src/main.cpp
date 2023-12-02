@@ -3,12 +3,7 @@
 
 int main()
 {
-	CEulerAgl a1;
-	Quat aa=a1.ToQuat();
-	std::cout << aa.QuatData[0]<< std::endl;
-	//check rpz
 	double SampleTime{ 0.1 };
-
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
 	pSimTime->InitSimSpeedManage(SampleTime, 1);
@@ -23,6 +18,6 @@ int main()
 
 			//std::cout << Amadeus;
 		}
-		//pSimTime->();
+		pSimTime->ReleaseSimCountMute();
 	}
 }

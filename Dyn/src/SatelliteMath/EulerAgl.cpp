@@ -2,20 +2,50 @@
 #include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/Quaternions.h"
 
-CEulerAgl::CEulerAgl() :AglData()
-{}
-
-CEulerAgl::CEulerAgl(double R1, double R2, double R3, unsigned Seq) :AglData()
+bool CEulerAgl::CheckSeq(unsigned Seq)
 {
-
-	AglData.Angel = Eigen::Vector3d(R1, R2, R3);
-	AglData.Seq = Seq;
+	if (Seq == EUL_SQE_ZYZ ||
+		Seq == EUL_SQE_ZXY ||
+		Seq == EUL_SQE_ZYX ||
+		Seq == EUL_SQE_ZXZ ||
+		Seq == EUL_SQE_YXZ ||
+		Seq == EUL_SQE_YXY ||
+		Seq == EUL_SQE_YZX ||
+		Seq == EUL_SQE_YZY ||
+		Seq == EUL_SQE_XYZ ||
+		Seq == EUL_SQE_XYX ||
+		Seq == EUL_SQE_XZY ||
+		Seq == EUL_SQE_XZX)
+		return true;
+	else
+		return false;
 }
 
-CEulerAgl::CEulerAgl(CEulerAgl& Agl)
+CEulerAgl::CEulerAgl()
 {
-	*this = Agl; // 拷贝数据
+	AglData.Angle << 0, 0, 0;
+	AglData.Seq = EUL_SQE_DEFAULT;
+}
 
+CEulerAgl::CEulerAgl(double R1, double R2, double R3, unsigned Seq) :CEulerAgl()
+{
+	if (CheckSeq(Seq))
+	{
+		AglData.Angle = Eigen::Vector3d(R1, R2, R3);
+		AglData.Seq = Seq;
+	}
+	else
+		printf("转序不合法，创建默认欧拉角\n");
+}
+
+CEulerAgl::CEulerAgl(CEulerAgl& Agl) :CEulerAgl()
+{
+	if (CheckSeq(Agl.AglData.Seq))
+	{
+		*this = Agl; // 拷贝数据
+	}
+	else
+		printf("转序不合法，创建默认欧拉角\n");
 }
 
 CEulerAgl& CEulerAgl::operator=(CEulerAgl Agl)
@@ -23,31 +53,31 @@ CEulerAgl& CEulerAgl::operator=(CEulerAgl Agl)
 	// 首先检查自赋值
 	if (this != &Agl) {
 		// 进行实际的赋值操作
-		this->AglData.Angel = Agl.AglData.Angel;
+		this->AglData.Angle = Agl.AglData.Angle;
 		this->AglData.Seq = Agl.AglData.Seq;
 	}
 	return *this;
 }
 
-
+//通过测试
 CDcm CEulerAgl::ToDcm()
 {
 	CDcm dcm;
 	//按以下三个角旋转
-	double psi = AglData.Angel(2); // 偏航角 
-	double theta = AglData.Angel(1); // 俯仰角  
-	double phi = AglData.Angel(0); // 滚转角 
+	double psi = AglData.Angle(2); // 偏航角 
+	double theta = AglData.Angle(1); // 俯仰角  
+	double phi = AglData.Angle(0); // 滚转角 
 
 	switch (AglData.Seq)
 	{
 	case EUL_SQE_ZYX:
 	{
-		double sx = sin(AglData.Angel(2));
-		double sy = sin(AglData.Angel(1));
-		double sz = sin(AglData.Angel(0));
-		double cx = cos(AglData.Angel(2));
-		double cy = cos(AglData.Angel(1));
-		double cz = cos(AglData.Angel(0));
+		double sx = sin(AglData.Angle(2));
+		double sy = sin(AglData.Angle(1));
+		double sz = sin(AglData.Angle(0));
+		double cx = cos(AglData.Angle(2));
+		double cy = cos(AglData.Angle(1));
+		double cz = cos(AglData.Angle(0));
 		dcm.DcmData(0, 0) = cy * cz;
 		dcm.DcmData(0, 1) = cy * sz;
 		dcm.DcmData(0, 2) = -sy;
@@ -61,12 +91,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_ZYZ:
 	{
-		double sy = sin(AglData.Angel(1));
-		double sz = sin(AglData.Angel(0));
-		double cy = cos(AglData.Angel(1));
-		double cz = cos(AglData.Angel(0));
-		double sz2 = sin(AglData.Angel(2));
-		double cz2 = cos(AglData.Angel(2));
+		double sy = sin(AglData.Angle(1));
+		double sz = sin(AglData.Angle(0));
+		double cy = cos(AglData.Angle(1));
+		double cz = cos(AglData.Angle(0));
+		double sz2 = sin(AglData.Angle(2));
+		double cz2 = cos(AglData.Angle(2));
 		dcm.DcmData(0, 0) = cz2 * cy * cz - sz2 * sz;
 		dcm.DcmData(0, 1) = cz2 * cy * sz + sz2 * cz;
 		dcm.DcmData(0, 2) = -cz2 * sy;
@@ -80,12 +110,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_ZXY:
 	{
-		double sx = sin(AglData.Angel(1));
-		double sy = sin(AglData.Angel(2));
-		double sz = sin(AglData.Angel(0));
-		double cx = cos(AglData.Angel(1));
-		double cy = cos(AglData.Angel(2));
-		double cz = cos(AglData.Angel(0));
+		double sx = sin(AglData.Angle(1));
+		double sy = sin(AglData.Angle(2));
+		double sz = sin(AglData.Angle(0));
+		double cx = cos(AglData.Angle(1));
+		double cy = cos(AglData.Angle(2));
+		double cz = cos(AglData.Angle(0));
 
 		dcm.DcmData(0, 0) = cy * cz - sy * sx * sz;
 		dcm.DcmData(0, 1) = cy * sz + sy * sx * cz;
@@ -100,12 +130,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_ZXZ:
 	{
-		double sx = sin(AglData.Angel(1));
-		double sz = sin(AglData.Angel(0));
-		double cx = cos(AglData.Angel(1));
-		double cz = cos(AglData.Angel(0));
-		double sz2 = sin(AglData.Angel(2));
-		double cz2 = cos(AglData.Angel(2));
+		double sx = sin(AglData.Angle(1));
+		double sz = sin(AglData.Angle(0));
+		double cx = cos(AglData.Angle(1));
+		double cz = cos(AglData.Angle(0));
+		double sz2 = sin(AglData.Angle(2));
+		double cz2 = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cz2 * cz - sz2 * cx * sz;
 		dcm.DcmData(0, 1) = cz2 * sz + sz2 * cx * cz;
@@ -120,12 +150,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_YXZ:
 	{
-		double sx = sin(AglData.Angel(1));
-		double sy = sin(AglData.Angel(0));
-		double sz = sin(AglData.Angel(2));
-		double cx = cos(AglData.Angel(1));
-		double cy = cos(AglData.Angel(0));
-		double cz = cos(AglData.Angel(2));
+		double sx = sin(AglData.Angle(1));
+		double sy = sin(AglData.Angle(0));
+		double sz = sin(AglData.Angle(2));
+		double cx = cos(AglData.Angle(1));
+		double cy = cos(AglData.Angle(0));
+		double cz = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cy * cz + sy * sx * sz;
 		dcm.DcmData(0, 1) = sz * cx;
@@ -140,12 +170,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_YXY:
 	{
-		double sx = sin(AglData.Angel(1));
-		double sy = sin(AglData.Angel(0));
-		double cx = cos(AglData.Angel(1));
-		double cy = cos(AglData.Angel(0));
-		double sy2 = sin(AglData.Angel(2));
-		double cy2 = cos(AglData.Angel(2));
+		double sx = sin(AglData.Angle(1));
+		double sy = sin(AglData.Angle(0));
+		double cx = cos(AglData.Angle(1));
+		double cy = cos(AglData.Angle(0));
+		double sy2 = sin(AglData.Angle(2));
+		double cy2 = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cy2 * cy - sy2 * cx * sy;
 		dcm.DcmData(0, 1) = sy2 * sx;
@@ -160,12 +190,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_YZX:
 	{
-		double sx = sin(AglData.Angel(2));
-		double sy = sin(AglData.Angel(0));
-		double sz = sin(AglData.Angel(1));
-		double cx = cos(AglData.Angel(2));
-		double cy = cos(AglData.Angel(0));
-		double cz = cos(AglData.Angel(1));
+		double sx = sin(AglData.Angle(2));
+		double sy = sin(AglData.Angle(0));
+		double sz = sin(AglData.Angle(1));
+		double cx = cos(AglData.Angle(2));
+		double cy = cos(AglData.Angle(0));
+		double cz = cos(AglData.Angle(1));
 
 		dcm.DcmData(0, 0) = cy * cz;
 		dcm.DcmData(0, 1) = sz;
@@ -180,12 +210,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_YZY:
 	{
-		double sy = sin(AglData.Angel(0));
-		double sz = sin(AglData.Angel(1));
-		double cy = cos(AglData.Angel(0));
-		double cz = cos(AglData.Angel(1));
-		double sy2 = sin(AglData.Angel(2));
-		double cy2 = cos(AglData.Angel(2));
+		double sy = sin(AglData.Angle(0));
+		double sz = sin(AglData.Angle(1));
+		double cy = cos(AglData.Angle(0));
+		double cz = cos(AglData.Angle(1));
+		double sy2 = sin(AglData.Angle(2));
+		double cy2 = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cy2 * cz * cy - sy2 * sy;
 		dcm.DcmData(0, 1) = cy2 * sz;
@@ -200,12 +230,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_XYZ:
 	{
-		double sx = sin(AglData.Angel(0));
-		double sy = sin(AglData.Angel(1));
-		double sz = sin(AglData.Angel(2));
-		double cx = cos(AglData.Angel(0));
-		double cy = cos(AglData.Angel(1));
-		double cz = cos(AglData.Angel(2));
+		double sx = sin(AglData.Angle(0));
+		double sy = sin(AglData.Angle(1));
+		double sz = sin(AglData.Angle(2));
+		double cx = cos(AglData.Angle(0));
+		double cy = cos(AglData.Angle(1));
+		double cz = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cy * cz;
 		dcm.DcmData(0, 1) = sz * cx + sy * sx * cz;
@@ -220,12 +250,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_XYX:
 	{
-		double sx = sin(AglData.Angel(0));
-		double sy = sin(AglData.Angel(1));
-		double cx = cos(AglData.Angel(0));
-		double cy = cos(AglData.Angel(1));
-		double sx2 = sin(AglData.Angel(2));
-		double cx2 = cos(AglData.Angel(2));
+		double sx = sin(AglData.Angle(0));
+		double sy = sin(AglData.Angle(1));
+		double cx = cos(AglData.Angle(0));
+		double cy = cos(AglData.Angle(1));
+		double sx2 = sin(AglData.Angle(2));
+		double cx2 = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cy;
 		dcm.DcmData(0, 1) = sy * sx;
@@ -240,12 +270,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_XZY:
 	{
-		double sx = sin(AglData.Angel(0));
-		double sy = sin(AglData.Angel(2));
-		double sz = sin(AglData.Angel(1));
-		double cx = cos(AglData.Angel(0));
-		double cy = cos(AglData.Angel(2));
-		double cz = cos(AglData.Angel(1));
+		double sx = sin(AglData.Angle(0));
+		double sy = sin(AglData.Angle(2));
+		double sz = sin(AglData.Angle(1));
+		double cx = cos(AglData.Angle(0));
+		double cy = cos(AglData.Angle(2));
+		double cz = cos(AglData.Angle(1));
 
 		dcm.DcmData(0, 0) = cy * cz;
 		dcm.DcmData(0, 1) = sz * cx * cy + sy * sx;
@@ -260,12 +290,12 @@ CDcm CEulerAgl::ToDcm()
 	break;
 	case EUL_SQE_XZX:
 	{
-		double sx = sin(AglData.Angel(0));
-		double sz = sin(AglData.Angel(1));
-		double cx = cos(AglData.Angel(0));
-		double cz = cos(AglData.Angel(1));
-		double sx2 = sin(AglData.Angel(2));
-		double cx2 = cos(AglData.Angel(2));
+		double sx = sin(AglData.Angle(0));
+		double sz = sin(AglData.Angle(1));
+		double cx = cos(AglData.Angle(0));
+		double cz = cos(AglData.Angle(1));
+		double sx2 = sin(AglData.Angle(2));
+		double cx2 = cos(AglData.Angle(2));
 
 		dcm.DcmData(0, 0) = cz;
 		dcm.DcmData(0, 1) = sz * cx;
@@ -282,15 +312,15 @@ CDcm CEulerAgl::ToDcm()
 	return dcm;
 }
 
-
+//通过测试
 Quat CEulerAgl::ToQuat()
 {
 	// r fai     p  xita     y pusai  
 	//区分转序
 	//转序（1，2，3）
-	double e1 = AglData.Angel[0] * 0.5;
-	double e2 = AglData.Angel[1] * 0.5;
-	double e3 = AglData.Angel[2] * 0.5;
+	double e1 = AglData.Angle[0] * 0.5;
+	double e2 = AglData.Angle[1] * 0.5;
+	double e3 = AglData.Angle[2] * 0.5;
 	double s1 = sin(e1);
 	double s2 = sin(e2);
 	double s3 = sin(e3);
@@ -319,98 +349,95 @@ Quat CEulerAgl::ToQuat()
 	break;
 	case EUL_SQE_ZXY:
 	{
-		 W = c1 * c2 * c3 - s1 * s2 * s3;
-		 X = c1 * s2 * c3 - s1 * c2 * s3;
-		 Y = c1 * c2 * s3 + s1 * s2 * c3;
-		 Z = c1 * s2 * s3 + s1 * c2 * c3;
+		W = c1 * c2 * c3 - s1 * s2 * s3;
+		X = c1 * s2 * c3 - s1 * c2 * s3;
+		Y = c1 * c2 * s3 + s1 * s2 * c3;
+		Z = c1 * s2 * s3 + s1 * c2 * c3;
 		// 返回构造的四元数
-		
-		 }break;
+
+	}break;
 	case EUL_SQE_ZXZ:
 	{
-		 W = c1 * c2 * c3 - s1 * c2 * s3;
-		 X = c1 * s2 * c3 + s1 * s2 * s3;
-		 Y = s1 * s2 * c3 - c1 * s2 * s3;
-		 Z = c1 * c2 * s3 + s1 * c2 * c3;
+		W = c1 * c2 * c3 - s1 * c2 * s3;
+		X = c1 * s2 * c3 + s1 * s2 * s3;
+		Y = s1 * s2 * c3 - c1 * s2 * s3;
+		Z = c1 * c2 * s3 + s1 * c2 * c3;
 		// 返回构造的四元数
-		
 
-		 }break; 
+
+	}break;
 	case EUL_SQE_YXZ:
 	{
-		 W = c1 * c2 * c3 + s1 * s2 * s3;
-		 X = c1 * s2 * c3 + s1 * c2 * s3;
-		 Y = s1 * c2 * c3 - c1 * s2 * s3;
-		 Z = c1 * c2 * s3 - s1 * s2 * c3;
+		W = c1 * c2 * c3 + s1 * s2 * s3;
+		X = c1 * s2 * c3 + s1 * c2 * s3;
+		Y = s1 * c2 * c3 - c1 * s2 * s3;
+		Z = c1 * c2 * s3 - s1 * s2 * c3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_YXY:
 	{
-		 W = c1 * c2 * c3 - s1 * c2 * s3;
-		 X = c1 * s2 * c3 + s1 * s2 * s3;
-		 Y = s1 * c2 * c3 + c1 * c2 * s3;
-		 Z = c1 * s2 * s3 - s1 * s2 * c3;
+		W = c1 * c2 * c3 - s1 * c2 * s3;
+		X = c1 * s2 * c3 + s1 * s2 * s3;
+		Y = s1 * c2 * c3 + c1 * c2 * s3;
+		Z = c1 * s2 * s3 - s1 * s2 * c3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_YZX:
 	{
-		 W = c1 * c2 * c3 - s1 * s2 * s3;
-		 X = c1 * c2 * s3 + s1 * s2 * c3;
-		 Y = c1 * s2 * s3 + s1 * c2 * c3;
-		 Z = c1 * s2 * c3 - s1 * c2 * s3;
+		W = c1 * c2 * c3 - s1 * s2 * s3;
+		X = c1 * c2 * s3 + s1 * s2 * c3;
+		Y = c1 * s2 * s3 + s1 * c2 * c3;
+		Z = c1 * s2 * c3 - s1 * c2 * s3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_YZY:
 	{
-		 W = c1 * c2 * c3 - s1 * c2 * s3;
-		 X = s1 * s2 * c3 - c1 * s2 * s3;
-		 Y = c1 * c2 * s3 + s1 * c2 * c3;
-		 Z = c1 * s2 * c3 + s1 * s2 * s3;
+		W = c1 * c2 * c3 - s1 * c2 * s3;
+		X = s1 * s2 * c3 - c1 * s2 * s3;
+		Y = c1 * c2 * s3 + s1 * c2 * c3;
+		Z = c1 * s2 * c3 + s1 * s2 * s3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_XYZ:
 	{
-		 W = c1 * c2 * c3 - s1 * s2 * s3;
-		 X = c1 * s2 * s3 + s1 * c2 * c3;
-		 Y = c1 * s2 * c3 - s1 * c2 * s3;
-		 Z = c1 * c2 * s3 + s1 * s2 * c3;
+		W = c1 * c2 * c3 - s1 * s2 * s3;
+		X = c1 * s2 * s3 + s1 * c2 * c3;
+		Y = c1 * s2 * c3 - s1 * c2 * s3;
+		Z = c1 * c2 * s3 + s1 * s2 * c3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_XYX:
 	{
-		 W = c1 * c2 * c3 - s1 * c2 * s3;
-		 X = c1 * c2 * s3 + s1 * c2 * c3;
-		 Y = c1 * s2 * c3 + s1 * s2 * s3;
-		 Z = s1 * s2 * c3 - c1 * s2 * s3;
+		W = c1 * c2 * c3 - s1 * c2 * s3;
+		X = c1 * c2 * s3 + s1 * c2 * c3;
+		Y = c1 * s2 * c3 + s1 * s2 * s3;
+		Z = s1 * s2 * c3 - c1 * s2 * s3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_XZY:
 	{
-		 W = c1 * c2 * c3 + s1 * s2 * s3;
-		 X = s1 * c2 * c3 - c1 * s2 * s3;
-		 Y = c1 * c2 * s3 - s1 * s2 * c3;
-		 Z = c1 * s2 * c3 + s1 * c2 * s3;
+		W = c1 * c2 * c3 + s1 * s2 * s3;
+		X = s1 * c2 * c3 - c1 * s2 * s3;
+		Y = c1 * c2 * s3 - s1 * s2 * c3;
+		Z = c1 * s2 * c3 + s1 * c2 * s3;
 		// 返回构造的四元数
-		
-		 }break; 
+
+	}break;
 	case EUL_SQE_XZX:
 	{
-		 W = c1 * c2 * c3 - s1 * c2 * s3;
-		 X = c1 * c2 * s3 + s1 * c2 * c3;
-		 Y = c1 * s2 * s3 - s1 * s2 * c3;
-		 Z = c1 * s2 * c3 + s1 * s2 * s3;
+		W = c1 * c2 * c3 - s1 * c2 * s3;
+		X = c1 * c2 * s3 + s1 * c2 * c3;
+		Y = c1 * s2 * s3 - s1 * s2 * c3;
+		Z = c1 * s2 * c3 + s1 * s2 * s3;
 		// 返回构造的四元数
-		
-		 }break; 
-	//
-	return Quat(W, X, Y, Z);
-	
-	
 
+	}break;
 	}
+	return Quat(W, X, Y, Z);
+}
