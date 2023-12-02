@@ -1,6 +1,6 @@
 #pragma once
 #include"SatelliteMath/Quaternions.h"
-
+#include"SatelliteMath/EulerAgl.h"
 
 class CAttitude
 {

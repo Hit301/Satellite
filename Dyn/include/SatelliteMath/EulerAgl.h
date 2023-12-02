@@ -3,11 +3,11 @@
 
 typedef struct EulerAgl
 {
-	Eigen::Vector3d AglData;//三轴角数据(rad)
+	Eigen::Vector3d Angel;//三轴角数据(rad)
 	unsigned Seq;//转序
 	EulerAgl()
 	{
-		AglData << 0, 0, 0;
+		Angel << 0, 0, 0;
 		Seq = EUL_SQE_DEFAULT;
 	}
 };
@@ -28,6 +28,10 @@ public:
 	CEulerAgl();
 
 	//@brief: 以分量和指定转序初始化
+	// 
+	// 
+	// 
+	// 
 	//@para : R1~R3(rad)：三轴角度
 	//		  Seq：转序
 	//@return : none
