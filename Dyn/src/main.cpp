@@ -20,4 +20,24 @@ int main()
 		}
 		pSimTime->ReleaseSimCountMute();
 	}
+
+	//CDcm DcmDemo1;
+
+	//CDcm DcmDemo1(0, 1.57);
+	
+	//CDcm DcmDemo1(1,2,3,4,5,6,7,8,9);
+	
+	//CDcm DcmDemo1(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	//CDcm DcmDemo2(DcmDemo1);
+
+	//CDcm DcmDemo1(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	//CDcm DcmDemo2;
+	//DcmDemo2.operator=(DcmDemo1);
+
+    //CDcm DcmDemo1(0.6313, 0.5317, -0.5646, -0.3583, 0.8456, 0.3957, 0.6878, -0.0475, 0.7243);
+	//std::cout << DcmDemo1.DcmData << std::endl;
+	//DcmDemo1.ToEulerAgl(EUL_SQE_YXZ);
+	//DcmDemo1.ToQuat();
+	
+	//std::cout << DcmDemo2.DcmData << std::endl;
 }
