@@ -3,8 +3,7 @@
 
 int main()
 {
-	//zzw checkout
-	double SampleTime{ 0.5 };
+	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
 	pSimTime->InitSimSpeedManage(SampleTime, 1);
@@ -15,7 +14,7 @@ int main()
 		{
 			Amadeus.StateRenew(SampleTime);
 //			std::cout << Amadeus << std::endl;
-//			std::cout << "Gyro: " << Amadeus._Gyro.Data << std::endl;
+			std::cout << "Gyro:\n " << Amadeus._Gyro.Data << std::endl;
 
 			//std::cout << Amadeus;
 		}

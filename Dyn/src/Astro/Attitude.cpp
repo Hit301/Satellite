@@ -65,7 +65,7 @@ Quat PlstToDeltaQuat(const Eigen::Vector3d Omega_b, double OfstSec)
 
 CAttitude::CAttitude() :Qib()
 {
-    Omega_b << 0.01, -0.04, 0;
+    Omega_b << 0.05, -0.04, 0.1;
 
     SatInaMat << 10, 0, 0,
         0, 20, 0,

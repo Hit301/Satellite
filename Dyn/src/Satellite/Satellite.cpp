@@ -1,21 +1,29 @@
 #include "Satellite/Satellite.h"
+#include "AStro/AttitudeControl.h"
 
-Satellite::Satellite():Orbit(),Attitude()
+Satellite::Satellite() :Orbit(), Attitude(), _Gyro()
 {
 	SatelliteTime = 1640966400000;
 	//初始化敏感器开机时间
 	_Gyro.LastRenewTime = SatelliteTime;
+	_Gyro.Data = _Gyro.InstallMatrix * Attitude.Omega_b;
 }
 
 void Satellite::StateRenew(double SampleTime)
 {
-	//更新时间、轨道、姿态和控制力矩
+	//环境信息更新
 	SatelliteTime += (int64_t)(SampleTime * 1e3);
+
+	//控制器计算
+	Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 3);
+
+	//动力学更新
 	Orbit.TwoBod(SampleTime);
-	Attitude.AttitudeDynamicsRk4(SampleTime);
 	Attitude.AttitudeKinematics(SampleTime);
+	Attitude.AttitudeDynamicsRk4(SampleTime);
+
+	//单机数据更新
 	_Gyro.StateRenew(SatelliteTime, Attitude.Omega_b);
-	Attitude.TotalTorque = AttitudeControl.ControlCommand(_Gyro.Data, _Gyro.InstallMatrix);
 }
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
