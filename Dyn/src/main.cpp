@@ -4,7 +4,7 @@
 int main()
 {
 	//zzw checkout
-	//double SampleTime{ 0.2 };
+	double SampleTime{ 0.5 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
 	pSimTime->InitSimSpeedManage(SampleTime, 1);

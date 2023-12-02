@@ -1,7 +1,8 @@
 #pragma once
-#include"SatelliteMath/EulerAgl.h"
-#include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/Quaternions.h"
+#include"SatelliteMath/Dcm.h"
+#include"SatelliteMath/EulerAgl.h"
+#include "AStro/AttitudeControl.h"
 
 class CAttitude
 {

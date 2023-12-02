@@ -11,6 +11,7 @@ public:
 	CAttitude Attitude;//姿态
 	Environment Env;//环境
 	GyroScope _Gyro;//陀螺
+	CAttitudeControl AttitudeControl;//控制力矩
 public:
 	Satellite();
 
