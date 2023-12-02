@@ -2,8 +2,6 @@
 #include"SatelliteMath/EulerAgl.h"
 #include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/Quaternions.h"
-#include"SatelliteMath/Dcm.h"
-#include"SatelliteMath/EulerAgl.h"
 
 class CAttitude
 {

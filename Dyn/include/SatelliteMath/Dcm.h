@@ -31,16 +31,6 @@ public:
 	//@return : none
 	CDcm(unsigned Axis, double Theta);
 
-	////@brief: 以欧拉角初始化DcmData
-	////		  Agl(rad):欧拉角结构体
-	////@return : none
-	//CDcm(CEulerAgl Agl);
-	//
-	////@brief: 以四元数初始化DcmData
-	////@para : quat:四元数
-	////@return : none
-	//CDcm(Quat quat);
-
 	//@brief: 以其他方向余弦矩阵初始化DcmData
 	//@para : _Dcm：另一个方向余弦矩阵
 	//@return : none

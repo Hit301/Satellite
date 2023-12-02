@@ -2,17 +2,12 @@
 #include"SatelliteMath/EulerAgl.h"
 #include"SatelliteMath/Quaternions.h"
 
-//CDcm::CDcm()
-//{
-//	DcmData << 1, 0, 0, 0, 1, 0, 0, 0, 1;
-//}
 
 CDcm::CDcm() : DcmData(Eigen::Matrix3d::Identity())
 {
 	// 或者
 	// DcmData << 1, 0, 0, 0, 1, 0, 0, 0, 1;
 }
-
 
 CDcm::CDcm(double A00, double A01, double A02, double A10, double A11, double A12, double A20, double A21, double A22)
 {
@@ -21,22 +16,6 @@ CDcm::CDcm(double A00, double A01, double A02, double A10, double A11, double A1
 		       A10, A11, A12, 
 		       A20, A21, A22;
 }
-
-//CDcm::CDcm(const Eigen::Vector3d& Axis, double Theta)
-//{
-//	//@brief: 以单轴旋转初始化DcmData
-//	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)：转轴(查BaseMath)
-//	//		  Theta(rad)：转角
-//	//@return : none
-//	//@remark : 未测试
-//	Eigen::Vector3d axis_normalize = Axis.normalized();
-//	Eigen::Matrix3d Identity = Eigen::Matrix3d::Identity();
-//	Eigen::Matrix3d anti_symmetric_Axis;
-//	anti_symmetric_Axis << 0,            -axis_normalize(0),  axis_normalize(1),
-//		             axis_normalize(2),          0,          -axis_normalize(0), 
-//	                -axis_normalize(1),   axis_normalize(0),          0 ;
-//	DcmData = cos(Theta) * Identity + (1 - cos(Theta)) * axis_normalize * axis_normalize.transpose() - sin(Theta) * anti_symmetric_Axis;
-//}
 
 CDcm::CDcm(unsigned Axis, double Theta)
 {
@@ -76,13 +55,6 @@ CDcm::CDcm(unsigned Axis, double Theta)
 	}
 }
 
-//CDcm::CDcm(CEulerAgl Agl)
-//{
-//}
-//
-//CDcm::CDcm(Quat quat)
-//{
-//}
 
 CDcm::CDcm(CDcm& _Dcm)
 {
@@ -215,7 +187,7 @@ Quat CDcm::ToQuat()
 	//@return : 转换得到的四元数
 	//@remark : 已测试
 	double trace = DcmData(0, 0) + DcmData(1, 1) + DcmData(2, 2);
-	double q0, q1, q2, q3;
+	double q0{ 1 }, q1{ 0 }, q2{ 0 }, q3{ 0 };
 	/*精简*/
 	if (trace > 0.0)
 	{
