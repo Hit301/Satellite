@@ -3,7 +3,6 @@
 Satellite::Satellite():Orbit(),Attitude()
 {
 	SatelliteTime = 1640966400000;
-
 	//初始化敏感器开机时间
 	_Gyro.LastRenewTime = SatelliteTime;
 }

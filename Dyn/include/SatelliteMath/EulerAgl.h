@@ -1,16 +1,16 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
 
-typedef struct EulerAgl
-{
-	Eigen::Vector3d AglData;//三轴角数据(rad)
-	unsigned Seq;//转序
-	EulerAgl()
-	{
-		AglData << 0, 0, 0;
-		Seq = EUL_SQE_DEFAULT;
-	}
-};
+//typedef struct EulerAgl
+//{
+//	Eigen::Vector3d Angle;//三轴角数据(rad)
+//	unsigned Seq;//转序
+//	EulerAgl()
+//	{
+//		Angle << 0, 0, 0;
+//		Seq = EUL_SQE_DEFAULT;
+//	}
+//};
 
 //前向声明
 class CDcm;
@@ -19,7 +19,10 @@ class Quat;
 class CEulerAgl
 {
 public:
-	EulerAgl AglData;//欧拉角数据
+	struct {
+		Eigen::Vector3d Angle;//三轴角数据(rad)
+		unsigned Seq;//转序
+	} AglData;//欧拉角数据
 
 public:
 	//@brief: 以默认转序和0向量初始化
