@@ -31,6 +31,10 @@ public:
 	CEulerAgl();
 
 	//@brief: 以分量和指定转序初始化
+	// 
+	// 
+	// 
+	// 
 	//@para : R1~R3(rad)：三轴角度
 	//		  Seq：转序
 	//@return : none

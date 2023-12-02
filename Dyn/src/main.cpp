@@ -3,7 +3,12 @@
 
 int main()
 {
+	CEulerAgl a1;
+	Quat aa=a1.ToQuat();
+	std::cout << aa.QuatData[0]<< std::endl;
+	//check rpz
 	double SampleTime{ 0.1 };
+
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
 	pSimTime->InitSimSpeedManage(SampleTime, 1);
@@ -13,11 +18,11 @@ int main()
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew(SampleTime);
-			std::cout << Amadeus << std::endl;
-			std::cout << "Gyro: " << Amadeus._Gyro.Data << std::endl;
+//			std::cout << Amadeus << std::endl;
+//			std::cout << "Gyro: " << Amadeus._Gyro.Data << std::endl;
 
 			//std::cout << Amadeus;
 		}
-		pSimTime->ReleaseSimCountMute();
+		//pSimTime->();
 	}
 }
