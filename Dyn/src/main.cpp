@@ -1,6 +1,5 @@
 #include"General/SimTime.h"
 #include "Satellite/Satellite.h"
-
 int main()
 {
 	double SampleTime{ 0.1 };
