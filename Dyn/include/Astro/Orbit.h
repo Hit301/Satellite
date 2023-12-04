@@ -68,6 +68,12 @@ public:
     // brief  : 使用惯性系RV和二体递推轨道
     //
     int TwoBod(double Ts);
+
+    //
+    //brief:轨道系和惯性系的转移矩阵
+    //
+
+
 };
 
 

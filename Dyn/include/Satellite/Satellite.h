@@ -11,6 +11,9 @@ public:
 	CAttitude Attitude;//×ËÌ¬
 	Environment Env;//»·¾³
 	GyroScope _Gyro;//ÍÓÂİ
+	CSunCal SunCal;//Ì«ÑôÊ¸Á¿£¨²âÊÔ£©
+	Eigen::Vector3d SolVec;//Ì«ÑôÊ¸Á¿£¨²âÊÔ£©
+
 public:
 	Satellite();
 

@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Astro\AttitudeControl.cpp" />
-    <ClCompile Include="src\Astro\SunCal.cpp" />
     <ClCompile Include="src\SatelliteMath\EulerAgl.cpp" />
     <ClCompile Include="src\SatelliteMath\BaseMath.cpp" />
     <ClCompile Include="src\Astro\Attitude.cpp" />
@@ -35,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Astro\AttitudeControl.h" />
-    <ClInclude Include="include\Astro\SunCal.h" />
     <ClInclude Include="include\SatelliteMath\EulerAgl.h" />
     <ClInclude Include="include\Astro\Attitude.h" />
     <ClInclude Include="include\Astro\Environment.h" />

@@ -24,6 +24,10 @@ void Satellite::StateRenew(double SampleTime)
 
 	//单机数据更新
 	_Gyro.StateRenew(SatelliteTime, Attitude.Omega_b);
+
+	//太阳矢量测试
+	//SolVec=SunCal.SunPos(SatelliteTime);
+	SolVec = SunCal.SunPos(1659312000);//与MATLAB结果对比，存在差异
 }
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
@@ -34,5 +38,6 @@ std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
 	_cout << "Omega_b(rad/s) " << Sat.Attitude.Omega_b(0) << " " << Sat.Attitude.Omega_b(1) << " " << Sat.Attitude.Omega_b(2) << std::endl;
 	_cout << "Qib " << Sat.Attitude.Qib;
 	_cout << "TotalTorque(N.m) " << Sat.Attitude.TotalTorque(0) << " " << Sat.Attitude.TotalTorque(1) << " " << Sat.Attitude.TotalTorque(2) << std::endl;
+	_cout << "SolVec(m) " << Sat.SolVec(0) << " " << Sat.SolVec(1) << " " << Sat.SolVec(2) << std::endl;
 	return _cout;
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+#include"General/SimTime.h"
+#include"SatelliteMath/Dcm.h"
 class Environment
 {
 public:
@@ -10,4 +12,20 @@ public:
 	//@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
 	//@return : none
 	static Eigen::Matrix3d ECI2ECEF(const int64_t timestamp, const double deltaUT1 = 0, const double xp = 0, const double yp = 0);
+};
+
+class CSunCal
+{
+public:
+	int64_t SunTime;//utc时间戳单位ms
+	CDcm dcm;
+public:
+	CSunCal();
+
+public:
+	//@brief: 惯性系下太阳矢量的计算（用时间戳转儒略世纪数进行接下来的计算）
+	//@para : 时间戳
+	//@return : 惯性系太阳矢量
+static Eigen::Vector3d SunPos(int64_t SunTime);
+
 };
