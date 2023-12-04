@@ -16,6 +16,12 @@ CCommuThread::CCommuThread(const char* comPara, const char* cpPara, u_short port
 	this->RunFlag = runFlag;
 }
 
+CCommuThread::~CCommuThread()
+{
+	delete this->udp;
+	delete this->usart;
+}
+
 CUSART* CCommuThread::GetUSART()
 {
 	return this->usart;
