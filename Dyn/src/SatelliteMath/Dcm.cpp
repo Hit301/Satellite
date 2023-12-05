@@ -2,10 +2,6 @@
 #include"SatelliteMath/EulerAgl.h"
 #include"SatelliteMath/Quaternions.h"
 
-//CDcm::CDcm()
-//{
-//	DcmData << 1, 0, 0, 0, 1, 0, 0, 0, 1;
-//}
 
 CDcm::CDcm() : DcmData(Eigen::Matrix3d::Identity())
 {
@@ -20,22 +16,6 @@ CDcm::CDcm(double A00, double A01, double A02, double A10, double A11, double A1
         A10, A11, A12,
         A20, A21, A22;
 }
-
-//CDcm::CDcm(const Eigen::Vector3d& Axis, double Theta)
-//{
-//	//@brief: 以单轴旋转初始化DcmData
-//	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)：转轴(查BaseMath)
-//	//		  Theta(rad)：转角
-//	//@return : none
-//	//@remark : 未测试
-//	Eigen::Vector3d axis_normalize = Axis.normalized();
-//	Eigen::Matrix3d Identity = Eigen::Matrix3d::Identity();
-//	Eigen::Matrix3d anti_symmetric_Axis;
-//	anti_symmetric_Axis << 0,            -axis_normalize(0),  axis_normalize(1),
-//		             axis_normalize(2),          0,          -axis_normalize(0), 
-//	                -axis_normalize(1),   axis_normalize(0),          0 ;
-//	DcmData = cos(Theta) * Identity + (1 - cos(Theta)) * axis_normalize * axis_normalize.transpose() - sin(Theta) * anti_symmetric_Axis;
-//}
 
 CDcm::CDcm(unsigned Axis, double Theta)
 {
@@ -75,13 +55,6 @@ CDcm::CDcm(unsigned Axis, double Theta)
     }
 }
 
-//CDcm::CDcm(CEulerAgl Agl)
-//{
-//}
-//
-//CDcm::CDcm(Quat quat)
-//{
-//}
 
 CDcm::CDcm(CDcm& _Dcm)
 {
@@ -209,59 +182,59 @@ CEulerAgl CDcm::ToEulerAgl(unsigned Sequence)
 
 Quat CDcm::ToQuat()
 {
-    //@brief:  方向余弦矩阵转四元数
-    //@para : none
-    //@return : 转换得到的四元数
-    //@remark : 已测试
-    double trace = DcmData(0, 0) + DcmData(1, 1) + DcmData(2, 2);
-    double q0, q1, q2, q3;
-    /*精简*/
-    if (trace > 0.0)
-    {
-        double sqtrp1 = sqrt(trace + 1.0);
-        q0 = (0.5 * sqtrp1);
-        q1 = ((DcmData(1, 2) - DcmData(2, 1)) / (2.0 * sqtrp1));
-        q2 = ((DcmData(2, 0) - DcmData(0, 2)) / (2.0 * sqtrp1));
-        q3 = ((DcmData(0, 1) - DcmData(1, 0)) / (2.0 * sqtrp1));
-    }
-    else
-    {
-        if (DcmData(1, 1) > DcmData(0, 0) && DcmData(1, 1) > DcmData(2, 2))
-        {
-            double sqtrp1 = sqrt(DcmData(1, 1) - DcmData(0, 0) - DcmData(2, 2) + 1.0);
-            q2 = (0.5 * sqtrp1);
-            if (sqtrp1 != 0)
-            {
-                sqtrp1 = 0.5 / sqtrp1;
-            }
-            q0 = ((DcmData(2, 0) - DcmData(0, 2)) * sqtrp1);
-            q1 = ((DcmData(0, 1) + DcmData(1, 0)) * sqtrp1);
-            q3 = ((DcmData(1, 2) + DcmData(2, 1)) * sqtrp1);
-        }
-        else if (DcmData(2, 2) > DcmData(0, 0))
-        {
-            double sqtrp1 = sqrt(DcmData(2, 2) - DcmData(0, 0) - DcmData(1, 1) + 1.0);
-            q3 = (0.5 * sqtrp1);
-            if (sqtrp1 != 0)
-            {
-                sqtrp1 = 0.5 / sqtrp1;
-            }
-            q0 = ((DcmData(0, 1) - DcmData(1, 0)) * sqtrp1);
-            q1 = ((DcmData(2, 0) + DcmData(0, 2)) * sqtrp1);
-            q2 = ((DcmData(1, 2) + DcmData(2, 1)) * sqtrp1);
-        }
-        else
-        {
-            double sqtrp1 = sqrt(DcmData(0, 0) - DcmData(1, 1) - DcmData(2, 2) + 1.0);
-            q1 = (0.5 * sqtrp1);
-            if (sqtrp1 != 0)
-            {
-                sqtrp1 = 0.5 / sqtrp1;
-            }
-            q0 = ((DcmData(1, 2) - DcmData(2, 1)) * sqtrp1);
-            q2 = ((DcmData(0, 1) + DcmData(1, 0)) * sqtrp1);
-            q3 = ((DcmData(2, 0) + DcmData(0, 2)) * sqtrp1);
-        }
-    }
-    return Quat(q0, q1, q2, q3);
+	//@brief:  方向余弦矩阵转四元数
+	//@para : none
+	//@return : 转换得到的四元数
+	//@remark : 已测试
+	double trace = DcmData(0, 0) + DcmData(1, 1) + DcmData(2, 2);
+	double q0{ 1 }, q1{ 0 }, q2{ 0 }, q3{ 0 };
+	/*精简*/
+	if (trace > 0.0)
+	{
+		double sqtrp1 = sqrt(trace + 1.0);
+		q0 = (0.5 * sqtrp1);
+		q1 = ((DcmData(1, 2) - DcmData(2, 1)) / (2.0 * sqtrp1));
+		q2 = ((DcmData(2, 0) - DcmData(0, 2)) / (2.0 * sqtrp1));
+		q3 = ((DcmData(0, 1) - DcmData(1, 0)) / (2.0 * sqtrp1));
+	}
+	else
+	{
+		if (DcmData(1, 1) > DcmData(0, 0) && DcmData(1, 1) > DcmData(2, 2))
+		{
+			double sqtrp1 = sqrt(DcmData(1, 1) - DcmData(0, 0) - DcmData(2, 2) + 1.0);
+			q2 = (0.5 * sqtrp1);
+			if (sqtrp1 != 0)
+			{
+				sqtrp1 = 0.5 / sqtrp1;
+			}
+			q0 = ((DcmData(2, 0) - DcmData(0, 2)) * sqtrp1);
+			q1 = ((DcmData(0, 1) + DcmData(1, 0)) * sqtrp1);
+			q3 = ((DcmData(1, 2) + DcmData(2, 1)) * sqtrp1);
+		}
+		else if (DcmData(2, 2) > DcmData(0, 0))
+		{
+			double sqtrp1 = sqrt(DcmData(2, 2) - DcmData(0, 0) - DcmData(1, 1) + 1.0);
+			q3 = (0.5 * sqtrp1);
+			if (sqtrp1 != 0)
+			{
+				sqtrp1 = 0.5 / sqtrp1;
+			}
+			q0 = ((DcmData(0, 1) - DcmData(1, 0)) * sqtrp1);
+			q1 = ((DcmData(2, 0) + DcmData(0, 2)) * sqtrp1);
+			q2 = ((DcmData(1, 2) + DcmData(2, 1)) * sqtrp1);
+		}
+		else
+		{
+			double sqtrp1 = sqrt(DcmData(0, 0) - DcmData(1, 1) - DcmData(2, 2) + 1.0);
+			q1 = (0.5 * sqtrp1);
+			if (sqtrp1 != 0)
+			{
+				sqtrp1 = 0.5 / sqtrp1;
+			}
+			q0 = ((DcmData(1, 2) - DcmData(2, 1)) * sqtrp1);
+			q2 = ((DcmData(0, 1) + DcmData(1, 0)) * sqtrp1);
+			q3 = ((DcmData(2, 0) + DcmData(0, 2)) * sqtrp1);
+		}
+	}
+	return Quat(q0, q1, q2, q3);
 }
