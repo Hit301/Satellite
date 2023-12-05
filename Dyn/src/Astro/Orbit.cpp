@@ -17,6 +17,12 @@ int COrbit::TwoBod(double Ts)
 	}
 }
 
+CDcm COrbit::TransferMatrix(Quat _Qib)
+{
+	return quat.ToDcm();
+}
+
+
 std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 {
 	_cout << "J2000 Pos(km) " << j2000.Pos(0) / 1000 << " " << j2000.Pos(1) / 1000 << " " << j2000.Pos(2) / 1000 << std::endl;

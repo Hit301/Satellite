@@ -1,5 +1,7 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+#include"Astro/Attitude.h"
+#include"SatelliteMath/Quaternions.h"
 
 struct RV
 {
@@ -60,7 +62,8 @@ private:
 public:
     RV J2000Inertial;//惯性系RV
     OrbitElement OrbitElements;//轨道根数
-
+    CAttitude Attitude; //姿态
+    Quat quat;//四元数
     COrbit(): J2000Inertial(), OrbitElements()
     {}
 
@@ -69,10 +72,10 @@ public:
     //
     int TwoBod(double Ts);
 
-    //
-    //brief:轨道系和惯性系的转移矩阵
-    //
-
+    //@brief: 计算惯性系下的姿态矩阵
+    //@para : 惯性系到本体系四元数
+    //@return : 惯性系到本体系的转移矩阵
+    CDcm TransferMatrix(Quat _Qib);
 
 };
 
