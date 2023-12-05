@@ -1,5 +1,6 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+#include "Astro/Environment.h"
 
 struct RV
 {
@@ -59,15 +60,57 @@ private:
 
 public:
     RV J2000Inertial;//惯性系RV
+    RV Wgs84Fix;//地固系RV
     OrbitElement OrbitElements;//轨道根数
+    Environment Env;//环境
 
-    COrbit(): J2000Inertial(), OrbitElements()
-    {}
+    struct 
+    {
+        //
+        // brief  : 地理经度
+        //
+        double Lng;
+        //
+        // brief  : 地理纬度
+        //
+        double Lat;
+        //
+        // brief  : 海拔高度
+        //
+        double Alt;
+    } LLA;//地理经纬高
+
+    Eigen::Vector3d LLR;//地球经纬度和半径
+
+
+    COrbit(): J2000Inertial(), OrbitElements(), Wgs84Fix()
+    {
+        LLA.Lng = 0;
+        LLA.Lat = 0;
+        LLA.Alt = 0;//LLA和LLR的声明
+    }
 
     //
     // brief  : 使用惯性系RV和二体递推轨道
     //
     int TwoBod(double Ts);
+
+    //@brief: 惯性系位置速度转地固系位置速度
+    //@para : 惯性系RV
+    //@return : none
+    //@remark : 惯性系到地固系转移矩阵的调用
+    void Inl2Fix(const int64_t timestamp, const double deltaUT1 = 0, const double xp = 0, const double yp = 0);
+
+    //@brief: 地固系轨道计算LLA
+    //@para : none
+    //@return : none
+    void FixPosToLLA();
+
+    //@brief: 计算北东地系到地固系的转移矩阵
+    //@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
+    //@return : none
+    //@remark : static
+    static Eigen::Matrix3d NED2ECEF();
 };
 
 

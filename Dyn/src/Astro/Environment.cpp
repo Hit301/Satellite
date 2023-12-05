@@ -15,3 +15,11 @@ Eigen::Matrix3d Environment::ECI2ECEF(const int64_t timestamp, const double delt
 		tmpres[2][0], tmpres[2][1], tmpres[2][2];
 	return res;
 }
+
+void Environment::NEDMag()
+{
+	//@brief: 北东地系地磁场
+	//@para : none
+	//@return : none
+
+}

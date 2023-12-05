@@ -10,4 +10,10 @@ public:
 	//@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
 	//@return : none
 	static Eigen::Matrix3d ECI2ECEF(const int64_t timestamp, const double deltaUT1 = 0, const double xp = 0, const double yp = 0);
+
+
+	//@brief: 北东地系地磁场
+	//@para : none
+	//@return : none
+	void NEDMag();
 };
