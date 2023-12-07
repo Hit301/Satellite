@@ -23,7 +23,7 @@
 #define EARTH_ECCENTRICITY                  (0.081819190842621)               //                                
 #define EARTH_RATE                          (7.292115859146235E-05)           //15.04106717866910/3600* pi/180                     
 #define EARTH_EQUATORIAL_RADIUS             (6378137.0)                       //(m)                            
-#define EARTH_POLAR_RADIUS                  (6356752.31424)                   //(m)                                    
+#define EARTH_POLAR_RADIUS                  (6356752.31424)                   //(m)      
 #define EARTH_GRAVITATIONAL                 (398600441500000.0)               //miu
 #define SUN_RADIUS_M                        (695508000.0)                     //
 #define MOON_RADIUS_M                       (1737400.0)                       //

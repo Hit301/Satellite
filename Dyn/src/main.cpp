@@ -35,8 +35,8 @@ int main()
 	//std::cout << b << std::endl;	
 	//
 	Eigen::Vector3d c;
-	c << 4, 5, 6;
-	std::cout << c(2) << std::endl;
+	c << 1, 2, 3;
+	std::cout << c.norm() << std::endl;
 	////std::cout << b.transpose() << std::endl;
 
 	//Eigen::Vector3d a;

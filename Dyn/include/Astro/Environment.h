@@ -1,9 +1,13 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+
+class COrbit;
+
 class Environment
 {
 public:
 	Eigen::Vector3d EarthMag;//本体系地磁场强度
+	Eigen::Vector3d NEDMag;//北东地系地磁场强度
 	Environment();
 
 	//@brief: 计算惯性系转地固系的转移矩阵
@@ -13,7 +17,7 @@ public:
 
 
 	//@brief: 北东地系地磁场
-	//@para : none
+	//@para : 轨道类轨道根数-半长轴 轨道类LLR
 	//@return : none
-	void NEDMag();
+	void GetNEDMag(const COrbit& Orbit);
 };

@@ -1,6 +1,5 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
-#include "Astro/Environment.h"
 
 struct RV
 {
@@ -10,6 +9,20 @@ struct RV
             Vel(0.0007615644, 6789.5304738682, 3686.4138485846) {}
     RV(const Eigen::Vector3d& initialPos, const Eigen::Vector3d& initialVel)
      : Pos(initialPos),Vel(initialVel){}
+};
+struct LLA_t
+{
+    double Lng;//地理经度，单位度
+    double Lat;//地理纬度，单位度
+    double Alt;//海拔高度，单位m
+    LLA_t() : Lng(0), Lat(0), Alt(0) {}
+};
+struct LLR_t
+{
+    double Lng;//球心经度，单位度
+    double Lat;//球心纬度，单位度
+    double Rds;//球心半径，单位m
+    LLR_t() : Lng(0), Lat(0), Rds(0) {}
 };
 
 struct OrbitElement
@@ -62,32 +75,11 @@ public:
     RV J2000Inertial;//惯性系RV
     RV Wgs84Fix;//地固系RV
     OrbitElement OrbitElements;//轨道根数
-    Environment Env;//环境
+    LLA_t LLA;
+    LLR_t LLR;//地球经纬度和半径
 
-    struct 
+    COrbit(): J2000Inertial(), OrbitElements(), Wgs84Fix(), LLA(), LLR()
     {
-        //
-        // brief  : 地理经度
-        //
-        double Lng;
-        //
-        // brief  : 地理纬度
-        //
-        double Lat;
-        //
-        // brief  : 海拔高度
-        //
-        double Alt;
-    } LLA;//地理经纬高
-
-    Eigen::Vector3d LLR;//地球经纬度和半径
-
-
-    COrbit(): J2000Inertial(), OrbitElements(), Wgs84Fix()
-    {
-        LLA.Lng = 0;
-        LLA.Lat = 0;
-        LLA.Alt = 0;//LLA和LLR的声明
     }
 
     //
@@ -104,13 +96,18 @@ public:
     //@brief: 地固系轨道计算LLA
     //@para : none
     //@return : none
-    void FixPosToLLA();
+    void FixPos2LLA();
+
+    //@brief: 地固系轨道计算LLR
+    //@para : none
+    //@return : none
+    void FixPos2LLR();
 
     //@brief: 计算北东地系到地固系的转移矩阵
     //@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
     //@return : none
-    //@remark : static
-    static Eigen::Matrix3d NED2ECEF();
+    //@remark : 静态成员函数只能访问静态成员变量
+    Eigen::Matrix3d NED2ECEF();
 };
 
 
