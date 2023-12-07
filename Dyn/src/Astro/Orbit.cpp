@@ -17,10 +17,10 @@ int COrbit::TwoBod(double Ts)
 	}
 }
 
-CDcm COrbit::TransferMatrix(Quat _Qib)
-{
-	return quat.ToDcm();
-}
+//CDcm COrbit::TransferMatrix(Quat _Qib)
+//{
+//	return quat.ToDcm();
+//}
 
 
 std::ostream& operator<<(std::ostream& _cout, const RV& j2000)

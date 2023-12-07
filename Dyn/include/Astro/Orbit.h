@@ -75,7 +75,7 @@ public:
     //@brief: 计算惯性系下的姿态矩阵
     //@para : 惯性系到本体系四元数
     //@return : 惯性系到本体系的转移矩阵
-    CDcm TransferMatrix(Quat _Qib);
+    //CDcm TransferMatrix(Quat _Qib);
 
 };
 

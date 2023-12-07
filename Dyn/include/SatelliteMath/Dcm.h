@@ -51,4 +51,10 @@ public:
 	//@para : none
 	//@return : 转换得到的四元数
 	Quat ToQuat();
+
+public:
+	//运算符重载
+	Eigen::Vector3d operator*(const Eigen::Vector3d& _Vector) const;//方向余弦矩阵和三维矢量的乘法
+	Eigen::Matrix3d operator*(const CDcm& _CDcm) const;//方向余弦矩阵和方向余弦矩阵的乘法
+
 };
