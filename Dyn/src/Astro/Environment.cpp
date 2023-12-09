@@ -5,6 +5,7 @@
 Environment::Environment()
 {
 	EarthMag << 0, 0, 0;
+	NEDMag << 0, 0, 0;
 }
 
 Eigen::Matrix3d Environment::ECI2ECEF(const int64_t timestamp, const double deltaUT1, const double xp, const double yp)
@@ -48,21 +49,55 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 
 	//BN,BE,BG为三轴磁强，单位nT 
 
-#define G10  (-29442.0)
-#define G11  (-1501.00)
-#define H11  (4797.100)
-#define G20  (-2445.10)
-#define G21  (3012.900)
-#define H21  (-2845.60)
-#define G22  (1676.700)
-#define H22  (-641.900)
-#define G30  (1350.700)
-#define G31  (-2352.30)
-#define H31  (-115.300)
-#define G32  (1225.600)
-#define H32  (244.9000)
-#define G33  (582.0000)
-#define H33  (-538.400)
+//wmm2020_data
+#define G10  (-29404.5)
+#define G11  (-1450.7)
+#define H11  (4652.9)
+#define G20  (-2500.0)
+#define G21  (2982.0 )
+#define H21  (-2991.6)
+#define G22  (1676.8)
+#define H22  (-734.8)
+#define G30  (1363.9)
+#define G31  (-2381.0)
+#define H31  (-82.2)
+#define G32  (1236.2)
+#define H32  (241.8)
+#define G33  (525.7)
+#define H33  (-542.9)
+
+//wmm2010_data
+//#define G10  (-29496.6)
+//#define G11  (-1586.3)
+//#define H11  (4944.4)
+//#define G20  (-2396.6)
+//#define G21  (3026.1)
+//#define H21  (-2707.7)
+//#define G22  (1668.6)
+//#define H22  (-576.1)
+//#define G30  (1340.1)
+//#define G31  (-2326.2)
+//#define H31  (-160.2)
+//#define G32  (1231.9)
+//#define H32  (251.9)
+//#define G33  (634.0)
+//#define H33  (-536.6)
+
+//#define G10  (-29442.0)
+//#define G11  (-1501.00)
+//#define H11  (4797.100)
+//#define G20  (-2445.10)
+//#define G21  (3012.900)
+//#define H21  (-2845.60)
+//#define G22  (1676.700)
+//#define H22  (-641.900)
+//#define G30  (1350.700)
+//#define G31  (-2352.30)
+//#define H31  (-115.300)
+//#define G32  (1225.600)
+//#define H32  (244.9000)
+//#define G33  (582.0000)
+//#define H33  (-538.400)
 
 	//分别计算BN,BE,BG
 	double re3_f64 = (G10 * (-sin_theta) + (G11 * cos_lambdal + H11 * sin_lambdal) * cos_theta);
@@ -75,6 +110,7 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 		(G33 * cos_3lambdal + H33 * sin_3lambdal) * (2.371708245126284 * sin2_theta * cos_theta));
 
 	double bn = re_r3 * re3_f64 + re_r4 * re4_f64 + re_r5 * re5_f64;
+
 	re3_f64 = ((G11 * sin_lambdal - H11 * cos_lambdal) * sin_theta);
 	re4_f64 = ((G21 * sin_lambdal - H21 * cos_lambdal) * (0.866025403784438 * sin_2theta) +
 		2.0 * (G22 * sin_2lambdal - H22 * cos_2lambdal) * (0.866025403784438 * sin2_theta));

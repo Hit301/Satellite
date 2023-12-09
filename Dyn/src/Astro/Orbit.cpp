@@ -18,18 +18,18 @@ int COrbit::TwoBod(double Ts)
 	}
 }
 
-void COrbit::Inl2Fix(const int64_t timestamp, const double deltaUT1, const double xp, const double yp)
+void COrbit::Inl2Fix(const int64_t timestamp)
 {
 	//@brief: 惯性系位置速度转地固系位置速度
-	//@para : 惯性系RV
+	//@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
 	//@return : none
-	//@remark : 未测试
+	//@remark : 已测试
 	Eigen::Matrix3d Aif;
-	Aif = Environment::ECI2ECEF(timestamp, deltaUT1, xp, yp);
-	Wgs84Fix.Pos = Aif * J2000Inertial.Pos;
+	Aif = Environment::ECI2ECEF(timestamp);
+	ECEFFix.Pos = Aif * J2000Inertial.Pos;
 	Eigen::Vector3d EarthAngularVelocityFixed;
 	EarthAngularVelocityFixed << 0, 0, EARTH_RATE;
-	Wgs84Fix.Vel = Aif * J2000Inertial.Vel - EarthAngularVelocityFixed.cross(Wgs84Fix.Pos) ;
+	ECEFFix.Vel = Aif * J2000Inertial.Vel - EarthAngularVelocityFixed.cross(ECEFFix.Pos) ;
 }
 
 void COrbit::FixPos2LLA()
@@ -37,22 +37,23 @@ void COrbit::FixPos2LLA()
 	//@brief: 地固系轨道计算LLA
 	//@para : none
 	//@return : none
-	double sqrt_x2y2 = SQRT(Wgs84Fix.Pos(0) * Wgs84Fix.Pos(0) + Wgs84Fix.Pos(1) * Wgs84Fix.Pos(1));
+	//@remark : 已测试
+	double sqrt_x2y2 = SQRT(ECEFFix.Pos(0) * ECEFFix.Pos(0) + ECEFFix.Pos(1) * ECEFFix.Pos(1));
 	double e2 = 1.0 - (EARTH_POLAR_RADIUS * EARTH_POLAR_RADIUS) / (EARTH_EQUATORIAL_RADIUS * EARTH_EQUATORIAL_RADIUS);
 	double e_2 = (EARTH_EQUATORIAL_RADIUS * EARTH_EQUATORIAL_RADIUS) / (EARTH_POLAR_RADIUS * EARTH_POLAR_RADIUS) - 1.0;
-	double belta = ATAN2(Wgs84Fix.Pos(2) * EARTH_EQUATORIAL_RADIUS , EARTH_POLAR_RADIUS * sqrt_x2y2);
+	double belta = ATAN2(ECEFFix.Pos(2) * EARTH_EQUATORIAL_RADIUS , EARTH_POLAR_RADIUS * sqrt_x2y2);
 	double Lat_tmp = sqrt_x2y2 - e2 * EARTH_EQUATORIAL_RADIUS * POW(cos(belta), 3);
-	LLA.Lng = ATAN2(Wgs84Fix.Pos(1), Wgs84Fix.Pos(0));
-	LLA.Lat = ATAN2(Wgs84Fix.Pos(2) + e_2 * EARTH_EQUATORIAL_RADIUS * POW(sin(belta), 3), Lat_tmp);
+	LLA.Lng = ATAN2(ECEFFix.Pos(1), ECEFFix.Pos(0));
+	LLA.Lat = ATAN2(ECEFFix.Pos(2) + e_2 * EARTH_EQUATORIAL_RADIUS * POW(sin(belta), 3), Lat_tmp);
 	double cosB = cos(LLA.Lat);
 	double sinB = sin(LLA.Lat);
 	if (cosB != 0)
 	{
-		LLA.Lat = sqrt_x2y2 / cosB - (EARTH_EQUATORIAL_RADIUS / (SQRT(1.0 - e2 * sinB * sinB)));
+		LLA.Alt = sqrt_x2y2 / cosB - (EARTH_EQUATORIAL_RADIUS / (SQRT(1.0 - e2 * sinB * sinB)));
 	}
 	else
 	{
-		LLA.Lat = Wgs84Fix.Pos(2) - EARTH_POLAR_RADIUS * SIGN(Wgs84Fix.Pos(2));
+		LLA.Alt = ECEFFix.Pos(2) - EARTH_POLAR_RADIUS * SIGN(ECEFFix.Pos(2));
 	}
 }
 
@@ -61,10 +62,10 @@ void COrbit::FixPos2LLR()
 	//@brief: 地固系轨道计算LLR
 	//@para : none
 	//@return : none
-	//@remark : 未测试
-	LLR.Lng = ATAN2(Wgs84Fix.Pos(1), Wgs84Fix.Pos(0));
-	LLR.Lat = ATAN2(Wgs84Fix.Pos(2), SQRT(Wgs84Fix.Pos(0) * Wgs84Fix.Pos(0) + Wgs84Fix.Pos(1) * Wgs84Fix.Pos(1)));
-	LLR.Rds = Wgs84Fix.Pos.norm();
+	//@remark : 已测试
+	LLR.Lng = ATAN2(ECEFFix.Pos(1), ECEFFix.Pos(0));
+	LLR.Lat = ATAN2(ECEFFix.Pos(2), SQRT(ECEFFix.Pos(0) * ECEFFix.Pos(0) + ECEFFix.Pos(1) * ECEFFix.Pos(1)));
+	LLR.Rds = ECEFFix.Pos.norm();
 }
 
 Eigen::Matrix3d COrbit::NED2ECEF()
@@ -72,7 +73,6 @@ Eigen::Matrix3d COrbit::NED2ECEF()
 	//@brief: 计算北东地系到地固系的转移矩阵
 	//@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
 	//@return : none
-	//@remark : static
 	/*单位*/
 	Eigen::Matrix3d res;
 	Eigen::Matrix3d temres;
