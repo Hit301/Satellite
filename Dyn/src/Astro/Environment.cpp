@@ -50,6 +50,8 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 	//BN,BE,BG为三轴磁强，单位nT 
 
 //wmm2020_data
+/*高斯系数理论上会随着时间变化而变化，但是变动较为微小，
+且这样的微小变化对于磁强最终大小的影响是较小的，不会改变计算的磁强与官方公布磁强的误差的数量级*/
 #define G10  (-29404.5)
 #define G11  (-1450.7)
 #define H11  (4652.9)
@@ -83,6 +85,7 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 //#define G33  (634.0)
 //#define H33  (-536.6)
 
+//银河
 //#define G10  (-29442.0)
 //#define G11  (-1501.00)
 //#define H11  (4797.100)

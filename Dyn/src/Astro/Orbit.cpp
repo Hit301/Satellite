@@ -84,7 +84,7 @@ Eigen::Matrix3d COrbit::NED2ECEF()
 		   -sin_lng,                  cos_lng,         0,
 		   -cos_lat * cos_lng, -cos_lat * sin_lng, -sin_lat;
 	temres = res.inverse();
-	return res;
+	return temres;
 }
 
 
