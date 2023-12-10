@@ -22,39 +22,40 @@ void Satellite::StateRenew(double SampleTime)
     //SolVec=SunCal.SunPos(SatelliteTime);
 	SolVec = SunCal.SunPos(1659312000);//正确性已经验证，与MATLAB结果对比，在小数点后三位保持和MATLAB计算的太阳矢量的结果一致
 
-	//控制率测试（包含模式切换，待修改）
-	//Eigen::Vector3d Wbi = _Gyro.InstallMatrix.inverse() * DEG2RAD * _Gyro.Data;
+	//控制率测试（包含模式切换）
+	///*Eigen::Vector3d Wbi = _Gyro.InstallMatrix.inverse() * DEG2RAD * _Gyro.Data;*/
+	//Eigen::Vector3d Wbi = Attitude.Omega_b;
 	//Quat _Qib = Attitude.Qib;
+	//Angle = CAttitudeControl::GetAngle(_Qib, SolVec);
 	//_Qbo = CAttitudeControl::GetQbo(_Qib);
-	//if (!sunControlMode && !earthControlMode && (std::fabs(Wbi[0]) > 0.00174 || std::fabs(Wbi[1]) > 0.00174 || std::fabs(Wbi[2]) > 0.00174)) {
+	//if (!sunControlMode && !earthControlMode ) {
 	//	// 切换到初始速率阻尼测试模式
-	//	sunControlMode = false;
-	//	earthControlMode = false;
-
+	//	if (std::fabs(Wbi[0]) < 0.00174 && std::fabs(Wbi[1]) < 0.00174 && std::fabs(Wbi[2]) < 0.00174) {
+	//		sunControlMode = true;
+	//		earthControlMode = false;
+	//	}
 	//	Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 10);
 	//}
-	//else if (!sunControlMode && Angle >= 0.5) {
+	//else if (sunControlMode) {
 	//	// 切换到对日姿态控制测试模式
-	//	sunControlMode = true;
-	//	earthControlMode = false;
-	//	Angle = CAttitudeControl::GetAngle(_Qib, SolVec);
+	//	if (Angle <= 0.005) {
+	//		sunControlMode = false;
+	//		earthControlMode = true;
+	//	}
 	//	Attitude.TotalTorque = CAttitudeControl::ToSunControl(_Gyro, 0.125, 1, _Qib, SolVec);
 	//}
-	//else if (!earthControlMode) {
+	//else if (earthControlMode) {
 	//	// 切换到对地姿态控制测试模式
-	//	sunControlMode = false;
-	//	earthControlMode = true;
-
-	//	Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 8, 8, _Qib);
+	//	Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 0.5, 1, _Qib);
 	//}
 
-	//控制率测试（均验证）
-    Quat _Qib = Attitude.Qib;
-	Angle = CAttitudeControl::GetAngle(_Qib, SolVec);
-	_Qbo = CAttitudeControl::GetQbo(_Qib);
-	//Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 3);//初始速率阻尼测试通过
-	//Attitude.TotalTorque = CAttitudeControl::ToSunControl(_Gyro, 0.125, 1, _Qib, SolVec);//对日姿态控制测试通过
-	Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 0.5, 1, _Qib);//对地姿态控制测试通过
+	////控制率单独测试（均验证）
+ //   Quat _Qib = Attitude.Qib;
+	//Angle = CAttitudeControl::GetAngle(_Qib, SolVec);
+	//_Qbo = CAttitudeControl::GetQbo(_Qib);
+	////Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 3);//初始速率阻尼测试通过
+	////Attitude.TotalTorque = CAttitudeControl::ToSunControl(_Gyro, 0.125, 1, _Qib, SolVec);//对日姿态控制测试通过
+	//Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 0.5, 1, _Qib);//对地姿态控制测试通过
 	
 	//动力学更新
 	Orbit.TwoBod(SampleTime);
