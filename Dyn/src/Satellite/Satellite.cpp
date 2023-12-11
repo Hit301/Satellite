@@ -9,38 +9,19 @@ Satellite::Satellite() :Orbit(), Attitude(), AttController()
 	SatelliteTime = pCfg->SatelliteTime;
 
 	//轨道相关初始化
-	Orbit.J2000Inertial.Pos << pCfg->Rx, pCfg->Ry, pCfg->Rz;
-	Orbit.J2000Inertial.Vel << pCfg->Vx, pCfg->Vy, pCfg->Vz;
-	Orbit.Inl2Fix(SatelliteTime);
-	Orbit.FixPos2LLR();
-	Orbit.FixPos2LLA();
+	Orbit.Init(SatelliteTime);
 
 	//姿态相关初始化
-	Attitude.Omega_b << pCfg->Wx, pCfg->Wy, pCfg->Wz;
-	Attitude.Qib.QuatData[0] = pCfg->Q0;
-	Attitude.Qib.QuatData[1] = pCfg->Q1;
-	Attitude.Qib.QuatData[2] = pCfg->Q2;
-	Attitude.Qib.QuatData[3] = pCfg->Q3;
-	Attitude.SatInaMat << pCfg->Jxx, pCfg->Jxy, pCfg->Jxz,
-						  pCfg->Jxy, pCfg->Jyy, pCfg->Jyz,
-		                  pCfg->Jxz, pCfg->Jyz, pCfg->Jzz;
-	Attitude.GetAio(Orbit);
-	Attitude.Qob = Attitude.Aio.ToQuat().QuatInv() * Attitude.Qib;
+	Attitude.Init(Orbit);
 
 	//环境相关初始化
 	Env.StateRenew(Attitude, Orbit, SatelliteTime);
 
 	//单机初始化
 	pComponet = CComponet::GetInstance();
+	pComponet->Init(Attitude, Orbit, Env, SatelliteTime);
 
-	//陀螺初始化
-	GyroScope* pGyro = pComponet->pGyro;
-	for (size_t i{ 0 }; i < pComponet->GyroNums; i++)
-	{
-		pGyro[i].LastRenewTime = SatelliteTime;
-		pGyro[i].Data = RAD2DEG * pGyro[i].InstallMatrix * Attitude.Omega_b;
-	}
-
+	//控制器设置
 	AttController.workmode = EARTHPOINT;
 }
 
@@ -63,13 +44,9 @@ void Satellite::StateRenew(double SampleTime)
 	Env.StateRenew(Attitude, Orbit, SatelliteTime);
 
 	//单机数据更新
-	GyroScope* pGyro = pComponet->pGyro;
-	for (size_t i{ 0 }; i < pComponet->GyroNums; i++)
-	{
-		pGyro[i].StateRenew(SatelliteTime, Attitude.Omega_b);
-	}
-
+	pComponet->StateRenew(Attitude, Orbit, Env, SatelliteTime);
 }
+
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
 {

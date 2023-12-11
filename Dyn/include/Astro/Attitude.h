@@ -40,6 +40,8 @@ public:
 	void GetAio(COrbit& Orbit);
 
 	void StateRenew(double Ts, COrbit& Orbit);
+
+	void Init(COrbit& Obt);
 };
 
 

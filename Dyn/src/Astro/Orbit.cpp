@@ -2,7 +2,7 @@
 #include "Astro/Environment.h"
 #include"Astro/Attitude.h"
 #include"SatelliteMath/Quaternions.h"
-
+#include"General/CConfig.h"
 int COrbit::TwoBod(double Ts)
 {
 	if (IsRV(J2000Inertial) == false)
@@ -93,6 +93,16 @@ void COrbit::StateRenew(double Ts, const int64_t timestamp)
 {
 	TwoBod(Ts);
 	Inl2Fix(timestamp);
+	FixPos2LLR();
+	FixPos2LLA();
+}
+
+void COrbit::Init(int64_t Timestamp)
+{
+	CConfig* pCfg = CConfig::GetInstance();
+	J2000Inertial.Pos << pCfg->Rx, pCfg->Ry, pCfg->Rz;
+	J2000Inertial.Vel << pCfg->Vx, pCfg->Vy, pCfg->Vz;
+	Inl2Fix(Timestamp);
 	FixPos2LLR();
 	FixPos2LLA();
 }

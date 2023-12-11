@@ -117,6 +117,8 @@ public:
     Eigen::Matrix3d NED2ECEF();
 
     void StateRenew(double Ts, const int64_t timestamp);
+
+    void Init(int64_t Timestamp);
 };
 
 

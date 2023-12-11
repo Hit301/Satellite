@@ -1,15 +1,12 @@
 #include"General/SimTime.h"
 #include "Satellite/Satellite.h"
-#include "Astro/Orbit.h"
-#include"SatelliteMath/EulerAgl.h"
-#include "Astro/Environment.h"
 
 int main()
 {
 	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
-	pSimTime->InitSimSpeedManage(SampleTime, 1);
+	pSimTime->InitSimSpeedManage(SampleTime, 10);
 	while (1)
 	{
 		pSimTime->WaitForSimCountMute();

@@ -1,6 +1,6 @@
 #include"Astro/Attitude.h"
 #include "Astro/Orbit.h"
-
+#include"General/CConfig.h"
 //姿态运动学计算差分四元数
 #if 0
 Eigen::Vector3d Omega_bRK4(Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Omega_b, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s, double Ts)
@@ -112,4 +112,19 @@ void CAttitude::StateRenew(double Ts, COrbit& Orbit)
 
     Quat Qio = Aio.ToQuat();
     Qob = Qio.QuatInv() * Qib;
+}
+
+void CAttitude::Init(COrbit& Obt)
+{
+    CConfig* pCfg = CConfig::GetInstance();
+   Omega_b << pCfg->Wx, pCfg->Wy, pCfg->Wz;
+   Qib.QuatData[0] = pCfg->Q0;
+   Qib.QuatData[1] = pCfg->Q1;
+   Qib.QuatData[2] = pCfg->Q2;
+   Qib.QuatData[3] = pCfg->Q3;
+   SatInaMat << pCfg->Jxx, pCfg->Jxy, pCfg->Jxz,
+        pCfg->Jxy, pCfg->Jyy, pCfg->Jyz,
+        pCfg->Jxz, pCfg->Jyz, pCfg->Jzz;
+    GetAio(Obt);
+    Qob = Aio.ToQuat().QuatInv() * Qib;
 }
