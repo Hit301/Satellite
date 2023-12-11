@@ -1,5 +1,7 @@
 #include "Astro/Orbit.h"
 #include "Astro/Environment.h"
+#include"Astro/Attitude.h"
+#include"SatelliteMath/Quaternions.h"
 
 int COrbit::TwoBod(double Ts)
 {
@@ -92,7 +94,7 @@ void COrbit::StateRenew(double Ts, const int64_t timestamp)
 	TwoBod(Ts);
 	Inl2Fix(timestamp);
 	FixPos2LLR();
-	FixPos2LLR();
+	FixPos2LLA();
 }
 
 

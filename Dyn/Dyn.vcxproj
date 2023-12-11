@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Componet\Componet.cpp" />
+    <ClCompile Include="src\General\CConfig.cpp" />
     <ClCompile Include="src\Astro\AttitudeControl.cpp" />
     <ClCompile Include="src\SatelliteMath\EulerAgl.cpp" />
     <ClCompile Include="src\SatelliteMath\BaseMath.cpp" />
@@ -29,10 +31,13 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SatelliteMath\Dcm.cpp" />
     <ClCompile Include="src\SatelliteMath\Quaternions.cpp" />
-    <ClCompile Include="src\Satellite\Gyro.cpp" />
+    <ClCompile Include="src\Componet\Gyro.cpp" />
     <ClCompile Include="src\Satellite\Satellite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Componet\Componet.h" />
+    <ClInclude Include="include\General\AllHead.h" />
+    <ClInclude Include="include\General\CConfig.h" />
     <ClInclude Include="include\Astro\AttitudeControl.h" />
     <ClInclude Include="include\SatelliteMath\EulerAgl.h" />
     <ClInclude Include="include\Astro\Attitude.h" />
@@ -40,7 +45,7 @@
     <ClInclude Include="include\Astro\Orbit.h" />
     <ClInclude Include="include\General\SimTime.h" />
     <ClInclude Include="include\SatelliteMath\BaseMath.h" />
-    <ClInclude Include="include\Satellite\Gyro.h" />
+    <ClInclude Include="include\Componet\Gyro.h" />
     <ClInclude Include="include\Satellite\Satellite.h" />
     <ClInclude Include="include\SatelliteMath\Dcm.h" />
     <ClInclude Include="include\SatelliteMath\Quaternions.h" />
@@ -69,7 +74,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

@@ -1,7 +1,6 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
-#include"Astro/Attitude.h"
-#include"SatelliteMath/Quaternions.h"
+#include"General/AllHead.h"
 
 struct RV
 {
@@ -84,6 +83,8 @@ public:
 public:
     COrbit(): J2000Inertial(), OrbitElements(), ECEFFix(), LLA(), LLR()
     {
+        //先写一个以惯性系初始化的方式吧
+
     }
 
     //

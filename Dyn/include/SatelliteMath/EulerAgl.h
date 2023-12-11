@@ -1,9 +1,6 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
-
-//Ç°ÏòÉùÃ÷
-class CDcm;
-class Quat;
+#include"General/AllHead.h"
 
 class CEulerAgl
 {

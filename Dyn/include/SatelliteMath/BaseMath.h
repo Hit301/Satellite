@@ -92,17 +92,17 @@
 #define MJD2DAYS(mjd)                       ((mjd)-40587.0)                  //Total days from 1970-1-1
 
 //
-// brief  : 时间戳转JD
+// brief  : 时间戳(s)转JD
 //
 #define TS2JD(timestamp)                    (((timestamp)-1609459200.0)/86400.0+2459215.5)     //time stamp to JD
 
 //
-// brief  : 时间戳转儒略世纪数
+// brief  : 时间戳(s)转儒略世纪数
 //
 #define TS2CEN(timestamp)                   ((TS2JD(timestamp)-2451545.0)/36525.0)            //time stamp to JD centry
 
 //
-// brief  : JD转时间戳
+// brief  : JD转时间戳(s)
 //
 #define JD2TS(jd)                          (((jd)-2459215.5)*86400.0+1609459200.0)            //JD to time stamp
 

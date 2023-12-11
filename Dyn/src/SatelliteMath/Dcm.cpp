@@ -245,7 +245,7 @@ Eigen::Vector3d CDcm::operator*(const Eigen::Vector3d& _Vector) const
 	return this->DcmData * _Vector;
 }
 
-Eigen::Matrix3d CDcm::operator*(const CDcm& _CDcm) const const
+Eigen::Matrix3d CDcm::operator*(const CDcm& _CDcm) const
 {
 	return this->DcmData * _CDcm.DcmData;
 }
