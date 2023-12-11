@@ -6,7 +6,7 @@ class COrbit;
 class Environment
 {
 public:
-	Eigen::Vector3d EarthMag;//本体系地磁场强度
+	Eigen::Vector3d BodyMag;//本体系地磁场强度
 	Eigen::Vector3d NEDMag;//北东地系地磁场强度
 	Environment();
 
@@ -20,4 +20,6 @@ public:
 	//@para : 轨道类轨道根数-半长轴 轨道类LLR
 	//@return : none
 	void GetNEDMag(const COrbit& Orbit);
+
+	void StateRenew(COrbit& Orbit, const int64_t timestamp);
 };

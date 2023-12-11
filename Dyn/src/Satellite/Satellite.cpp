@@ -11,16 +11,20 @@ Satellite::Satellite() :Orbit(), Attitude(), _Gyro()
 
 void Satellite::StateRenew(double SampleTime)
 {
-	//环境信息更新
+	//时间戳更新
 	SatelliteTime += (int64_t)(SampleTime * 1e3);
 
 	//控制器计算
 	Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 3);
 
-	//动力学更新
-	Orbit.TwoBod(SampleTime);
-	Attitude.AttitudeKinematics(SampleTime);
-	Attitude.AttitudeDynamicsRk4(SampleTime);
+	//轨道相关信息更新
+	Orbit.StateRenew(SampleTime, SatelliteTime);
+
+	//姿态相关信息更新
+	Attitude.StateRenew(SampleTime);
+
+	//环境信息更新
+	Env.StateRenew(Orbit, SatelliteTime);
 
 	//单机数据更新
 	_Gyro.StateRenew(SatelliteTime, Attitude.Omega_b);

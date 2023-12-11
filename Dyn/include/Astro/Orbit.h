@@ -75,9 +75,11 @@ public:
     RV J2000Inertial;//惯性系RV
     RV ECEFFix;//地固系RV
     OrbitElement OrbitElements;//轨道根数
-    LLA_t LLA;
+    LLA_t LLA;//经纬高
     LLR_t LLR;//地球经纬度和半径
 
+
+public:
     COrbit(): J2000Inertial(), OrbitElements(), ECEFFix(), LLA(), LLR()
     {
     }
@@ -110,6 +112,8 @@ public:
     //@return : none
     //@remark : 静态成员函数只能访问静态成员变量
     Eigen::Matrix3d NED2ECEF();
+
+    void StateRenew(double Ts, const int64_t timestamp);
 };
 
 

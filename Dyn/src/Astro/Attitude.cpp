@@ -92,3 +92,9 @@ int CAttitude::AttitudeKinematics(double Ts)
     Qib = Qib * QuatTemp;
     return 0;
 }
+
+void CAttitude::StateRenew(double Ts)
+{
+    AttitudeKinematics(Ts);
+    AttitudeDynamicsRk4(Ts);
+}

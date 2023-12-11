@@ -13,6 +13,9 @@ public:
 	Eigen::Vector3d WheelMomentum_b;//飞轮组在本体系下的角动量，单位Nms
 	Eigen::Vector3d TotalTorque;//Tf：干扰力矩：TB 磁力矩：Tw：飞轮本体系力矩 TotalTorque=TB+Tf-Tw
 
+	
+public:
+
 	//
 	// brief  : 默认姿态类构造函数
 	//
@@ -28,6 +31,7 @@ public:
 	//
 	int AttitudeKinematics(double Ts);
 
+	void StateRenew(double Ts);
 };
 
 

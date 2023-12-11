@@ -25,6 +25,7 @@ public:
 		 double A10, double A11, double A12,
 		 double A20, double A21, double A22);
 	
+
 	//@brief: 以单轴旋转初始化DcmData
 	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)：转轴(查BaseMath)
 	//		  Theta(rad)：转角

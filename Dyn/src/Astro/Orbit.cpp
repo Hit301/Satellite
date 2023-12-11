@@ -87,6 +87,14 @@ Eigen::Matrix3d COrbit::NED2ECEF()
 	return temres;
 }
 
+void COrbit::StateRenew(double Ts, const int64_t timestamp)
+{
+	TwoBod(Ts);
+	Inl2Fix(timestamp);
+	FixPos2LLR();
+	FixPos2LLR();
+}
+
 
 std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 {

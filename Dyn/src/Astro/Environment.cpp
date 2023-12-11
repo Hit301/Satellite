@@ -4,7 +4,7 @@
 
 Environment::Environment()
 {
-	EarthMag << 0, 0, 0;
+	BodyMag << 0, 0, 0;
 	NEDMag << 0, 0, 0;
 }
 
@@ -135,4 +135,11 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 	double bg = -2.0 * re_r3 * re3_f64 - 3.0 * re_r4 * re4_f64 - 4.0 * re_r5 * re5_f64;
 
 	NEDMag << bn, be, bg;
+}
+
+void Environment::StateRenew(COrbit& Orbit, const int64_t timestamp)
+{
+	GetNEDMag(Orbit);
+	Eigen::Matrix3d Ane = Orbit.NED2ECEF();
+	BodyMag = Ane * NEDMag;
 }
