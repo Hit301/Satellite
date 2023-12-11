@@ -143,3 +143,40 @@ void Environment::StateRenew(COrbit& Orbit, const int64_t timestamp)
 	Eigen::Matrix3d Ane = Orbit.NED2ECEF();
 	BodyMag = Ane * NEDMag;
 }
+CSunCal::CSunCal()
+{
+	//示例时间
+	//SunTime =1659312000;
+	SunTime = GetTimeStampMs();//单位ms
+}
+
+Eigen::Vector3d CSunCal::SunPos(int64_t SunTime)
+{
+	double TJD; double M;long double lamM;long double rs; double bs;
+	Eigen::Matrix3d Rx;
+	Eigen::Vector3d sunpos;
+
+	//儒略世纪数
+	TJD = TS2CEN(SunTime);
+	//TJD = 0.2258; //为了与MATLAB结果对比时使用
+	//太阳平近点角，这里忽略了儒略世纪数的平方及以上项
+	M = 357.5256 + 35999.049 * TJD;
+	//太阳相对于当日平春分点的真近点角（黄道经度）
+	lamM = 282.94 + M + SEC2DEG*6892 * SIND(M) + SEC2DEG*72 * SIND(M);
+	//太阳地心距
+	rs = (149.619 - 2.499 * COSD(M) - 0.021 * COSD(2.0 *M)) * 1e9;  //单位为m
+	//23.4393是黄赤交角
+	bs = 23.4393 - 46.815 / 3600 * TJD - 0.00059 / 3600 * TJD * TJD;
+	sunpos << rs * COSD(lamM), rs* SIND(lamM), 0;  //单位为m
+
+	//两种计算（第二个精度更高一些）	
+	//Rx << 1, 0, 0,												
+	//	0, COSD(-23.4393), SIND(-23.4393),
+	//	0, -SIND(-23.4393), COSD(-23.4393);
+	Rx << 1, 0, 0,
+		0, COSD(-bs), SIND(-bs),
+		0, -SIND(-bs), COSD(-bs);
+	Eigen::Vector3d SunPos = Rx * sunpos / rs;  //归一化的结果
+	return SunPos;
+}
+

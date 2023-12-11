@@ -1,5 +1,7 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+#include"Astro/Attitude.h"
+#include"SatelliteMath/Quaternions.h"
 
 struct RV
 {
