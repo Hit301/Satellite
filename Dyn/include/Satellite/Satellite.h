@@ -3,6 +3,8 @@
 #include"Astro/Orbit.h"
 #include "Satellite/Gyro.h"
 #include "Astro/Environment.h"
+#include "Satellite/StarSensor.h"
+
 class Satellite
 {
 public:
@@ -11,6 +13,7 @@ public:
 	CAttitude Attitude;//×ËÌ¬
 	Environment Env;//»·¾³
 	GyroScope _Gyro;//ÍÓÂİ
+
 public:
 	Satellite();
 

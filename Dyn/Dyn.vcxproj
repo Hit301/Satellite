@@ -29,8 +29,12 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SatelliteMath\Dcm.cpp" />
     <ClCompile Include="src\SatelliteMath\Quaternions.cpp" />
+    <ClCompile Include="src\Satellite\Flywheel.cpp" />
     <ClCompile Include="src\Satellite\Gyro.cpp" />
+    <ClCompile Include="src\Satellite\MagSensor.cpp" />
     <ClCompile Include="src\Satellite\Satellite.cpp" />
+    <ClCompile Include="src\Satellite\StarSensor.cpp" />
+    <ClCompile Include="src\Satellite\SunSensor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Astro\AttitudeControl.h" />
@@ -40,10 +44,14 @@
     <ClInclude Include="include\Astro\Orbit.h" />
     <ClInclude Include="include\General\SimTime.h" />
     <ClInclude Include="include\SatelliteMath\BaseMath.h" />
+    <ClInclude Include="include\Satellite\Flywheel.h" />
     <ClInclude Include="include\Satellite\Gyro.h" />
+    <ClInclude Include="include\Satellite\MagSensor.h" />
     <ClInclude Include="include\Satellite\Satellite.h" />
     <ClInclude Include="include\SatelliteMath\Dcm.h" />
     <ClInclude Include="include\SatelliteMath\Quaternions.h" />
+    <ClInclude Include="include\Satellite\StarSensor.h" />
+    <ClInclude Include="include\Satellite\SunSensor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

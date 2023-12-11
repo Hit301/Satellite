@@ -51,6 +51,18 @@
     <ClCompile Include="src\Astro\AttitudeControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Satellite\StarSensor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Satellite\MagSensor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Satellite\SunSensor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Satellite\Flywheel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SatelliteMath\Quaternions.h">
@@ -84,6 +96,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Astro\AttitudeControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Satellite\StarSensor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Satellite\MagSensor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Satellite\SunSensor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Satellite\Flywheel.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
