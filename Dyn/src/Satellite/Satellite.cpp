@@ -49,13 +49,13 @@ void Satellite::StateRenew(double SampleTime)
 	//	Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 0.5, 1, _Qib);
 	//}
 
-	////控制率单独测试（均验证）
- //   Quat _Qib = Attitude.Qib;
-	//Angle = CAttitudeControl::GetAngle(_Qib, SolVec);
-	//_Qbo = CAttitudeControl::GetQbo(_Qib);
-	////Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 3);//初始速率阻尼测试通过
-	////Attitude.TotalTorque = CAttitudeControl::ToSunControl(_Gyro, 0.125, 1, _Qib, SolVec);//对日姿态控制测试通过
-	//Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 0.5, 1, _Qib);//对地姿态控制测试通过
+	//控制率单独测试（均验证）
+    Quat _Qib = Attitude.Qib;
+	Angle = CAttitudeControl::GetAngle(_Qib, SolVec);
+	_Qbo = CAttitudeControl::GetQbo(_Qib);
+	//Attitude.TotalTorque = CAttitudeControl::RateDamping(_Gyro, 3);//初始速率阻尼测试通过
+	//Attitude.TotalTorque = CAttitudeControl::ToSunControl(_Gyro, 0.125, 1, _Qib, SolVec);//对日姿态控制测试通过
+	Attitude.TotalTorque = CAttitudeControl::ToEarthControl(_Gyro, 0.5, 1, _Qib);//对地姿态控制测试通过
 	
 	//动力学更新
 	Orbit.TwoBod(SampleTime);
