@@ -1,4 +1,4 @@
-#include "Satellite/Gyro.h"
+#include "Componet/Gyro.h"
 
 GyroScope::GyroScope()
 {

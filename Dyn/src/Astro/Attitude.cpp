@@ -1,7 +1,6 @@
 #include"Astro/Attitude.h"
-
-
-
+#include "Astro/Orbit.h"
+#include"General/CConfig.h"
 //姿态运动学计算差分四元数
 #if 0
 Eigen::Vector3d Omega_bRK4(Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Omega_b, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s, double Ts)
@@ -63,7 +62,7 @@ Quat PlstToDeltaQuat(const Eigen::Vector3d Omega_b, double OfstSec)
 
 
 
-CAttitude::CAttitude() :Qib()
+CAttitude::CAttitude() :Qib(),Qob(),Aio()
 {
     Omega_b << 0.05, -0.04, 0.1;
 
@@ -91,4 +90,41 @@ int CAttitude::AttitudeKinematics(double Ts)
     QuatTemp = PlstToDeltaQuat(Omega_b, Ts);
     Qib = Qib * QuatTemp;
     return 0;
+}
+
+void CAttitude::GetAio(COrbit& Orbit)
+{
+    Eigen::Vector3d Pos = Orbit.J2000Inertial.Pos;//卫星的位置矢量
+    Eigen::Vector3d Vel = Orbit.J2000Inertial.Vel;//卫星的速度矢量
+    Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//偏航轴单位矢量
+    Eigen::Vector3d y_tmp = Vel.cross(Pos);
+    Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // 俯仰轴单位矢量
+    Eigen::Vector3d xo = yo.cross(zo);//滚动轴单位矢量
+
+    Aio.DcmData << xo, yo, zo;
+}
+
+void CAttitude::StateRenew(double Ts, COrbit& Orbit)
+{
+    AttitudeKinematics(Ts);
+    AttitudeDynamicsRk4(Ts);
+    GetAio(Orbit);
+
+    Quat Qio = Aio.ToQuat();
+    Qob = Qio.QuatInv() * Qib;
+}
+
+void CAttitude::Init(COrbit& Obt)
+{
+    CConfig* pCfg = CConfig::GetInstance();
+   Omega_b << pCfg->Wx, pCfg->Wy, pCfg->Wz;
+   Qib.QuatData[0] = pCfg->Q0;
+   Qib.QuatData[1] = pCfg->Q1;
+   Qib.QuatData[2] = pCfg->Q2;
+   Qib.QuatData[3] = pCfg->Q3;
+   SatInaMat << pCfg->Jxx, pCfg->Jxy, pCfg->Jxz,
+        pCfg->Jxy, pCfg->Jyy, pCfg->Jyz,
+        pCfg->Jxz, pCfg->Jyz, pCfg->Jzz;
+    GetAio(Obt);
+    Qob = Aio.ToQuat().QuatInv() * Qib;
 }

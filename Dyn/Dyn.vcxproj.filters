@@ -36,7 +36,7 @@
     <ClCompile Include="src\General\SimTime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Satellite\Gyro.cpp">
+    <ClCompile Include="src\Componet\Gyro.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Astro\Environment.cpp">
@@ -51,16 +51,10 @@
     <ClCompile Include="src\Astro\AttitudeControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Satellite\StarSensor.cpp">
+    <ClCompile Include="src\General\CConfig.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Satellite\MagSensor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Satellite\SunSensor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Satellite\Flywheel.cpp">
+    <ClCompile Include="src\Componet\Componet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +77,7 @@
     <ClInclude Include="include\General\SimTime.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\Satellite\Gyro.h">
+    <ClInclude Include="include\Componet\Gyro.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Astro\Environment.h">
@@ -98,16 +92,13 @@
     <ClInclude Include="include\Astro\AttitudeControl.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\Satellite\StarSensor.h">
+    <ClInclude Include="include\General\CConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\Satellite\MagSensor.h">
+    <ClInclude Include="include\Componet\Componet.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\Satellite\SunSensor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Satellite\Flywheel.h">
+    <ClInclude Include="include\General\AllHead.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

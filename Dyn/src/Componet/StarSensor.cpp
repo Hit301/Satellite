@@ -1,6 +1,6 @@
-#include "Satellite/StarSensor.h"
+#include"Componet/StarSensor.h"
 
-StarSensorScope::StarSensorScope():InstallMatrix(1, 0, 0,0, 1, 0,0, 0, 1)
+StarSensor::StarSensor():InstallMatrix(1, 0, 0,0, 1, 0,0, 0, 1)
 {
 
 	Data= Quat( 1, 0, 0, 0 );
@@ -8,7 +8,7 @@ StarSensorScope::StarSensorScope():InstallMatrix(1, 0, 0,0, 1, 0,0, 0, 1)
 	SamplePeriod = 1;
 }
 
-void StarSensorScope::StateRenew(int64_t NowTime, Quat Quat_b)
+void StarSensor::StateRenew(int64_t NowTime, Quat Quat_b)
 {
 	if (NowTime - LastRenewTime >= SamplePeriod * 1e3)
 	{

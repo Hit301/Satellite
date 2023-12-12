@@ -1,10 +1,6 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
-
-
-//前向声明
-class CEulerAgl;
-class Quat;
+#include"General/AllHead.h"
 
 class CDcm
 {
@@ -25,6 +21,7 @@ public:
 		 double A10, double A11, double A12,
 		 double A20, double A21, double A22);
 	
+
 	//@brief: 以单轴旋转初始化DcmData
 	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)：转轴(查BaseMath)
 	//		  Theta(rad)：转角
@@ -51,4 +48,11 @@ public:
 	//@para : none
 	//@return : 转换得到的四元数
 	Quat ToQuat();
+
+public:
+	//运算符重载
+	Eigen::Vector3d operator*(const Eigen::Vector3d& _Vector) const;//方向余弦矩阵和三维矢量的乘法
+	Eigen::Matrix3d operator*(const CDcm& _CDcm) const;//方向余弦矩阵和方向余弦矩阵的乘法
+
+
 };
