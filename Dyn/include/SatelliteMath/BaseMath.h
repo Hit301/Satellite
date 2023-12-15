@@ -265,3 +265,13 @@ double LOG2(double Value);
 // brief  : 求以10为底的对数
 //
 double LOG10(double Value);
+
+//
+// brief  : 双阶乘
+//
+uint64_t DoubleFactorial(int Value);
+
+//
+// brief  : 阶乘
+//
+uint64_t Factorial(int Value);

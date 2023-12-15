@@ -2,6 +2,7 @@
 #include"MySofaDll.h"
 #include"Astro/Orbit.h"
 #include"Astro/Attitude.h"
+#include<fstream>
 Environment::Environment()
 {
 	BodyMag << 0, 0, 0;
@@ -52,116 +53,174 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 	//@para : 轨道类轨道根数-半长轴 轨道类LLR
 	//@return : none
 
-	const double theta = HALFPI - Orbit.LLR.Lat;
-	const double _re_r = EARTH_RADIUS_M / Orbit.OrbitElements.a;
-	const double re_r3 = _re_r * _re_r * _re_r;
-	const double re_r4 = re_r3 * _re_r;
-	const double re_r5 = re_r4 * _re_r;
+	//初始化高斯系数
+	Eigen::ArrayXXf g(13, 13);
+	Eigen::ArrayXXf h(13, 13);
+	Eigen::ArrayXXf gdot(13, 13);
+	Eigen::ArrayXXf hdot(13, 13);
 
-	const double sin_theta = sin(theta);
+	g = Eigen::ArrayXXf::Zero(13, 13);
+	h = Eigen::ArrayXXf::Zero(13, 13);
+	gdot = Eigen::ArrayXXf::Zero(13, 13);
+	hdot = Eigen::ArrayXXf::Zero(13, 13);
 
-	const double cos_theta = cos(theta);
-	const double sin_2theta = sin(2.0 * theta);
-	const double cos_2theta = cos(2.0 * theta);
-	const double sin_lambdal = sin(Orbit.LLR.Lng);
-	const double cos_lambdal = cos(Orbit.LLR.Lng);
-	const double sin_2lambdal = sin(2.0 * Orbit.LLR.Lng);
-	const double sin_3lambdal = sin(3.0 * Orbit.LLR.Lng);
-	const double cos_2lambdal = cos(2.0 * Orbit.LLR.Lng);
-	const double cos_3lambdal = cos(3.0 * Orbit.LLR.Lng);
-	const double sin2_theta = sin_theta * sin_theta;
-	const double sin3_theta = sin2_theta * sin_theta;
-	const double cos2_theta = cos_theta * cos_theta;
-	const double cos3_theta = cos2_theta * cos_theta;
+	//double g[13][13] = { };
+	//double h[13][13] = { };
+	//double gdot[13][13] = { };
+	//double hdot[13][13] = { };
 
-	//BN,BE,BG为三轴磁强，单位nT 
+	Eigen::ArrayXXf wmm_2020_data(90, 6);
+	wmm_2020_data = Eigen::ArrayXXf::Zero(90, 6);
 
-//wmm2020_data
-/*高斯系数理论上会随着时间变化而变化，但是变动较为微小，
-且这样的微小变化对于磁强最终大小的影响是较小的，不会改变计算的磁强与官方公布磁强的误差的数量级*/
-#define G10  (-29404.5)
-#define G11  (-1450.7)
-#define H11  (4652.9)
-#define G20  (-2500.0)
-#define G21  (2982.0 )
-#define H21  (-2991.6)
-#define G22  (1676.8)
-#define H22  (-734.8)
-#define G30  (1363.9)
-#define G31  (-2381.0)
-#define H31  (-82.2)
-#define G32  (1236.2)
-#define H32  (241.8)
-#define G33  (525.7)
-#define H33  (-542.9)
+	//const int rows = 90;
+	//const int cols = 6;
+	//double wmm_2020_data[rows][cols] = { };
 
-//wmm2010_data
-//#define G10  (-29496.6)
-//#define G11  (-1586.3)
-//#define H11  (4944.4)
-//#define G20  (-2396.6)
-//#define G21  (3026.1)
-//#define H21  (-2707.7)
-//#define G22  (1668.6)
-//#define H22  (-576.1)
-//#define G30  (1340.1)
-//#define G31  (-2326.2)
-//#define H31  (-160.2)
-//#define G32  (1231.9)
-//#define H32  (251.9)
-//#define G33  (634.0)
-//#define H33  (-536.6)
+	std::ifstream file("src/Config/wmm_2020_data.txt");
+	if (file.is_open()) 
+	{
+		for (int i = 0; i < 90; i++) 
+		{
+			for (int j = 0; j < 6; j++) 
+			{
+				if (!(file >> wmm_2020_data(i,j)))
+				{
+					std::cerr << "Unable to successfully read data from file" << std::endl;
+				}
+			}
+		}
+		//输出
+		//for (int i = 0; i < 90; i++) 
+		//{
+		//	for (int j = 0; j < 6; j++) 
+		//	{
+		//		std::cout << wmm_2020_data(i, j) << " ";
+		//	}
+		//	std::cout << std::endl;
+		//}
+		file.close();
+	}
+	else 
+	{
+		std::cerr << "Unable to open file" << std::endl;
+	}
 
-//银河
-//#define G10  (-29442.0)
-//#define G11  (-1501.00)
-//#define H11  (4797.100)
-//#define G20  (-2445.10)
-//#define G21  (3012.900)
-//#define H21  (-2845.60)
-//#define G22  (1676.700)
-//#define H22  (-641.900)
-//#define G30  (1350.700)
-//#define G31  (-2352.30)
-//#define H31  (-115.300)
-//#define G32  (1225.600)
-//#define H32  (244.9000)
-//#define G33  (582.0000)
-//#define H33  (-538.400)
+	for (int i = 0; i < 90; i++) 
+	{
+		int row = wmm_2020_data(i, 0);
+		int col = wmm_2020_data(i, 1) ;
+		g(row, col) = wmm_2020_data(i, 2);
+		h(row, col) = wmm_2020_data(i, 3);
+		gdot(row, col) = wmm_2020_data(i, 4);
+		hdot(row, col) = wmm_2020_data(i, 5);
+	}
+	/*std::cout << hdot << std::endl;*/
+	//时间戳
+	int year = 2020;
+	int epoch = 2020;
+	int dt_change = year - epoch;
 
-	//分别计算BN,BE,BG
-	double re3_f64 = (G10 * (-sin_theta) + (G11 * cos_lambdal + H11 * sin_lambdal) * cos_theta);
-	double re4_f64 = (G20 * (-3.0 * sin_theta * cos_theta) +
-		(G21 * cos_lambdal + H21 * sin_lambdal) * (1.732050807568877 * cos_2theta) +
-		(G22 * cos_2lambdal + H22 * sin_2lambdal) * (0.866025403784438 * sin_2theta));
-	double re5_f64 = (G30 * (1.5 * sin_theta * (1.0 - 5.0 * cos2_theta)) +
-		(G31 * cos_lambdal + H31 * sin_lambdal) * (0.612372435695794 * cos_theta * (4.0 - 15.0 * sin2_theta)) +
-		(G32 * cos_2lambdal + H32 * sin_2lambdal) * (1.936491673103708 * sin_theta * (3.0 * cos2_theta - 1.0)) +
-		(G33 * cos_3lambdal + H33 * sin_3lambdal) * (2.371708245126284 * sin2_theta * cos_theta));
+	g = g + gdot * dt_change;
+	h = h + hdot * dt_change;
 
-	double bn = re_r3 * re3_f64 + re_r4 * re4_f64 + re_r5 * re5_f64;
+	Eigen::ArrayXXf P(14, 14);
+	P = Eigen::MatrixXf::Zero(14, 14);
+	double x = sin(Orbit.LLR.Lat);
 
-	re3_f64 = ((G11 * sin_lambdal - H11 * cos_lambdal) * sin_theta);
-	re4_f64 = ((G21 * sin_lambdal - H21 * cos_lambdal) * (0.866025403784438 * sin_2theta) +
-		2.0 * (G22 * sin_2lambdal - H22 * cos_2lambdal) * (0.866025403784438 * sin2_theta));
-	re5_f64 = ((G31 * sin_lambdal - H31 * cos_lambdal) * (0.612372435695794 * sin_theta * (5.0 * cos2_theta - 1.0)) +
-		2.0 * (G32 * sin_2lambdal - H32 * cos_2lambdal) * (1.936491673103708 * sin2_theta * cos_theta) +
-		3.0 * (G33 * sin_3lambdal - H33 * cos_3lambdal) * (0.790569415042094 * sin3_theta));
+	//计算帝合勒让德函数
+	//计算对角线上元素
+	for (int n = 0; n < 14; n++) 
+	{
+		P(n, n) = POW(-1, n) * DoubleFactorial(2 * n - 1) * POW(1 - x * x, n / 2.0);
+	}
+	
+	//计算主对角线下一层元素
+	for (int n = 0; n < 13; n++)
+	{
+		P(n + 1, n) = x * (2 * n + 1) * P(n, n);
+	}
 
-	double be = 1.0 / sin_theta * (re_r3 * re3_f64 + re_r4 * re4_f64 + re_r5 * re5_f64);
+	//计算非对角线元素
+	for (int n = 2; n < 14; n++)
+	{
+		for (int m = 0; m < n - 1; m++)
+		{
+			P(n, m) = 1.0 / (n - m) * (x * (2 * n - 1) * P((n - 1), m) - (n + m - 1) * P((n - 2), m));
+		}
+	}
 
-	re3_f64 = (G10 * cos_theta + (G11 * cos_lambdal + H11 * sin_lambdal) * sin_theta);
-	re4_f64 = (G20 * (1.5 * cos2_theta - 0.5) +
-		(G21 * cos_lambdal + H21 * sin_lambdal) * (0.866025403784438 * sin_2theta) +
-		(G22 * cos_2lambdal + H22 * sin_2lambdal) * (0.866025403784438 * sin2_theta));
-	re5_f64 = (G30 * (2.5 * cos3_theta - 1.5 * cos_theta) +
-		(G31 * cos_lambdal + H31 * sin_lambdal) * (0.612372435695794 * sin_theta * (5.0 * cos2_theta - 1.0)) +
-		(G32 * cos_2lambdal + H32 * sin_2lambdal) * (1.936491673103708 * sin2_theta * cos_theta) +
-		(G33 * cos_3lambdal + H33 * sin_3lambdal) * (0.790569415042094 * sin3_theta));
+	//对P中的每一个元素都进行施密特半归一化 无法计算高阶阶乘(估计22-28)
+	for (int n = 0; n < 14; n++)
+	{
+		for (int m = 0; m < n + 1; m++)
+		{
+			if (m > 0)
+			{
+				P(n, m) = POW(-1, m) * SQRT(2.0 * Factorial(n - m) / Factorial(n + m)) * P(n, m);
+			}
+		}
+	}
 
-	double bg = -2.0 * re_r3 * re3_f64 - 3.0 * re_r4 * re4_f64 - 4.0 * re_r5 * re5_f64;
+	//计算dP
+	Eigen::ArrayXXf dP(13, 13);
+	dP = Eigen::MatrixXf::Zero(13, 13);
+	for (int n = 0; n < 13; n++)
+	{
+		for (int m = 0; m < n + 1; m++)
+		{
+			dP(n, m) = (n + 1) * tan(Orbit.LLR.Lat) * P(n, m) - SQRT((n + 1) * (n + 1) - m * m) * (1 / cos(Orbit.LLR.Lat)) * P(n + 1, m);
+		}
+	}
 
-	NEDMag << bn, be, bg;
+	double X_prime = 0;
+	double Y_prime = 0;
+	double Z_prime = 0;
+
+	for (int n = 1; n < 13; n++)
+	{
+		Eigen::ArrayXXf tempX(1, 13);
+		Eigen::ArrayXXf tempY(1, 13);
+		Eigen::ArrayXXf tempZ(1, 13);
+
+		tempX = Eigen::ArrayXXf::Zero(1, 13);
+		tempY = Eigen::ArrayXXf::Zero(1, 13);
+		tempZ = Eigen::ArrayXXf::Zero(1, 13);
+
+		for (int m = 0; m < n + 1; m++)
+		{
+			tempX(m) = (g(n, m) * cos(m * (Orbit.LLR.Lng) + h(n, m) * sin(m * (Orbit.LLR.Lng)))) * dP(n, m);
+			tempY(m) = m * (g(n, m) * sin(m * (Orbit.LLR.Lng)) - h(n, m) * cos(m * (Orbit.LLR.Lng))) * P(n, m);
+			tempZ(m) = (g(n, m) * cos(m * (Orbit.LLR.Lng) + h(n, m) * sin(m * (Orbit.LLR.Lng)))) * P(n, m);
+		}
+		
+		double sumtempX = 0;
+		double sumtempY = 0;
+		double sumtempZ = 0;
+
+		for (int i = 0; i < 13; i++) 
+		{
+			sumtempX += tempX(i);
+			sumtempY += tempY(i);
+			sumtempZ += tempZ(i);
+		}
+
+		X_prime += POW((EARTH_RADIUS_M / Orbit.LLR.Rds), (n + 2)) * sumtempX;
+		Y_prime += POW((EARTH_RADIUS_M / Orbit.LLR.Rds), (n + 2)) * sumtempY;
+		Z_prime += (n + 1) * POW((EARTH_RADIUS_M / Orbit.LLR.Rds), (n + 2)) * sumtempZ;
+	}
+
+	X_prime = - X_prime;
+	Y_prime = 1 / cos(Orbit.LLR.Lat) * Y_prime;
+	Z_prime = - Z_prime;
+
+	double BN = 0;
+	double BE = 0;
+	double BG = 0;
+	BN = X_prime * cos(Orbit.LLR.Lat - 1.3963) - Z_prime * sin(Orbit.LLR.Lat - 1.3963);
+	BE = Y_prime;
+	BG = X_prime * sin(Orbit.LLR.Lat - 1.3963) + Z_prime * cos(Orbit.LLR.Lat - 1.3963);
+
+	NEDMag << BN, BE, BG;
 }
 
 void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp)

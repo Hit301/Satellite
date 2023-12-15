@@ -187,3 +187,37 @@ double LOG10(double Value)
 
     return 0;
 }
+
+
+//
+// brief  : Ë«½×³Ë
+//
+uint64_t DoubleFactorial(int Value)
+{
+    if (Value <= 1)
+    {
+        return 1;
+    }
+    else 
+    {
+        return Value * DoubleFactorial(Value - 2);
+    }
+}
+
+//
+// brief  : ½×³Ë
+//
+uint64_t Factorial(int Value)
+{
+    if (Value == 0 || Value == 1)
+    {
+        return 1;
+    }
+    uint64_t result = 1;
+    for (int i = 2; i <= Value; i++)
+    {
+        result *= i;
+    }
+    return result;
+}
+

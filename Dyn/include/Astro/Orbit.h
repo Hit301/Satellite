@@ -23,7 +23,7 @@ struct LLR_t
     double Lng;//球心经度，单位弧度
     double Lat;//球心纬度，单位弧度
     double Rds;//球心半径，单位m
-    LLR_t() : Lng(0), Lat(0), Rds(0) {}
+    LLR_t() : Lng(0), Lat(1.3951), Rds(6357400) {}
 };
 
 struct OrbitElement
