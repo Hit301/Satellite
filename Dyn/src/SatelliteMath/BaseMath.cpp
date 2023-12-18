@@ -192,7 +192,7 @@ double LOG10(double Value)
 //
 // brief  : Ë«½×³Ë
 //
-uint64_t DoubleFactorial(int Value)
+double DoubleFactorial(double Value)
 {
     if (Value <= 1)
     {
@@ -207,17 +207,47 @@ uint64_t DoubleFactorial(int Value)
 //
 // brief  : ½×³Ë
 //
-uint64_t Factorial(int Value)
+double Factorial(double Value)
 {
     if (Value == 0 || Value == 1)
     {
         return 1;
     }
-    uint64_t result = 1;
-    for (int i = 2; i <= Value; i++)
+    double result = 1;
+    for (double i = 2; i <= Value; i++)
     {
         result *= i;
     }
     return result;
 }
 
+//
+// brief  : ÅÐ¶ÏÈòÄê
+//
+int LunarMonthDays(int year)
+{
+    bool flag = !(year & 3) && (year % 100 || !(year % 400));
+    return flag ? 29 : 28;
+}
+
+//
+// brief  : ¼ÆËãÐ¡ÊýÄê
+//
+double DecYear(int year, double month, double day)
+{
+    int daysPerMonth[] = { 31, 28 + LunarMonthDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    double alldays = 0;
+    for (int i{ 0 }; i < 12; i++)
+        alldays += daysPerMonth[i];
+
+    double days = 0;
+    for (int i = 1; i < month; i++) 
+    {
+        days += daysPerMonth[i - 1];
+    }
+    days += day;
+    
+    double partialYear = (double)days / (double)alldays;
+    return (double)year + partialYear;
+
+}

@@ -26,7 +26,7 @@ public:
 	//@brief: 北东地系地磁场
 	//@para : 轨道类轨道根数-半长轴 轨道类LLR
 	//@return : none
-	void GetNEDMag(const COrbit& Orbit);
+	void GetNEDMag(const COrbit& Orbit, const int64_t timestamp);
 
 	void StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp);
 };

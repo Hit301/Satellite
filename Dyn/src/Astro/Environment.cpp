@@ -2,7 +2,8 @@
 #include"MySofaDll.h"
 #include"Astro/Orbit.h"
 #include"Astro/Attitude.h"
-#include<fstream>
+#include"fstream"
+#include "ctime"
 Environment::Environment()
 {
 	BodyMag << 0, 0, 0;
@@ -47,34 +48,25 @@ void Environment::SunPos(const int64_t timestamp)
 	SunVecInl = Rx * sunpos / rs;//归一化的结果
 }
 
-void Environment::GetNEDMag(const COrbit& Orbit)
+void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 {
 	//@brief: 北东地系地磁场
 	//@para : 轨道类轨道根数-半长轴 轨道类LLR
 	//@return : none
 
 	//初始化高斯系数
-	Eigen::ArrayXXf g(13, 13);
-	Eigen::ArrayXXf h(13, 13);
-	Eigen::ArrayXXf gdot(13, 13);
-	Eigen::ArrayXXf hdot(13, 13);
+	Eigen::ArrayXXd g(13, 13);
+	Eigen::ArrayXXd h(13, 13);
+	Eigen::ArrayXXd gdot(13, 13);
+	Eigen::ArrayXXd hdot(13, 13);
 
-	g = Eigen::ArrayXXf::Zero(13, 13);
-	h = Eigen::ArrayXXf::Zero(13, 13);
-	gdot = Eigen::ArrayXXf::Zero(13, 13);
-	hdot = Eigen::ArrayXXf::Zero(13, 13);
+	g = Eigen::ArrayXXd::Zero(13, 13);
+	h = Eigen::ArrayXXd::Zero(13, 13);
+	gdot = Eigen::ArrayXXd::Zero(13, 13);
+	hdot = Eigen::ArrayXXd::Zero(13, 13);
 
-	//double g[13][13] = { };
-	//double h[13][13] = { };
-	//double gdot[13][13] = { };
-	//double hdot[13][13] = { };
-
-	Eigen::ArrayXXf wmm_2020_data(90, 6);
-	wmm_2020_data = Eigen::ArrayXXf::Zero(90, 6);
-
-	//const int rows = 90;
-	//const int cols = 6;
-	//double wmm_2020_data[rows][cols] = { };
+	Eigen::ArrayXXd wmm_2020_data(90, 6);
+	wmm_2020_data = Eigen::ArrayXXd::Zero(90, 6);
 
 	std::ifstream file("src/Config/wmm_2020_data.txt");
 	if (file.is_open()) 
@@ -89,15 +81,6 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 				}
 			}
 		}
-		//输出
-		//for (int i = 0; i < 90; i++) 
-		//{
-		//	for (int j = 0; j < 6; j++) 
-		//	{
-		//		std::cout << wmm_2020_data(i, j) << " ";
-		//	}
-		//	std::cout << std::endl;
-		//}
 		file.close();
 	}
 	else 
@@ -107,24 +90,30 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 
 	for (int i = 0; i < 90; i++) 
 	{
-		int row = wmm_2020_data(i, 0);
-		int col = wmm_2020_data(i, 1) ;
+		int row = (int)wmm_2020_data(i, 0);
+		int col = (int)wmm_2020_data(i, 1) ;
 		g(row, col) = wmm_2020_data(i, 2);
 		h(row, col) = wmm_2020_data(i, 3);
 		gdot(row, col) = wmm_2020_data(i, 4);
 		hdot(row, col) = wmm_2020_data(i, 5);
 	}
-	/*std::cout << hdot << std::endl;*/
 	//时间戳
-	int year = 2020;
-	int epoch = 2020;
-	int dt_change = year - epoch;
+	time_t utcTime = timestamp;
+	tm timeInfo;
+	gmtime_s(&timeInfo, &utcTime);
+
+	int year = timeInfo.tm_year + 1900;
+	int month = timeInfo.tm_mon + 1;
+	int day = timeInfo.tm_mday;
+
+	double epoch = DecYear(2020,1,1);
+	double dt_change = DecYear(year, month, day) - epoch;
 
 	g = g + gdot * dt_change;
 	h = h + hdot * dt_change;
 
-	Eigen::ArrayXXf P(14, 14);
-	P = Eigen::MatrixXf::Zero(14, 14);
+	Eigen::ArrayXXd P(14, 14);
+	P = Eigen::MatrixXd::Zero(14, 14);
 	double x = sin(Orbit.LLR.Lat);
 
 	//计算帝合勒让德函数
@@ -149,21 +138,21 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 		}
 	}
 
-	//对P中的每一个元素都进行施密特半归一化 无法计算高阶阶乘(估计22-28)
+	//对P中的每一个元素都进行施密特半归一化 
 	for (int n = 0; n < 14; n++)
 	{
 		for (int m = 0; m < n + 1; m++)
 		{
 			if (m > 0)
 			{
-				P(n, m) = POW(-1, m) * SQRT(2.0 * Factorial(n - m) / Factorial(n + m)) * P(n, m);
+				P(n, m) = POW(-1.0, m) * SQRT(2.0 * Factorial(n - m) / Factorial(n + m)) * P(n, m);
 			}
 		}
 	}
-
+	
 	//计算dP
-	Eigen::ArrayXXf dP(13, 13);
-	dP = Eigen::MatrixXf::Zero(13, 13);
+	Eigen::ArrayXXd dP(13, 13);
+	dP = Eigen::MatrixXd::Zero(13, 13);
 	for (int n = 0; n < 13; n++)
 	{
 		for (int m = 0; m < n + 1; m++)
@@ -171,20 +160,21 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 			dP(n, m) = (n + 1) * tan(Orbit.LLR.Lat) * P(n, m) - SQRT((n + 1) * (n + 1) - m * m) * (1 / cos(Orbit.LLR.Lat)) * P(n + 1, m);
 		}
 	}
-
 	double X_prime = 0;
 	double Y_prime = 0;
 	double Z_prime = 0;
 
-	for (int n = 1; n < 13; n++)
-	{
-		Eigen::ArrayXXf tempX(1, 13);
-		Eigen::ArrayXXf tempY(1, 13);
-		Eigen::ArrayXXf tempZ(1, 13);
+	int MagOrder = 12;
 
-		tempX = Eigen::ArrayXXf::Zero(1, 13);
-		tempY = Eigen::ArrayXXf::Zero(1, 13);
-		tempZ = Eigen::ArrayXXf::Zero(1, 13);
+	for (int n = 1; n < MagOrder + 1; n++)
+	{
+		Eigen::ArrayXXd tempX(1, MagOrder + 1);
+		Eigen::ArrayXXd tempY(1, MagOrder + 1);
+		Eigen::ArrayXXd tempZ(1, MagOrder + 1);
+
+		tempX = Eigen::ArrayXXd::Zero(1, MagOrder + 1);
+		tempY = Eigen::ArrayXXd::Zero(1, MagOrder + 1);
+		tempZ = Eigen::ArrayXXd::Zero(1, MagOrder + 1);
 
 		for (int m = 0; m < n + 1; m++)
 		{
@@ -197,7 +187,7 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 		double sumtempY = 0;
 		double sumtempZ = 0;
 
-		for (int i = 0; i < 13; i++) 
+		for (int i = 0; i < MagOrder + 1; i++)
 		{
 			sumtempX += tempX(i);
 			sumtempY += tempY(i);
@@ -208,7 +198,7 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 		Y_prime += POW((EARTH_RADIUS_M / Orbit.LLR.Rds), (n + 2)) * sumtempY;
 		Z_prime += (n + 1) * POW((EARTH_RADIUS_M / Orbit.LLR.Rds), (n + 2)) * sumtempZ;
 	}
-
+	
 	X_prime = - X_prime;
 	Y_prime = 1 / cos(Orbit.LLR.Lat) * Y_prime;
 	Z_prime = - Z_prime;
@@ -216,16 +206,16 @@ void Environment::GetNEDMag(const COrbit& Orbit)
 	double BN = 0;
 	double BE = 0;
 	double BG = 0;
-	BN = X_prime * cos(Orbit.LLR.Lat - 1.3963) - Z_prime * sin(Orbit.LLR.Lat - 1.3963);
+	BN = X_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat) - Z_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat);
 	BE = Y_prime;
-	BG = X_prime * sin(Orbit.LLR.Lat - 1.3963) + Z_prime * cos(Orbit.LLR.Lat - 1.3963);
+	BG = X_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat) + Z_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat);
 
 	NEDMag << BN, BE, BG;
 }
 
 void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp)
 {
-	GetNEDMag(Orbit);
+	GetNEDMag(Orbit, timestamp);
 	Eigen::Matrix3d Ane = Orbit.NED2ECEF();
 	BodyMag = Ane * NEDMag;
 	SunPos(timestamp);

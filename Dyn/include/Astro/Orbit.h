@@ -16,7 +16,7 @@ struct LLA_t
     double Lng;//地理经度，单位弧度
     double Lat;//地理纬度，单位弧度
     double Alt;//海拔高度，单位m
-    LLA_t() : Lng(0), Lat(0), Alt(0) {}
+    LLA_t() : Lng(0), Lat(1.3963), Alt(0) {}
 };
 struct LLR_t
 {

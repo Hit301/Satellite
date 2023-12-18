@@ -269,9 +269,19 @@ double LOG10(double Value);
 //
 // brief  : 双阶乘
 //
-uint64_t DoubleFactorial(int Value);
+double DoubleFactorial(double Value);
 
 //
 // brief  : 阶乘
 //
-uint64_t Factorial(int Value);
+double Factorial(double Value);
+
+//
+// brief  : 判断闰年
+//
+int LunarMonthDays(int year);
+
+//
+// brief  : 计算小数年
+//
+double DecYear(int year, double month, double day);
