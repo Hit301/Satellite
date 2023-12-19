@@ -45,7 +45,7 @@ CComponet::CComponet() :
 {
 	//这里读配置文件应该，先走默认配置读各单机数量
 	GyroNums = 1;
-
+	FlywheelNums = 1;
 	//之后根据单机的参数进行配置，可读一个ini
 	if (GyroNums <= 0)
 	{
@@ -53,6 +53,13 @@ CComponet::CComponet() :
 		MessageBox(NULL, "陀螺数量非法,程序结束", "警告", MB_OKCANCEL);
 		exit(0);
 	}
+	if (FlywheelNums<= 0)
+	{
+		std::cout << "飞轮数量非法 值= " << FlywheelNums << "改为默认值1" << std::endl;
+		MessageBox(NULL, "飞轮数量非法,程序结束", "警告", MB_OKCANCEL);
+		exit(0);
+	}
+
 
 	pGyro = new GyroScope[GyroNums];
 	for (size_t i{ 0 }; i < GyroNums; i++)
@@ -61,11 +68,21 @@ CComponet::CComponet() :
 		pGyro[i].InstallMatrix << Eigen::Matrix3d::Identity();
 		pGyro[i].SamplePeriod = 0.25;
 	}
+	pWheel = new flywheel[FlywheelNums];
+	for (size_t i{ 0 }; i < FlywheelNums; i++)
+	{
+		//这里要改成配置表类型的
+		pWheel[i].InstallVet << Eigen::Vector3d::Identity();
+		pWheel[i].SamplePeriod = 0.25;
+	}
+
+
 }
 
 CComponet::~CComponet()
 {
 	delete[] pGyro;
+	delete[] pWheel;
 }
 
 void CComponet::ReleaseInstance()
