@@ -1,5 +1,7 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+#include"General/AllHead.h"
+
 
 class GyroScope
 {
@@ -13,4 +15,5 @@ public:
 
 public:
 	void StateRenew(int64_t NowTime, Eigen::Vector3d Omega_b);
+	void Init(Eigen::Vector3d& Omega_b, int64_t timestamp);
 };

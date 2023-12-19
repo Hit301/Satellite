@@ -7,6 +7,9 @@
 
 CComponet::DeleteHelper CComponet::helper;
 
+CComponet* pComponet = CComponet::GetInstance();
+
+
 CComponet* CComponet::GetInstance()
 {
 	if (m_instance == NULL)
@@ -18,8 +21,7 @@ void CComponet::Init(CAttitude& Att, COrbit& Obt, Environment& Env, int64_t time
 {
 	for (size_t i{ 0 }; i < GyroNums; i++)
 	{
-		pGyro[i].LastRenewTime = timestamp;
-		pGyro[i].Data = RAD2DEG * pGyro[i].InstallMatrix * Att.Omega_b;
+		pGyro[i].Init(Att.Omega_b, timestamp);
 	}
 }
 
@@ -30,6 +32,12 @@ void CComponet::StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, int64_
 	{
 		pGyro[i].StateRenew(timestamp, Att.Omega_b);
 	}
+	for (size_t i{ 0 }; i < FlywheelNums; i++)
+	{
+		pWheel[i].StateRenew(timestamp);
+	}
+
+
 }
 
 CComponet::CComponet() :

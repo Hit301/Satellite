@@ -1,5 +1,6 @@
 #pragma once
 #include "Componet/Gyro.h"
+#include"Componet/Flywheel.h"
 #include"General/AllHead.h"
 
 
@@ -11,7 +12,10 @@ public:
 	void StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, int64_t timestamp);
 public:
 	size_t GyroNums;
+	size_t FlywheelNums;
 	GyroScope* pGyro;
+	flywheel* pWheel;
+	
 private:
 	static inline CComponet* m_instance{ NULL };
 
