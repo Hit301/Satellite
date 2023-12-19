@@ -6,14 +6,14 @@ int main()
 	double SampleTime{ 0.1 };
 	Satellite Amadeus;
 	CSimTime* pSimTime = CSimTime::GetInstance();
-	pSimTime->InitSimSpeedManage(SampleTime, 10);
+	pSimTime->InitSimSpeedManage(SampleTime, 1);
 	while (1)
 	{
 		pSimTime->WaitForSimCountMute();
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew(SampleTime);
-			std::cout << Amadeus << std::endl;
+			std::cout << Amadeus.Env.NEDMag << std::endl;
 		}
 		pSimTime->ReleaseSimCountMute();
 	}

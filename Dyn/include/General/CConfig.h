@@ -40,6 +40,14 @@ public:
 
 	//单机配置， 因为单机数量不定所以应该走配置表
 
+	//环境配置
+	//地磁阶次，1~12
+	size_t MagOrder;
+	//地磁场高斯系数，一次性读进来方便后续使用
+	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_g;
+	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_h;
+	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_gdot;
+	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_hdot;
 private:
 	static inline CConfig* m_instance{ NULL };
 

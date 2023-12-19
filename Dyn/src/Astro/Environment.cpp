@@ -2,8 +2,7 @@
 #include"MySofaDll.h"
 #include"Astro/Orbit.h"
 #include"Astro/Attitude.h"
-#include"fstream"
-#include "ctime"
+#include"General/CConfig.h"
 Environment::Environment()
 {
 	BodyMag << 0, 0, 0;
@@ -54,83 +53,41 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	//@para : 轨道类轨道根数-半长轴 轨道类LLR
 	//@return : none
 
-	//初始化高斯系数
-	Eigen::ArrayXXd g(13, 13);
-	Eigen::ArrayXXd h(13, 13);
-	Eigen::ArrayXXd gdot(13, 13);
-	Eigen::ArrayXXd hdot(13, 13);
+	CConfig* pCfg = CConfig::GetInstance();
+	size_t& Order = pCfg->MagOrder;
 
-	g = Eigen::ArrayXXd::Zero(13, 13);
-	h = Eigen::ArrayXXd::Zero(13, 13);
-	gdot = Eigen::ArrayXXd::Zero(13, 13);
-	hdot = Eigen::ArrayXXd::Zero(13, 13);
 
-	Eigen::ArrayXXd wmm_2020_data(90, 6);
-	wmm_2020_data = Eigen::ArrayXXd::Zero(90, 6);
-
-	std::ifstream file("src/Config/wmm_2020_data.txt");
-	if (file.is_open()) 
-	{
-		for (int i = 0; i < 90; i++) 
-		{
-			for (int j = 0; j < 6; j++) 
-			{
-				if (!(file >> wmm_2020_data(i,j)))
-				{
-					std::cerr << "Unable to successfully read data from file" << std::endl;
-				}
-			}
-		}
-		file.close();
-	}
-	else 
-	{
-		std::cerr << "Unable to open file" << std::endl;
-	}
-
-	for (int i = 0; i < 90; i++) 
-	{
-		int row = (int)wmm_2020_data(i, 0);
-		int col = (int)wmm_2020_data(i, 1) ;
-		g(row, col) = wmm_2020_data(i, 2);
-		h(row, col) = wmm_2020_data(i, 3);
-		gdot(row, col) = wmm_2020_data(i, 4);
-		hdot(row, col) = wmm_2020_data(i, 5);
-	}
-	//时间戳
-	time_t utcTime = timestamp;
-	tm timeInfo;
-	gmtime_s(&timeInfo, &utcTime);
-
-	int year = timeInfo.tm_year + 1900;
-	int month = timeInfo.tm_mon + 1;
-	int day = timeInfo.tm_mday;
-
+	//时间戳转年月日
+	YMD m_ymd = UTCTimeStamp2YMD(timestamp);
 	double epoch = DecYear(2020,1,1);
-	double dt_change = DecYear(year, month, day) - epoch;
+	double dt_change = DecYear(m_ymd.year, m_ymd.month, m_ymd.day) - epoch;
 
-	g = g + gdot * dt_change;
-	h = h + hdot * dt_change;
+	Eigen::ArrayXXd g(Order + 1, Order + 1);
+	Eigen::ArrayXXd h(Order + 1, Order + 1);
+	g = pCfg->gauss_g + pCfg->gauss_gdot * dt_change;
+	h = pCfg->gauss_h + pCfg->gauss_hdot * dt_change;
 
-	Eigen::ArrayXXd P(14, 14);
-	P = Eigen::MatrixXd::Zero(14, 14);
+
+	Eigen::ArrayXXd P(Order +2, Order+2);
+	P.setZero();
 	double x = sin(Orbit.LLR.Lat);
 
 	//计算帝合勒让德函数
 	//计算对角线上元素
-	for (int n = 0; n < 14; n++) 
+	P(0, 0) = 1;
+	for (int n = 1; n < P.rows(); n++)
 	{
-		P(n, n) = POW(-1, n) * DoubleFactorial(2 * n - 1) * POW(1 - x * x, n / 2.0);
+		P(n, n) = (-1)*(2 * n - 1) * POW(1 - x * x, 0.5) * P(n - 1, n - 1);
 	}
 	
 	//计算主对角线下一层元素
-	for (int n = 0; n < 13; n++)
+	for (int n = 0; n < P.rows()-1; n++)
 	{
 		P(n + 1, n) = x * (2 * n + 1) * P(n, n);
 	}
 
 	//计算非对角线元素
-	for (int n = 2; n < 14; n++)
+	for (int n = 2; n < P.rows(); n++)
 	{
 		for (int m = 0; m < n - 1; m++)
 		{
@@ -139,7 +96,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	}
 
 	//对P中的每一个元素都进行施密特半归一化 
-	for (int n = 0; n < 14; n++)
+	for (int n = 0; n < P.rows(); n++)
 	{
 		for (int m = 0; m < n + 1; m++)
 		{
@@ -151,30 +108,34 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	}
 	
 	//计算dP
-	Eigen::ArrayXXd dP(13, 13);
-	dP = Eigen::MatrixXd::Zero(13, 13);
-	for (int n = 0; n < 13; n++)
+	Eigen::ArrayXXd dP(Order+1, Order+1);
+	dP.setZero();
+	for (int n = 0; n < dP.rows(); n++)
 	{
 		for (int m = 0; m < n + 1; m++)
 		{
 			dP(n, m) = (n + 1) * tan(Orbit.LLR.Lat) * P(n, m) - SQRT((n + 1) * (n + 1) - m * m) * (1 / cos(Orbit.LLR.Lat)) * P(n + 1, m);
 		}
 	}
+
 	double X_prime = 0;
 	double Y_prime = 0;
 	double Z_prime = 0;
+	double sumtempX = 0;
+	double sumtempY = 0;
+	double sumtempZ = 0;
+	Eigen::ArrayXXd tempX(1, Order + 1);
+	Eigen::ArrayXXd tempY(1, Order + 1);
+	Eigen::ArrayXXd tempZ(1, Order + 1);
 
-	int MagOrder = 12;
-
-	for (int n = 1; n < MagOrder + 1; n++)
+	for (int n = 1; n < Order + 1; n++)
 	{
-		Eigen::ArrayXXd tempX(1, MagOrder + 1);
-		Eigen::ArrayXXd tempY(1, MagOrder + 1);
-		Eigen::ArrayXXd tempZ(1, MagOrder + 1);
-
-		tempX = Eigen::ArrayXXd::Zero(1, MagOrder + 1);
-		tempY = Eigen::ArrayXXd::Zero(1, MagOrder + 1);
-		tempZ = Eigen::ArrayXXd::Zero(1, MagOrder + 1);
+		tempX.setZero();
+		tempY.setZero();
+		tempZ.setZero();
+		sumtempX = 0;
+		sumtempY = 0;
+		sumtempZ = 0;
 
 		for (int m = 0; m < n + 1; m++)
 		{
@@ -182,12 +143,9 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 			tempY(m) = m * (g(n, m) * sin(m * (Orbit.LLR.Lng)) - h(n, m) * cos(m * (Orbit.LLR.Lng))) * P(n, m);
 			tempZ(m) = (g(n, m) * cos(m * (Orbit.LLR.Lng) + h(n, m) * sin(m * (Orbit.LLR.Lng)))) * P(n, m);
 		}
-		
-		double sumtempX = 0;
-		double sumtempY = 0;
-		double sumtempZ = 0;
-
-		for (int i = 0; i < MagOrder + 1; i++)
+	
+		//for (int i = 0; i < Order + 1; i++) 我感觉应该写成n+1
+		for (int i = 0; i < n + 1; i++)
 		{
 			sumtempX += tempX(i);
 			sumtempY += tempY(i);
@@ -203,14 +161,11 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	Y_prime = 1 / cos(Orbit.LLR.Lat) * Y_prime;
 	Z_prime = - Z_prime;
 
-	double BN = 0;
-	double BE = 0;
-	double BG = 0;
-	BN = X_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat) - Z_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat);
-	BE = Y_prime;
-	BG = X_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat) + Z_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat);
+	double BN = X_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat) - Z_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat);
+	double BE = Y_prime;
+	double BD = X_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat) + Z_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat);
 
-	NEDMag << BN, BE, BG;
+	NEDMag << BN, BE, BD;
 }
 
 void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp)

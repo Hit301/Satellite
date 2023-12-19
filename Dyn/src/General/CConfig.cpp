@@ -1,5 +1,5 @@
 #include"General/CConfig.h"
-
+#include<fstream>
 CConfig::DeleteHelper CConfig::helper;
 
 
@@ -33,6 +33,45 @@ CConfig::CConfig()
 	Jyy = 40;
 	Jzz = 50;
 	Jxy = Jxz = Jyz = 0;
+
+	//地磁相关
+	MagOrder = 12;
+	if ((MagOrder < 1) || (MagOrder > 12))
+	{
+		MagOrder = 2;
+	}
+	Eigen::Index rows = (MagOrder + 1) * (MagOrder + 2)/2 - 1;
+	gauss_g.resize(MagOrder+1, MagOrder+1);
+	gauss_h.resize(MagOrder + 1, MagOrder + 1);
+	gauss_gdot.resize(MagOrder + 1, MagOrder + 1);
+	gauss_hdot.resize(MagOrder + 1, MagOrder + 1);
+	gauss_g.setZero();
+	gauss_h.setZero();
+	gauss_gdot.setZero();
+	gauss_hdot.setZero();
+
+	//打开配置文件读取数据
+	std::ifstream file("src/Config/wmm_2020_data.txt");
+	if (file.is_open())
+	{
+		//索引行
+		for (int i = 0; i < rows; i++)
+		{
+			//每行6列数据分别是 r c g h gdot hdot
+			int row, col;
+			file >> row;
+			file >> col;
+			file >> gauss_g(row, col);
+			file >> gauss_h(row, col);
+			file >> gauss_gdot(row, col);
+			file >> gauss_hdot(row, col);
+		}
+		file.close();
+	}
+	else
+	{
+		std::cerr << "Unable to open file" << std::endl;
+	}
 }
 CConfig* CConfig::GetInstance()
 {
