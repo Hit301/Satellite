@@ -18,5 +18,16 @@ void StarSensor::StateRenew(int64_t NowTime, Quat Quat_b)
 		Data = installq * Quat_b;
 		
 		LastRenewTime = NowTime;
+		std::cout << "StarSensor" << Data<<std::endl;
 	}
+}
+
+void StarSensor::Init(Quat Quat_b, int64_t timestamp)
+{
+	Quat installq;
+	installq = InstallMatrix.ToQuat();
+	Data = installq * Quat_b;
+
+	LastRenewTime = timestamp;
+
 }

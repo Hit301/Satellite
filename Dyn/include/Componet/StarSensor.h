@@ -14,6 +14,7 @@ public:
 
 public:
 	void StateRenew(int64_t NowTime, Quat Quat_b);
+	void Init(Quat Quat_b, int64_t timestamp);
 
 };
 

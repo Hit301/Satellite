@@ -12,5 +12,5 @@ public:
 
 public:
 	void StateRenew(int64_t NowTime, Eigen::Vector3d Sun_b);
-
+	void Init(Eigen::Vector3d Sun_b, int64_t timestamp);
 };

@@ -46,7 +46,7 @@ void flywheel::StateRenew(int64_t NowTime, double Tref)
 		}
 	}
 	Torque = J * (Speed - lastspeed) / 0.01;
-	std::cout << "SPEED" << Speed;
+	std::cout << "SPEED" << Speed<<std::endl;
 }
 
 void flywheel::Init(double speed, int64_t timestamp)
