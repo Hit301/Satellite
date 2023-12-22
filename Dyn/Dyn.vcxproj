@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Componet\Componet.cpp" />
+    <ClCompile Include="src\Componet\Flywheel.cpp" />
+    <ClCompile Include="src\General\CConfig.cpp" />
+    <ClCompile Include="src\Astro\AttitudeControl.cpp" />
     <ClCompile Include="src\SatelliteMath\EulerAgl.cpp" />
     <ClCompile Include="src\SatelliteMath\BaseMath.cpp" />
     <ClCompile Include="src\Astro\Attitude.cpp" />
@@ -28,20 +32,31 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SatelliteMath\Dcm.cpp" />
     <ClCompile Include="src\SatelliteMath\Quaternions.cpp" />
-    <ClCompile Include="src\Satellite\Gyro.cpp" />
+    <ClCompile Include="src\Componet\Gyro.cpp" />
+    <ClCompile Include="src\Componet\MagSensor.cpp" />
     <ClCompile Include="src\Satellite\Satellite.cpp" />
+    <ClCompile Include="src\Componet\StarSensor.cpp" />
+    <ClCompile Include="src\Componet\SunSensor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Componet\Componet.h" />
+    <ClInclude Include="include\Componet\Flywheel.h" />
+    <ClInclude Include="include\Componet\MagSensor.h" />
+    <ClInclude Include="include\General\AllHead.h" />
+    <ClInclude Include="include\General\CConfig.h" />
+    <ClInclude Include="include\Astro\AttitudeControl.h" />
     <ClInclude Include="include\SatelliteMath\EulerAgl.h" />
     <ClInclude Include="include\Astro\Attitude.h" />
     <ClInclude Include="include\Astro\Environment.h" />
     <ClInclude Include="include\Astro\Orbit.h" />
     <ClInclude Include="include\General\SimTime.h" />
     <ClInclude Include="include\SatelliteMath\BaseMath.h" />
-    <ClInclude Include="include\Satellite\Gyro.h" />
+    <ClInclude Include="include\Componet\Gyro.h" />
     <ClInclude Include="include\Satellite\Satellite.h" />
     <ClInclude Include="include\SatelliteMath\Dcm.h" />
     <ClInclude Include="include\SatelliteMath\Quaternions.h" />
+    <ClInclude Include="include\Componet\StarSensor.h" />
+    <ClInclude Include="include\Componet\SunSensor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -106,6 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>\deps\MySofa\MySofaDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,12 +147,18 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>deps\eigen-3.3.8;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>deps\MySofa;deps\eigen-3.3.8;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>deps\MySofa\MySofaDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)Dyn\deps\MySofa\MySofaDll.dll" "$(OutDir)"
+
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

@@ -14,11 +14,9 @@ int main()
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew(SampleTime);
-			std::cout << Amadeus << std::endl;
-			std::cout << "Gyro: " << Amadeus._Gyro.Data << std::endl;
-
-			//std::cout << Amadeus;
+			std::cout << Amadeus.Env.NEDMag << std::endl;
 		}
 		pSimTime->ReleaseSimCountMute();
 	}
+	
 }

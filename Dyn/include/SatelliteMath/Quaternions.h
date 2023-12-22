@@ -1,9 +1,6 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
-
-//前向声明
-class CDcm;
-class CEulerAgl;
+#include"General/AllHead.h"
 
 class Quat
 {
@@ -28,7 +25,6 @@ public:
 	Quat operator*(const Quat& _Quat) const;//四元数乘法
 	Quat operator*(const double val) const;//四元数乘标量
 	Quat& operator=(const Quat& _Quat);
-
 public:
 	Quat QuatNormalize() const;//四元数标准化
 	Quat QuatInv() const;//四元数求逆
