@@ -1,5 +1,6 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+#include"General/AllHead.h"
 
 struct RV
 {
@@ -9,6 +10,20 @@ struct RV
             Vel(0.0007615644, 6789.5304738682, 3686.4138485846) {}
     RV(const Eigen::Vector3d& initialPos, const Eigen::Vector3d& initialVel)
      : Pos(initialPos),Vel(initialVel){}
+};
+struct LLA_t
+{
+    double Lng;//地理经度，单位弧度
+    double Lat;//地理纬度，单位弧度
+    double Alt;//海拔高度，单位m
+    LLA_t() : Lng(0), Lat(1.3963), Alt(0) {}
+};
+struct LLR_t
+{
+    double Lng;//球心经度，单位弧度
+    double Lat;//球心纬度，单位弧度
+    double Rds;//球心半径，单位m
+    LLR_t() : Lng(0), Lat(1.3951), Rds(6357400) {}
 };
 
 struct OrbitElement
@@ -59,15 +74,51 @@ private:
 
 public:
     RV J2000Inertial;//惯性系RV
+    RV ECEFFix;//地固系RV
     OrbitElement OrbitElements;//轨道根数
+    LLA_t LLA;//经纬高
+    LLR_t LLR;//地球经纬度和半径
 
-    COrbit(): J2000Inertial(), OrbitElements()
-    {}
+
+public:
+    COrbit(): J2000Inertial(), OrbitElements(), ECEFFix(), LLA(), LLR()
+    {
+        //先写一个以惯性系初始化的方式吧
+
+    }
 
     //
     // brief  : 使用惯性系RV和二体递推轨道
     //
     int TwoBod(double Ts);
+
+    //@brief: 惯性系位置速度转地固系位置速度
+    //@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
+    //@return : none
+    //@remark : 已测试
+    void Inl2Fix(const int64_t timestamp);
+
+    //@brief: 地固系轨道计算LLA
+    //@para : none
+    //@return : none
+    //@remark : 已测试
+    void FixPos2LLA();
+
+    //@brief: 地固系轨道计算LLR
+    //@para : none
+    //@return : none
+    //@remark : 已测试
+    void FixPos2LLR();
+
+    //@brief: 计算北东地系到地固系的转移矩阵
+    //@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
+    //@return : none
+    //@remark : 静态成员函数只能访问静态成员变量
+    Eigen::Matrix3d NED2ECEF();
+
+    void StateRenew(double Ts, const int64_t timestamp);
+
+    void Init(int64_t Timestamp);
 };
 
 

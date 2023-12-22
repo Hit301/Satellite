@@ -5,7 +5,6 @@
 #include<cmath>
 #include <Eigen/Dense>
 
-
 //定义数学常量
 #define M_PI   3.14159265358979323846
 #define ZERO        (1e-12)
@@ -24,7 +23,7 @@
 #define EARTH_ECCENTRICITY                  (0.081819190842621)               //                                
 #define EARTH_RATE                          (7.292115859146235E-05)           //15.04106717866910/3600* pi/180                     
 #define EARTH_EQUATORIAL_RADIUS             (6378137.0)                       //(m)                            
-#define EARTH_POLAR_RADIUS                  (6356752.31424)                   //(m)                                    
+#define EARTH_POLAR_RADIUS                  (6356752.31424)                   //(m)      
 #define EARTH_GRAVITATIONAL                 (398600441500000.0)               //miu
 #define SUN_RADIUS_M                        (695508000.0)                     //
 #define MOON_RADIUS_M                       (1737400.0)                       //
@@ -93,17 +92,17 @@
 #define MJD2DAYS(mjd)                       ((mjd)-40587.0)                  //Total days from 1970-1-1
 
 //
-// brief  : 时间戳转JD
+// brief  : 时间戳(s)转JD
 //
 #define TS2JD(timestamp)                    (((timestamp)-1609459200.0)/86400.0+2459215.5)     //time stamp to JD
 
 //
-// brief  : 时间戳转儒略世纪数
+// brief  : 时间戳(s)转儒略世纪数
 //
 #define TS2CEN(timestamp)                   ((TS2JD(timestamp)-2451545.0)/36525.0)            //time stamp to JD centry
 
 //
-// brief  : JD转时间戳
+// brief  : JD转时间戳(s)
 //
 #define JD2TS(jd)                          (((jd)-2459215.5)*86400.0+1609459200.0)            //JD to time stamp
 
@@ -266,3 +265,23 @@ double LOG2(double Value);
 // brief  : 求以10为底的对数
 //
 double LOG10(double Value);
+
+//
+// brief  : 双阶乘
+//
+double DoubleFactorial(double Value);
+
+//
+// brief  : 阶乘
+//
+double Factorial(double Value);
+
+//
+// brief  : 判断闰年
+//
+int LunarMonthDays(int year);
+
+//
+// brief  : 计算小数年
+//
+double DecYear(int year, double month, double day);
