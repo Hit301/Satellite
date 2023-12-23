@@ -3,6 +3,8 @@
 #include"General/InfluxDB.h"
 Satellite::Satellite() :Orbit(), Attitude(), AttController()
 {
+	SampleTime = 0.1;
+	SpeedTimes = 1;
 	CConfig* pCfg = CConfig::GetInstance();
 
 	//时间戳初始化
@@ -25,8 +27,14 @@ Satellite::Satellite() :Orbit(), Attitude(), AttController()
 	pComponet->Init(Attitude, Orbit, Env, AttController,SatelliteTime);
 }
 
+Satellite::Satellite(double Ts, int m_SpeedTimes):Satellite()
+{
+	SampleTime = Ts;
+	SpeedTimes = m_SpeedTimes;
+}
 
-void Satellite::StateRenew(double SampleTime)
+
+void Satellite::StateRenew()
 {
 	//时间戳更新
 	SatelliteTime += (int64_t)(SampleTime * 1e3);
@@ -45,6 +53,7 @@ void Satellite::StateRenew(double SampleTime)
 
 	//单机数据更新
 	pComponet->StateRenew(Attitude, Orbit, Env, AttController, SatelliteTime, SampleTime);
+
 }
 
 void Satellite::dataToDB(CInfluxDB& DB, double Period)
@@ -73,7 +82,7 @@ std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
 	//_cout << Sat.Orbit.J2000Inertial;
 	_cout << "Omega_b(rad/s) " << Sat.Attitude.Omega_b(0) << " " << Sat.Attitude.Omega_b(1) << " " << Sat.Attitude.Omega_b(2) << std::endl;//初始速率阻尼测试
 	//_cout << "Qib " << Sat.Attitude.Qib;
-	_cout << "TotalTorque(N.m) " << Sat.Attitude.TotalTorque(0) << " " << Sat.Attitude.TotalTorque(1) << " " << Sat.Attitude.TotalTorque(2) << std::endl;
+	//_cout << "TotalTorque(N.m) " << Sat.Attitude.TotalTorque(0) << " " << Sat.Attitude.TotalTorque(1) << " " << Sat.Attitude.TotalTorque(2) << std::endl;
 	//_cout<<"VSunBody"<< Sat.Env.SunVecBody(0)<<" "<< Sat.Env.SunVecBody(1) <<" "<< Sat.Env.SunVecBody(2) << std::endl;
 	//_cout << "VSunInl" << Sat.Env.SunVecInl(0) << " " << Sat.Env.SunVecInl(1) << " " << Sat.Env.SunVecInl(2) << std::endl;
 	_cout << "Qob " << Sat.Attitude.Qob;

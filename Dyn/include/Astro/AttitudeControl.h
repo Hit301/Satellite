@@ -6,18 +6,17 @@
 class CAttitudeController
 {
 public:
-	int workmode;//姿态控制模式
-	Eigen::Vector3d TorqueRef;//参考力矩Nm
-	Eigen::Matrix3d Kp;//控制器系数
-	Eigen::Matrix3d Kd;//控制器系数
-	double MaxTorque;//最大力矩
-
 	enum Mode
 	{
 		RATEDAMP,
 		SUNPOINT,
 		EARTHPOINT
 	};
+	Mode workmode;//姿态控制模式
+	Eigen::Vector3d TorqueRef;//参考力矩Nm
+	Eigen::Matrix3d Kp;//控制器系数
+	Eigen::Matrix3d Kd;//控制器系数
+	double MaxTorque;//最大力矩
 public:
 	CAttitudeController();
 

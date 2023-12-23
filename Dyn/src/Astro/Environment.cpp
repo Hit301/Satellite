@@ -172,7 +172,12 @@ void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t t
 {
 	GetNEDMag(Orbit, timestamp);
 	Eigen::Matrix3d Ane = Orbit.NED2ECEF();
-	BodyMag = Ane * NEDMag;
+	Eigen::Vector3d ECEFMag = Ane * NEDMag;
+	//地固系到惯性系
+	Eigen::Matrix3d  Aif = Environment::ECI2ECEF(timestamp);
+	Eigen::Vector3d ECIMag = Aif.inverse() * ECEFMag;\
+	//惯性系到本体系
+	BodyMag = Attitude.Qib.ToDcm() * ECIMag;
 	SunPos(timestamp);
 	SunVecBody = Attitude.Qib.ToDcm() * SunVecInl;
 }

@@ -16,9 +16,13 @@ public:
 	CComponet* pComponet;//单机
 	CAttitudeController AttController;//姿态控制
 public:
+	double SampleTime;//积分时长，单位s
+	int SpeedTimes;//加速倍率
+public:
 	Satellite();
+	Satellite(double Ts, int m_SpeedTimes);
 	~Satellite()=default;
-	void StateRenew(double SampleTime);
+	void StateRenew();
 	// 2023-12-22 11:28:55
 	void dataToDB(CInfluxDB& DB, double Period);
 };
