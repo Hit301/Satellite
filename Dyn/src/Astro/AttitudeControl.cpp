@@ -14,7 +14,7 @@ CAttitudeController::CAttitudeController() :workmode(EARTHPOINT)
 	MaxTorque = 0.08;
 }
 
-Eigen::Vector3d CAttitudeController::TorqueRefRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CComponet* pCom)
+Eigen::Vector3d CAttitudeController::TorqueRefRenew(CComponet* pCom)
 {
 	//这里默认用第一个单机了，后面有需要可以更改，实际上应该有定姿的算法，在定姿算法中算出结果
 	switch (workmode)
@@ -26,13 +26,13 @@ Eigen::Vector3d CAttitudeController::TorqueRefRenew(CAttitude& Att, COrbit& Obt,
 	break;
 	case SUNPOINT:
 	{
-		ToSunControl(pCom->Gyros[0], Att.Qib, Env.SunVecBody);
+		ToSunControl(pCom->Gyros[0], pCom->SunSensors[0]);
 	}
 	break;
 	case EARTHPOINT:
 	{
 
-		ToEarthControl(pCom->Gyros[0], Att.Qob);
+		ToEarthControl(pCom->Gyros[0], pCom->StarSensors[0], pCom->GNSSs[0]);
 	}
 	break;
 	default:
@@ -54,13 +54,14 @@ void CAttitudeController::RateDamping(const GyroScope& _Gyro)
 }
 
 //对日捕获与定向控制率设计
-void CAttitudeController::ToSunControl(const GyroScope& _Gyro, Quat& _Qib, Eigen::Vector3d& _SunPos)
+void CAttitudeController::ToSunControl(const GyroScope& _Gyro, const SunSensor& _Sun)
 {
 	Eigen::Vector3d Wbi = _Gyro.InstallMatrix.inverse() * DEG2RAD * _Gyro.Data;
 
 	//参考量
 	Eigen::Vector3d Wref(0, 0, 0.1 * DEG2RAD);
 	Eigen::Vector3d Rb(0, 0, 1);
+	Eigen::Vector3d _SunPos = _Sun.InstallMatrix.inverse() * _Sun.Data;
 	//控制力矩计算
 	Eigen::Vector3d Tcontrol = -Kp * _SunPos.cross(Rb) + Kd * (Eigen::Vector3d::Zero() - Wbi);
 	//限幅处理
@@ -72,11 +73,25 @@ void CAttitudeController::ToSunControl(const GyroScope& _Gyro, Quat& _Qib, Eigen
 }
 
 //对地捕获与定向控制率设计
-void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, Quat& _Qob)
+void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSensor& _Star, const GNSS& _gnss)
 {
 	Eigen::Vector3d Wbi = _Gyro.InstallMatrix.inverse() * DEG2RAD * _Gyro.Data;
+	Quat Qib = _Star.Data * _Star.InstallMatrix.ToQuat();
+
+	//计算Aio
+	Eigen::Vector3d Pos = _gnss.Data.Pos;//卫星的位置矢量
+	Eigen::Vector3d Vel = _gnss.Data.Vel;//卫星的速度矢量
+	Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//偏航轴单位矢量
+	Eigen::Vector3d y_tmp = Vel.cross(Pos);
+	Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // 俯仰轴单位矢量
+	Eigen::Vector3d xo = yo.cross(zo);//滚动轴单位矢量
+	CDcm Aio;
+	Aio.DcmData << xo, yo, zo;
+
+	Quat Qoi = Aio.ToQuat().QuatInv();
+	Quat Qob = Qoi * Qib;
 	Eigen::Vector3d ImQob;
-	ImQob << _Qob.QuatData[1], _Qob.QuatData[2], _Qob.QuatData[3];
+	ImQob << Qob.QuatData[1], Qob.QuatData[2], Qob.QuatData[3];
 
 	//控制力矩计算
 	Eigen::Vector3d Tcontrol = -Kp * ImQob - Kd * Wbi;

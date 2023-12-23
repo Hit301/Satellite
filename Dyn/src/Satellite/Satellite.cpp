@@ -40,7 +40,7 @@ void Satellite::StateRenew()
 	SatelliteTime += (int64_t)(SampleTime * 1e3);
 
 	//控制器计算
-	AttController.TorqueRefRenew(Attitude, Orbit, Env, pComponet);
+	AttController.TorqueRefRenew(pComponet);
 
 	//轨道相关信息更新
 	Orbit.StateRenew(SampleTime, SatelliteTime);
@@ -67,7 +67,7 @@ void Satellite::dataToDB(CInfluxDB& DB, double Period)
 		Attitude.record(DB);
 		Env.record(DB);
 		pComponet->record(DB);
-		DB.printStr2();
+		//DB.printStr2();
 		// AttController.record(DB);
 		DB.sendUdp();
 		DB.clearStr2();

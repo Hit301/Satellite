@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Componet\GNSS.cpp" />
     <ClCompile Include="src\Componet\Componet.cpp" />
     <ClCompile Include="src\Componet\Flywheel.cpp" />
     <ClCompile Include="src\General\CConfig.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="src\Componet\SunSensor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Componet\GNSS.h" />
     <ClInclude Include="include\Componet\Componet.h" />
     <ClInclude Include="include\Componet\Flywheel.h" />
     <ClInclude Include="include\Componet\MagSensor.h" />

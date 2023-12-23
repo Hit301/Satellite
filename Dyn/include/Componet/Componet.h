@@ -4,6 +4,7 @@
 #include"Componet/MagSensor.h"
 #include"Componet/StarSensor.h"
 #include"Componet/SunSensor.h"
+#include "Componet/GNSS.h"
 #include"General/AllHead.h"
 // 2023-12-22 14:47:10
 
@@ -20,12 +21,13 @@ public:
 	size_t MagSensorNums;
 	size_t StarSensorNums;
 	size_t SunSensorNums;
+	size_t GnssNums;
 	std::vector<GyroScope> Gyros;
 	std::vector<Flywheel> Wheels;
 	std::vector<SunSensor> SunSensors;
 	std::vector<StarSensor> StarSensors;
 	std::vector<MagSensor> MagSensors;
-	
+	std::vector<GNSS> GNSSs;
 private:
 	static inline CComponet* m_instance{ NULL };
 

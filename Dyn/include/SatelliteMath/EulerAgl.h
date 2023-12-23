@@ -26,22 +26,22 @@ public:
 	//@brief: 以其他欧拉角初始化
 	//@para : Agl：欧拉角
 	//@return : none
-	CEulerAgl(CEulerAgl& Agl);
+	CEulerAgl(const CEulerAgl& Agl);
 
 	//@brief: 重载赋值运算符
 	//@para : Agl：欧拉角
 	//@return : none
-	CEulerAgl& operator=(CEulerAgl Agl);
+	CEulerAgl& operator=(const CEulerAgl Agl);
 
 public:
 	//@brief:  欧拉角转方向余弦矩阵
 	//@para : Sequence:转序(查BaseMath)
 	//@return : 方向余弦矩阵
-	CDcm ToDcm();
+	CDcm ToDcm() const;
 
 	//@brief:  欧拉角转四元数
 	//@para :  none
 	//@return : 四元数
-	Quat ToQuat();
+	Quat ToQuat() const;
 };
 

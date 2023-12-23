@@ -44,6 +44,11 @@ void CComponet::Init(CAttitude& Att, COrbit& Obt, Environment& Env, CAttitudeCon
 	{
 		MagSensors[i].Init(Env.BodyMag, timestamp);
 	}
+
+	for (size_t i{ 0 }; i < GnssNums; i++)
+	{
+		GNSSs[i].Init(Obt.J2000Inertial, timestamp);
+	}
 }
 
 void CComponet::StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CAttitudeController& ACtrl, int64_t timestamp, double Ts)
@@ -71,6 +76,11 @@ void CComponet::StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CAttit
 	{
 		Wheels[i].StateRenew(timestamp, Ts, WheelsTref[i]);
 	}
+
+	for (size_t i{ 0 }; i < GnssNums; i++)
+	{
+		GNSSs[i].StateRenew(timestamp, Obt.J2000Inertial);
+	}
 }
 
 CComponet::CComponet() :
@@ -82,6 +92,7 @@ CComponet::CComponet() :
 	MagSensorNums = 1;
 	SunSensorNums = 1;
 	StarSensorNums = 1;
+	GnssNums = 1;
 	//之后根据单机的参数进行配置，可读一个ini
 	if (GyroNums <= 0)
 	{
@@ -114,7 +125,12 @@ CComponet::CComponet() :
 		MessageBox(NULL, "太敏数量非法,程序结束", "警告", MB_OKCANCEL);
 		exit(0);
 	}
-
+	if (GnssNums <= 0)
+	{
+		std::cout << "Gnss数量非法 值= " << GyroNums << "改为默认值1" << std::endl;
+		MessageBox(NULL, "Gnss数量非法,程序结束", "警告", MB_OKCANCEL);
+		exit(0);
+	}
 	Gyros.resize(GyroNums);
 	for (size_t i{ 0 }; i < GyroNums; i++)
 	{
@@ -156,6 +172,13 @@ CComponet::CComponet() :
 		//这里要改成配置表类型的
 		MagSensors[i].InstallMatrix<< Eigen::Matrix3d::Identity();
 		MagSensors[i].SamplePeriod = 0.25;
+	}
+
+	GNSSs.resize(GnssNums);
+	for (size_t i{ 0 }; i < GnssNums; i++)
+	{
+		//这里要改成配置表类型的
+		GNSSs[i].SamplePeriod = 0.25;
 	}
 }
 
