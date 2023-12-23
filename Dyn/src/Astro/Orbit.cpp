@@ -3,6 +3,7 @@
 #include"Astro/Attitude.h"
 #include"SatelliteMath/Quaternions.h"
 #include"General/CConfig.h"
+#include"General/InfluxDB.h"
 int COrbit::TwoBod(double Ts)
 {
 	if (IsRV(J2000Inertial) == false)
@@ -114,3 +115,8 @@ std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 	_cout << "J2000 Vel(km/s) " << j2000.Vel(0) / 1000 << " " << j2000.Vel(1) / 1000 << " " << j2000.Vel(2) / 1000 << std::endl;
 	return _cout;
 }
+
+void COrbit::record(CInfluxDB& DB) {
+	DB.addKeyValue("SIM003", 8.8);
+}
+

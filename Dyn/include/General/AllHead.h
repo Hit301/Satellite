@@ -11,3 +11,4 @@ class CEulerAgl;
 class CConfig;
 class CSimTime;
 class Satellite;
+class CInfluxDB;

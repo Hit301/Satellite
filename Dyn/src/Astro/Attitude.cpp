@@ -1,6 +1,8 @@
 #include"Astro/Attitude.h"
 #include "Astro/Orbit.h"
 #include"General/CConfig.h"
+#include"General/InfluxDB.h"
+
 //姿态运动学计算差分四元数
 #if 0
 Eigen::Vector3d Omega_bRK4(Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Omega_b, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s, double Ts)
@@ -127,4 +129,11 @@ void CAttitude::Init(COrbit& Obt)
         pCfg->Jxz, pCfg->Jyz, pCfg->Jzz;
     GetAio(Obt);
     Qob = Aio.ToQuat().QuatInv() * Qib;
+}
+
+void CAttitude::record(CInfluxDB& DB) {
+    DB.addKeyValue("SIM001", 6.6);
+    //SIM001~SIM004 SIM005~SIM009预留 
+    // 物理意义 编号 单位
+    //SELETE SIM001 FROM Satellite_db
 }

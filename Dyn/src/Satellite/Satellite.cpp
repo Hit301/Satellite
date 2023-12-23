@@ -1,6 +1,6 @@
 #include "Satellite/Satellite.h"
 #include"General/CConfig.h"
-
+#include"General/InfluxDB.h"
 Satellite::Satellite() :Orbit(), Attitude(), AttController()
 {
 	CConfig* pCfg = CConfig::GetInstance();
@@ -45,6 +45,24 @@ void Satellite::StateRenew(double SampleTime)
 
 	//单机数据更新
 	pComponet->StateRenew(Attitude, Orbit, Env, SatelliteTime);
+}
+
+void Satellite::dataToDB(CInfluxDB& DB, double Period)
+{
+	// -->Period采集发送数据
+	if (DB.IsSend(Period)) {
+		DB.setMeasurement("nb");
+		// 记录字符串
+		// 记录一下顺序
+		Orbit.record(DB);
+		Attitude.record(DB);
+		Env.record(DB);
+		pComponet->record(DB);
+		DB.printStr2();
+		// AttController.record(DB);
+		DB.sendUdp();
+		DB.clearStr2();
+	}
 }
 
 

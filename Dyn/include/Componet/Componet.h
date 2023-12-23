@@ -1,7 +1,7 @@
 #pragma once
 #include "Componet/Gyro.h"
 #include"General/AllHead.h"
-
+// 2023-12-22 14:47:10
 
 class CComponet
 {
@@ -9,6 +9,8 @@ public:
 	static CComponet* GetInstance();
 	void Init(CAttitude& Att, COrbit& Obt, Environment& Env, int64_t timestamp);
 	void StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, int64_t timestamp);
+	// 写入数据库
+	void record(CInfluxDB& DB);
 public:
 	size_t GyroNums;
 	GyroScope* pGyro;
@@ -36,3 +38,5 @@ private:
 //在Componet类的构造函数中中完成各单机数量和参数的初始化
 //在Componet类的Init函数中完成各单机物理量的初始化
 //在Componet类的StateRenew函数中完成各单机的数据更新
+
+

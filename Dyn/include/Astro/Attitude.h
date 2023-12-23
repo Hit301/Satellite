@@ -5,7 +5,6 @@
 #include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/EulerAgl.h"
 
-
 class COrbit;
 
 class CAttitude
@@ -42,6 +41,9 @@ public:
 	void StateRenew(double Ts, COrbit& Orbit);
 
 	void Init(COrbit& Obt);
+
+	// Ð´ÈëÊý¾Ý¿â
+	void record(CInfluxDB& DB);
 };
 
 

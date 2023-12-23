@@ -4,6 +4,8 @@
 #include "Astro/Environment.h"
 #include "AStro/AttitudeControl.h"
 #include"Componet/Componet.h"
+
+
 class Satellite
 {
 public:
@@ -20,6 +22,8 @@ public:
 
 	~Satellite()=default;
 	void StateRenew(double SampleTime);
+	// 2023-12-22 11:28:55
+	void dataToDB(CInfluxDB& DB, double Period);
 };
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat);

@@ -1,8 +1,8 @@
-#include<windows.h>
 #include "Componet/Componet.h"
 #include"Astro/Attitude.h"
 #include"Astro/Orbit.h"
 #include "Astro/Environment.h"
+#include"General/InfluxDB.h"
 
 
 CComponet::DeleteHelper CComponet::helper;
@@ -65,4 +65,8 @@ void CComponet::ReleaseInstance()
 	CComponet* tmp = m_instance;
 	m_instance = NULL;
 	delete tmp;
+}
+
+void CComponet::record(CInfluxDB& DB) {
+	DB.addKeyValue("SIM004", 4.4);
 }

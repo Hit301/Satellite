@@ -1,5 +1,7 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+// 2023-12-22 14:44:18
+# include "General/AllHead.h"
 
 class COrbit;
 class CAttitude;
@@ -29,4 +31,7 @@ public:
 	void GetNEDMag(const COrbit& Orbit, const int64_t timestamp);
 
 	void StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp);
+
+	// Ð´ÈëÊý¾Ý¿â
+	void record(CInfluxDB& DB);
 };

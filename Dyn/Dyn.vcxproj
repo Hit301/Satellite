@@ -23,6 +23,7 @@
     <ClCompile Include="src\Componet\Flywheel.cpp" />
     <ClCompile Include="src\General\CConfig.cpp" />
     <ClCompile Include="src\Astro\AttitudeControl.cpp" />
+    <ClCompile Include="src\General\InfluxDB.cpp" />
     <ClCompile Include="src\SatelliteMath\EulerAgl.cpp" />
     <ClCompile Include="src\SatelliteMath\BaseMath.cpp" />
     <ClCompile Include="src\Astro\Attitude.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="include\General\AllHead.h" />
     <ClInclude Include="include\General\CConfig.h" />
     <ClInclude Include="include\Astro\AttitudeControl.h" />
+    <ClInclude Include="include\General\InfluxDB.h" />
     <ClInclude Include="include\SatelliteMath\EulerAgl.h" />
     <ClInclude Include="include\Astro\Attitude.h" />
     <ClInclude Include="include\Astro\Environment.h" />
@@ -148,6 +150,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>deps\MySofa;deps\eigen-3.3.8;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

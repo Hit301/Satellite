@@ -3,6 +3,7 @@
 #include"Astro/Orbit.h"
 #include"Astro/Attitude.h"
 #include"General/CConfig.h"
+#include"General/InfluxDB.h"
 Environment::Environment()
 {
 	BodyMag << 0, 0, 0;
@@ -175,4 +176,8 @@ void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t t
 	BodyMag = Ane * NEDMag;
 	SunPos(timestamp);
 	SunVecBody = Attitude.Qib.ToDcm() * SunVecInl;
+}
+
+void Environment::record(CInfluxDB& DB) {
+	DB.addKeyValue("SIM002", 5.5);
 }
