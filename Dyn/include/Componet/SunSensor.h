@@ -4,7 +4,7 @@ class SunSensor
 {
 public:
 	Eigen::Matrix3d InstallMatrix;//安装矩阵,从本体系到测量系
-	Eigen::Vector3d Data;//三表头数值，单位deg/s
+	Eigen::Vector3d Data;//太敏测量三轴太阳矢量数值，单位deg/s
 	int64_t LastRenewTime;//开机时间，utc时间戳单位ms
 	double SamplePeriod;//太敏采样周期，单位为s
 public:
@@ -12,5 +12,5 @@ public:
 
 public:
 	void StateRenew(int64_t NowTime, Eigen::Vector3d Sun_b);
-
+	void Init(Eigen::Vector3d Sun_b, int64_t timestamp);
 };
