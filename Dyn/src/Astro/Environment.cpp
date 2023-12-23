@@ -56,7 +56,6 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	CConfig* pCfg = CConfig::GetInstance();
 	size_t& Order = pCfg->MagOrder;
 
-
 	//时间戳转年月日
 	YMD m_ymd = UTCTimeStamp2YMD(timestamp);
 	double epoch = DecYear(2020,1,1);
@@ -67,8 +66,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	g = pCfg->gauss_g + pCfg->gauss_gdot * dt_change;
 	h = pCfg->gauss_h + pCfg->gauss_hdot * dt_change;
 
-
-	Eigen::ArrayXXd P(Order +2, Order+2);
+	Eigen::ArrayXXd P(Order + 2, Order + 2);
 	P.setZero();
 	double x = sin(Orbit.LLR.Lat);
 
