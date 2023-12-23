@@ -16,6 +16,7 @@ int main()
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew(SampleTime);
+			std::cout << Amadeus << std::endl;
 		}
 		pSimTime->ReleaseSimCountMute();
 		// 2023-12-22 11:20:02

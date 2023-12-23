@@ -11,9 +11,12 @@ public:
 	double SamplePeriod;//陀螺采样周期，单位为s
 public:
 	StarSensor();
-
+	~StarSensor() {}
+	StarSensor(const StarSensor& m);
+	StarSensor& operator=(const StarSensor& m);
 public:
-	void StateRenew(int64_t NowTime, Quat Quat_b);
+	void StateRenew(int64_t NowTime, Quat Qib);
+	void Init(Quat Qib, int64_t timestamp);
 
 };
 

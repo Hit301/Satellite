@@ -57,7 +57,7 @@ CDcm::CDcm(unsigned Axis, double Theta)
 }
 
 
-CDcm::CDcm(CDcm& _Dcm)
+CDcm::CDcm(const CDcm& _Dcm)
 {
     //@brief: 以其他方向余弦矩阵初始化DcmData，注意这里传入的参数类型，也是CDcm
     //@para : _Dcm：另一个方向余弦矩阵
@@ -67,13 +67,14 @@ CDcm::CDcm(CDcm& _Dcm)
     DcmData = _Dcm.DcmData;
 }
 
-CDcm& CDcm::operator=(CDcm _Dcm)
+CDcm& CDcm::operator=(const CDcm _Dcm)
 {
     //@brief: 重载赋值运算符
     //@para : _Dcm：另一个方向余弦矩阵
     //@return : none
     //@remark : 已测试
     /*重载赋值运算符 返回当前对象的引用*/
+    if(this !=&_Dcm)
     DcmData = _Dcm.DcmData;
     return *this;
 }

@@ -2,10 +2,6 @@
 #include"SatelliteMath/BaseMath.h"
 #include"General/AllHead.h"
 
-//任务选择
-#define RATEDAMP 1U
-#define SUNPOINT 2U
-#define EARTHPOINT 3U
 
 class CAttitudeController
 {
@@ -15,6 +11,13 @@ public:
 	Eigen::Matrix3d Kp;//控制器系数
 	Eigen::Matrix3d Kd;//控制器系数
 	double MaxTorque;//最大力矩
+
+	enum Mode
+	{
+		RATEDAMP,
+		SUNPOINT,
+		EARTHPOINT
+	};
 public:
 	CAttitudeController();
 

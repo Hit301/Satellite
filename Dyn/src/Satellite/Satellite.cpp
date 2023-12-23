@@ -17,12 +17,12 @@ Satellite::Satellite() :Orbit(), Attitude(), AttController()
 	//环境相关初始化
 	Env.StateRenew(Attitude, Orbit, SatelliteTime);
 
+	//控制器设置
+	AttController.workmode = CAttitudeController::EARTHPOINT;
+
 	//单机初始化
 	pComponet = CComponet::GetInstance();
-	pComponet->Init(Attitude, Orbit, Env, SatelliteTime);
-
-	//控制器设置
-	AttController.workmode = EARTHPOINT;
+	pComponet->Init(Attitude, Orbit, Env, AttController,SatelliteTime);
 }
 
 
@@ -32,19 +32,19 @@ void Satellite::StateRenew(double SampleTime)
 	SatelliteTime += (int64_t)(SampleTime * 1e3);
 
 	//控制器计算
-	Attitude.TotalTorque = AttController.TorqueRefRenew(Attitude, Orbit, Env, pComponet);
+	AttController.TorqueRefRenew(Attitude, Orbit, Env, pComponet);
 
 	//轨道相关信息更新
 	Orbit.StateRenew(SampleTime, SatelliteTime);
 
 	//姿态相关信息更新
-	Attitude.StateRenew(SampleTime, Orbit);
+	Attitude.StateRenew(SampleTime, Orbit, pComponet);
 
 	//环境信息更新
 	Env.StateRenew(Attitude, Orbit, SatelliteTime);
 
 	//单机数据更新
-	pComponet->StateRenew(Attitude, Orbit, Env, SatelliteTime);
+	pComponet->StateRenew(Attitude, Orbit, Env, AttController, SatelliteTime, SampleTime);
 }
 
 void Satellite::dataToDB(CInfluxDB& DB, double Period)

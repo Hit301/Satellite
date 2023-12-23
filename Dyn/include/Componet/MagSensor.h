@@ -5,13 +5,12 @@ class MagSensor
 {
 public:
 	Eigen::Matrix3d InstallMatrix;//安装矩阵,从本体系到测量系
-	Eigen::Vector3d Data;//三表头数值，单位deg/s
+	Eigen::Vector3d Data;//磁强计数值，单位Gauss
 	int64_t LastRenewTime;//开机时间，utc时间戳单位ms
-	double SamplePeriod;//陀螺采样周期，单位为s
+	double SamplePeriod;//采样周期，单位为s
 public:
 	MagSensor();
-
 public:
-	void StateRenew(int64_t NowTime, Eigen::Vector3d Omega_b);
-
+	void StateRenew(int64_t NowTime, Eigen::Vector3d B_b);
+	void Init(Eigen::Vector3d& B_b, int64_t timestamp);
 };
