@@ -13,11 +13,8 @@ public:
 	Environment Env;//环境
 	CComponet* pComponet;//单机
 	CAttitudeController AttController;//姿态控制
-
-
 public:
 	Satellite();
-
 	~Satellite()=default;
 	void StateRenew(double SampleTime);
 };

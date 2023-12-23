@@ -19,7 +19,7 @@ public:
 
 	Eigen::Matrix3d SatInaMat;//本体系惯量矩阵，单位kgm2
 	Eigen::Vector3d WheelMomentum_b;//飞轮组在本体系下的角动量，单位Nms
-	Eigen::Vector3d TotalTorque;//Tf：干扰力矩：TB 磁力矩：Tw：飞轮本体系力矩 TotalTorque=TB+Tf-Tw	
+	Eigen::Vector3d TotalTorque;//Tf：干扰力矩：TB 磁力矩：Tw：飞轮本体系力矩 TotalTorque=TB+Tf-Tw
 public:
 
 	//
@@ -39,9 +39,11 @@ public:
 
 	void GetAio(COrbit& Orbit);
 
-	void StateRenew(double Ts, COrbit& Orbit);
+	void StateRenew(double Ts, COrbit& Orbit, CComponet* pComponet);
 
 	void Init(COrbit& Obt);
+private:
+	Eigen::Vector3d LastOmega_b;//上一拍的本体系角速度，单位rad/s
 };
 
 

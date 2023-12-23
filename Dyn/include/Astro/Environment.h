@@ -6,8 +6,8 @@ class CAttitude;
 class Environment
 {
 public:
-	Eigen::Vector3d BodyMag;//本体系地磁场强度nT
-	Eigen::Vector3d NEDMag;//北东地系地磁场强度nT
+	Eigen::Vector3d BodyMag;//本体系地磁场强度T
+	Eigen::Vector3d NEDMag;//北东地系地磁场强度T
 	Eigen::Vector3d SunVecInl;//惯性系太阳矢量
 	Eigen::Vector3d SunVecBody;//本体系太阳矢量
 

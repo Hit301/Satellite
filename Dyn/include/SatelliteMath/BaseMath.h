@@ -42,6 +42,16 @@
 #define T2GAUSS(t) ((t)*10000.0)
 
 //
+// brief  : 磁感应强度nT转T
+//
+#define NT2T(nt) ((nt)*1.0E-9)
+
+//
+// brief  : 磁感应强度T转nT
+//
+#define T2NT(t) ((t)*1.0E9)
+
+//
 // brief  : 弧度转角度
 //
 #define DEG(rad) ((rad)*RAD2DEG)
@@ -154,6 +164,11 @@
 #define LIMIT(v,min,max) MAX(MIN(v,max),min)
 
 //
+// brief  :对称饱和
+//
+#define SATURATION(v,max) LIMIT(v,-max,max)
+
+//
 // brief  : 判断是否为NULL
 //
 #define IS_NULL(v) (NULL==(v))
@@ -162,7 +177,6 @@
 // brief  : 判断是否为非NULL
 //
 #define NOT_NULL(v) (NULL!=(v))
-
 
 
 //方向余弦矩阵转轴

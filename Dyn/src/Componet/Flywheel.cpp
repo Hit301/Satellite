@@ -1,59 +1,53 @@
 #include"Componet/Flywheel.h"
 
-flywheel::flywheel()
+Flywheel::Flywheel()
 {
 	InstallVet << 1, 0, 0;
 	Speed= 0;
+	SpeedRef = 0;
 	Torque = 0;
+	TorqueRef = 0;
 	LastRenewTime = 0;
-	SamplePeriod = 1;
 	Kp = 1;
 	Ki = 1;
-	tao = 1;
+	tau = 1;
 	J = 0.064;
+	MaxSpeed = 628;
+	MaxTref = 0.5;
+	Momentum = J * Speed;
 }
 
-void flywheel::StateRenew(int64_t NowTime, double Tref)
+Flywheel::Flywheel(Eigen::Vector3d& InsVet) :Flywheel()
 {
-	static double lastspeed;
-	static double speedRef;
+	InstallVet = InsVet;
+}
+
+void Flywheel::StateRenew(int64_t NowTime, double SampleTime, double Tref)
+{
+	static double lastspeed = 0;
 	static double lastspeedRef=0;
-	if (abs(Tref) > 0.5)
-	{
-		if(Tref>0)
-		{
-			Tref = 0.5;
-		}
-		else
-		{
-			Tref = -0.5;
-		}
-	}
-	speedRef = Tref * 0.01 / J+lastspeedRef;
-	
+
+	//计算参考力矩
+	TorqueRef = SATURATION(Tref, MaxTref);
+	//计算参考转速
+	SpeedRef = TorqueRef * SampleTime / J + lastspeedRef;
+	lastspeedRef = SpeedRef;
+	//计算转速
+	Speed = (1 - Kp / tau - Ki * SampleTime / tau) * lastspeed + (Kp / tau + Ki * SampleTime / tau) * lastspeedRef;
+	Speed = SATURATION(Speed, MaxSpeed);
+	//计算力矩
+	Torque = J * (Speed - lastspeed) / SampleTime;
+	//计算角动量
+	Momentum = J * Speed;
+	//上一拍转速更新
 	lastspeed = Speed;
-	Speed = (1-Kp/tao-Ki*0.01/tao)*lastspeed+(Kp/tao+Ki*0.01/tao)*lastspeedRef;
-	lastspeedRef = speedRef;
-	if (abs(Speed)>628)
-	{
-		if (Speed > 0)
-		{
-			Speed = 628;
-		}
-		if (Speed < 0)
-		{
-			Speed = -628;
-		}
-	}
-	Torque = J * (Speed - lastspeed) / 0.01;
-	std::cout << "SPEED" << Speed<<std::endl;
 }
 
-void flywheel::Init(double speed, int64_t timestamp)
+void Flywheel::Init(double speed, int64_t timestamp)
 {
-	
-		LastRenewTime = timestamp;
-		Speed = speed;
-	}
+	LastRenewTime = timestamp;
+	Speed = speed;
+	Momentum = J * Speed;
+}
 
 

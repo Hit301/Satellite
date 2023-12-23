@@ -31,12 +31,12 @@ public:
 	//@brief: 以其他方向余弦矩阵初始化DcmData
 	//@para : _Dcm：另一个方向余弦矩阵
 	//@return : none
-	CDcm(CDcm& _Dcm);
+	CDcm(const CDcm& _Dcm);
 
 	//@brief: 重载赋值运算符
 	//@para : _Dcm：另一个方向余弦矩阵
 	//@return : none
-	CDcm& operator=(CDcm _Dcm);
+	CDcm& operator=(const CDcm _Dcm);
 
 public:
 	//@brief:  方向余弦矩阵转欧拉角

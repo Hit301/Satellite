@@ -164,6 +164,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	double BD = X_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat) + Z_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat);
 
 	NEDMag << BN, BE, BD;
+	NEDMag = NT2T(NEDMag);
 }
 
 void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp)

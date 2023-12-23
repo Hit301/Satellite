@@ -15,7 +15,6 @@ void SunSensor::StateRenew(int64_t NowTime, Eigen::Vector3d Sun_b)
 	{
 		Data = InstallMatrix * Sun_b;
 		LastRenewTime = NowTime;
-		std::cout << "SunSensor" << Data << std::endl;
 	}
 }
 
@@ -23,5 +22,4 @@ void SunSensor::Init(Eigen::Vector3d Sun_b, int64_t timestamp)
 {
 	LastRenewTime = timestamp;
 	Data = InstallMatrix*Sun_b;
-
 }

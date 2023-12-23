@@ -13,7 +13,7 @@ int main()
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew(SampleTime);
-			std::cout << Amadeus.Env.NEDMag << std::endl;
+			std::cout << Amadeus << std::endl;
 		}
 		pSimTime->ReleaseSimCountMute();
 	}

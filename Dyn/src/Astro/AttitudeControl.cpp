@@ -6,7 +6,7 @@
 #include"Componet/Componet.h"
 #include "Astro/Environment.h"
 //初始速率阻尼控制率设计
-CAttitudeController::CAttitudeController() :workmode(1)
+CAttitudeController::CAttitudeController() :workmode(EARTHPOINT)
 {
 	TorqueRef << 0, 0, 0;
 	Kp << 0.5 * Eigen::Matrix3d::Identity();
@@ -21,18 +21,18 @@ Eigen::Vector3d CAttitudeController::TorqueRefRenew(CAttitude& Att, COrbit& Obt,
 	{
 	case RATEDAMP:
 	{
-		RateDamping(pCom->pGyro[0]);
+		RateDamping(pCom->Gyros[0]);
 	}
 	break;
 	case SUNPOINT:
 	{
-		ToSunControl(pCom->pGyro[0], Att.Qib, Env.SunVecBody);
+		ToSunControl(pCom->Gyros[0], Att.Qib, Env.SunVecBody);
 	}
 	break;
 	case EARTHPOINT:
 	{
 
-		ToEarthControl(pCom->pGyro[0], Att.Qob);
+		ToEarthControl(pCom->Gyros[0], Att.Qob);
 	}
 	break;
 	default:
