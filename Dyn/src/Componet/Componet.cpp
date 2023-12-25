@@ -192,5 +192,43 @@ void CComponet::ReleaseInstance()
 }
 
 void CComponet::record(CInfluxDB& DB) {
-	DB.addKeyValue("SIM004", 4.4);
+	// 如果后续按照师兄讲的，有很多陀螺，用循环去addKeyValue
+	// 为了保证陀螺... ...序号连续，可以定义一个序号变量，每次addKeyValue加一，以保证按大类存储
+	// 陀螺表头
+	DB.addKeyValue("SIM062", pComponet->Gyros[0].Data.x() * RAD2DEG);
+	DB.addKeyValue("SIM063", pComponet->Gyros[0].Data.y() * RAD2DEG);
+	DB.addKeyValue("SIM064", pComponet->Gyros[0].Data.z() * RAD2DEG);
+	// 星敏表头
+	DB.addKeyValue("SIM65", pComponet->StarSensors[0].Data.QuatData[0]);
+	DB.addKeyValue("SIM66", pComponet->StarSensors[0].Data.QuatData[1]);
+	DB.addKeyValue("SIM67", pComponet->StarSensors[0].Data.QuatData[2]);
+	DB.addKeyValue("SIM68", pComponet->StarSensors[0].Data.QuatData[3]);
+	// 太敏太阳矢量
+	DB.addKeyValue("SIM069", pComponet->SunSensors[0].Data.x());
+	DB.addKeyValue("SIM070", pComponet->SunSensors[0].Data.y());
+	DB.addKeyValue("SIM071", pComponet->SunSensors[0].Data.z());
+	// 磁强计
+	DB.addKeyValue("SIM072", pComponet->MagSensors[0].Data.x());
+	DB.addKeyValue("SIM073", pComponet->MagSensors[0].Data.y());
+	DB.addKeyValue("SIM074", pComponet->MagSensors[0].Data.z());
+	// 飞轮1转速、力矩
+	DB.addKeyValue("SIM075", VEL2RPM(pComponet->Wheels[0].Speed));
+	DB.addKeyValue("SIM076", pComponet->Wheels[0].Torque);
+	// 飞轮2转速、力矩
+	DB.addKeyValue("SIM077", VEL2RPM(pComponet->Wheels[1].Speed));
+	DB.addKeyValue("SIM078", pComponet->Wheels[1].Torque);
+	// 飞轮3转速、力矩
+	DB.addKeyValue("SIM079", VEL2RPM(pComponet->Wheels[2].Speed));
+	DB.addKeyValue("SIM080", pComponet->Wheels[2].Torque);
+	// 陀螺数量
+	DB.addKeyValue("SIM081", static_cast<double>(pComponet->GyroNums));
+	// 星敏数量
+	DB.addKeyValue("SIM082", static_cast<double>(pComponet->StarSensorNums));
+	// 太敏数量
+	DB.addKeyValue("SIM083", static_cast<double>(pComponet->SunSensorNums));
+	// 磁强计数量
+	DB.addKeyValue("SIM084", static_cast<double>(pComponet->MagSensorNums));
+	// 飞轮数量
+	DB.addKeyValue("SIM085", static_cast<double>(pComponet->FlywheelNums));
+
 }

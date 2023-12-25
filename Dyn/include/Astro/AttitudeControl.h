@@ -22,6 +22,10 @@ public:
 
 	//根据任务模式计算参考力矩，实际上应该只需要单机信息
 	Eigen::Vector3d TorqueRefRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CComponet* pCom);
+
+	// 写入数据库
+	// 2023-12-24 21:16:03
+	void record(CInfluxDB& DB);
 private:
 
 	//@brief: 速率阻尼控制器

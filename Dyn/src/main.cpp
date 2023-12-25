@@ -20,7 +20,7 @@ int main()
 		}
 		pSimTime->ReleaseSimCountMute();
 		// 2023-12-22 11:20:02
-		Amadeus.dataToDB(DB, 5);
+		Amadeus.data2DB(DB, 5);
 	}
 	
 }

@@ -146,8 +146,20 @@ void CAttitude::Init(COrbit& Obt)
 }
 
 void CAttitude::record(CInfluxDB& DB) {
-    DB.addKeyValue("SIM001", 6.6);
-    //SIM001~SIM004 SIM005~SIM009预留 
-    // 物理意义 编号 单位
-    //SELETE SIM001 FROM Satellite_db
+    // 惯性系到本体系四元数
+    DB.addKeyValue("SIM0029", Qib.QuatData[0]);
+    DB.addKeyValue("SIM0030", Qib.QuatData[1]);
+    DB.addKeyValue("SIM0031", Qib.QuatData[2]);
+    DB.addKeyValue("SIM0032", Qib.QuatData[3]);
+    // 轨道系到本体系四元数
+    DB.addKeyValue("SIM0033", Qob.QuatData[0]);
+    DB.addKeyValue("SIM0034", Qob.QuatData[0]);
+    DB.addKeyValue("SIM0035", Qob.QuatData[0]);
+    DB.addKeyValue("SIM0036", Qob.QuatData[0]);
+    // 本体系角速度
+    DB.addKeyValue("SIM0037", Omega_b.x() * RAD2DEG);
+    DB.addKeyValue("SIM0038", Omega_b.y() * RAD2DEG);
+    DB.addKeyValue("SIM0039", Omega_b.z() * RAD2DEG);
+
+
 }

@@ -56,22 +56,28 @@ void Satellite::StateRenew()
 
 }
 
-void Satellite::dataToDB(CInfluxDB& DB, double Period)
+void Satellite::data2DB(CInfluxDB& DB, double Period)
 {
 	// -->Period采集发送数据
 	if (DB.IsSend(Period)) {
-		DB.setMeasurement("nb");
-		// 记录字符串
-		// 记录一下顺序
+		DB.setMeasurement("zzz");
+		record(DB);
 		Orbit.record(DB);
 		Attitude.record(DB);
 		Env.record(DB);
 		pComponet->record(DB);
+		AttController.record(DB);
 		DB.printStr2();
-		// AttController.record(DB);
 		DB.sendUdp();
 		DB.clearStr2();
 	}
+}
+
+void Satellite::record(CInfluxDB& DB)
+{
+	DB.addKeyValue("SIM001", SampleTime);
+	DB.addKeyValue("SIM002", SpeedTimes);
+	DB.addKeyValue("SIM003", SatelliteTime);
 }
 
 

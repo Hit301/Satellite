@@ -117,6 +117,23 @@ std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 }
 
 void COrbit::record(CInfluxDB& DB) {
-	DB.addKeyValue("SIM003", 8.8);
+	// 惯性系RV
+	DB.addKeyValue("SIM009", J2000Inertial.Pos.x());
+	DB.addKeyValue("SIM010", J2000Inertial.Pos.y());
+	DB.addKeyValue("SIM011", J2000Inertial.Pos.z());
+	DB.addKeyValue("SIM012", J2000Inertial.Vel.x());
+	DB.addKeyValue("SIM013", J2000Inertial.Vel.y());
+	DB.addKeyValue("SIM014", J2000Inertial.Vel.z());
+	// 地固系RV
+	DB.addKeyValue("SIM015", ECEFFix.Pos.x());
+	DB.addKeyValue("SIM016", ECEFFix.Pos.y());
+	DB.addKeyValue("SIM017", ECEFFix.Pos.z());
+	DB.addKeyValue("SIM018", ECEFFix.Vel.x());
+	DB.addKeyValue("SIM019", ECEFFix.Vel.y());
+	DB.addKeyValue("SIM020", ECEFFix.Vel.z());
+	// 地理参数
+	DB.addKeyValue("SIM021", RAD_PI(LLA.Lng) * RAD2DEG);
+	DB.addKeyValue("SIM022", RAD_PI(LLA.Lat) * RAD2DEG);
+	DB.addKeyValue("SIM023", LLA.Alt);
 }
 

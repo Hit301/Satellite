@@ -183,5 +183,20 @@ void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t t
 }
 
 void Environment::record(CInfluxDB& DB) {
-	DB.addKeyValue("SIM002", 5.5);
+	// 惯性系太阳矢量
+	DB.addKeyValue("SIM045", SunVecInl.x());
+	DB.addKeyValue("SIM046", SunVecInl.y());
+	DB.addKeyValue("SIM047", SunVecInl.z());
+	// 本体系太阳矢量
+	DB.addKeyValue("SIM048", SunVecBody.x());
+	DB.addKeyValue("SIM049", SunVecBody.y());
+	DB.addKeyValue("SIM050", SunVecBody.z());
+	// 北东地系地磁场强度
+	DB.addKeyValue("SIM051", T2GAUSS(NEDMag.x()));
+	DB.addKeyValue("SIM052", T2GAUSS(NEDMag.y()));
+	DB.addKeyValue("SIM053", T2GAUSS(NEDMag.z()));
+	// 本体系地磁场强度
+	DB.addKeyValue("SIM054", T2GAUSS(BodyMag.x()));
+	DB.addKeyValue("SIM055", T2GAUSS(BodyMag.y()));
+	DB.addKeyValue("SIM056", T2GAUSS(BodyMag.z()));
 }
