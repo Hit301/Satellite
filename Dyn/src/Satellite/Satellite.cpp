@@ -40,7 +40,7 @@ void Satellite::StateRenew()
 	SatelliteTime += (int64_t)(SampleTime * 1e3);
 
 	//控制器计算
-	AttController.TorqueRefRenew(Attitude, Orbit, Env, pComponet);
+	AttController.TorqueRefRenew(pComponet);
 
 	//轨道相关信息更新
 	Orbit.StateRenew(SampleTime, SatelliteTime);

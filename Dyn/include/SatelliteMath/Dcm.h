@@ -42,12 +42,12 @@ public:
 	//@brief:  方向余弦矩阵转欧拉角
 	//@para : Sequence:转序(查BaseMath)
 	//@return : 指定转序的欧拉角
-	CEulerAgl ToEulerAgl(unsigned Sequence);
+	CEulerAgl ToEulerAgl(unsigned Sequence) const;
 
 	//@brief:  方向余弦矩阵转四元数
 	//@para : none
 	//@return : 转换得到的四元数
-	Quat ToQuat();
+	Quat ToQuat() const;
 
 public:
 	//运算符重载

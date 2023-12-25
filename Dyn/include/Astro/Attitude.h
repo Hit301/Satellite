@@ -44,6 +44,7 @@ public:
 
 	// 写入数据库
 	void record(CInfluxDB& DB);
+
 private:
 	Eigen::Vector3d LastOmega_b;//上一拍的本体系角速度，单位rad/s
 };

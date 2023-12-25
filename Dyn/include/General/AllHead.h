@@ -12,3 +12,6 @@ class CConfig;
 class CSimTime;
 class Satellite;
 class CInfluxDB;
+class StarSensor;
+class SunSensor;
+class GNSS;

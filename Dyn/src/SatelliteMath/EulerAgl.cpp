@@ -38,7 +38,7 @@ CEulerAgl::CEulerAgl(double R1, double R2, double R3, unsigned Seq) :CEulerAgl()
 		printf("转序不合法，创建默认欧拉角\n");
 }
 
-CEulerAgl::CEulerAgl(CEulerAgl& Agl) :CEulerAgl()
+CEulerAgl::CEulerAgl(const CEulerAgl& Agl) :CEulerAgl()
 {
 	if (CheckSeq(Agl.AglData.Seq))
 	{
@@ -48,7 +48,7 @@ CEulerAgl::CEulerAgl(CEulerAgl& Agl) :CEulerAgl()
 		printf("转序不合法，创建默认欧拉角\n");
 }
 
-CEulerAgl& CEulerAgl::operator=(CEulerAgl Agl)
+CEulerAgl& CEulerAgl::operator=(const CEulerAgl Agl)
 {
 	// 首先检查自赋值
 	if (this != &Agl) {
@@ -60,7 +60,7 @@ CEulerAgl& CEulerAgl::operator=(CEulerAgl Agl)
 }
 
 //通过测试
-CDcm CEulerAgl::ToDcm()
+CDcm CEulerAgl::ToDcm() const
 {
 	CDcm dcm;
 	//按以下三个角旋转
@@ -313,7 +313,7 @@ CDcm CEulerAgl::ToDcm()
 }
 
 //通过测试
-Quat CEulerAgl::ToQuat()
+Quat CEulerAgl::ToQuat() const
 {
 	// r fai     p  xita     y pusai  
 	//区分转序

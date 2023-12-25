@@ -79,7 +79,7 @@ CDcm& CDcm::operator=(const CDcm _Dcm)
     return *this;
 }
 
-CEulerAgl CDcm::ToEulerAgl(unsigned Sequence)
+CEulerAgl CDcm::ToEulerAgl(unsigned Sequence) const
 {
     //@brief:  方向余弦矩阵转欧拉角
     //@para : Sequence:转序(查BaseMath)
@@ -182,7 +182,7 @@ CEulerAgl CDcm::ToEulerAgl(unsigned Sequence)
     return CEulerAgl(R1, R2, R3, Sequence);
 }
 
-Quat CDcm::ToQuat()
+Quat CDcm::ToQuat() const
 {
 	//@brief:  方向余弦矩阵转四元数
 	//@para : none
