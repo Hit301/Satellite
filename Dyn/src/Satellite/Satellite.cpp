@@ -60,7 +60,7 @@ void Satellite::data2DB(CInfluxDB& DB, double Period)
 {
 	// -->Period采集发送数据
 	if (DB.IsSend(Period)) {
-		DB.setMeasurement("zzz");
+		DB.setMeasurement("nb");
 		record(DB);
 		Orbit.record(DB);
 		Attitude.record(DB);

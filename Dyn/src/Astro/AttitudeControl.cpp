@@ -108,9 +108,9 @@ void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSenso
 void CAttitudeController::record(CInfluxDB& DB)
 {	
 	// 控制模式，InfluxDB中tag标签，存储字符串数据，field字段，存储数值数据
-	DB.addKeyValue("SIM086", workmode);
+	DB.addKeyValue("SIM093", workmode);
 	// 控制力矩
-	DB.addKeyValue("SIM087", TorqueRef.x());
-	DB.addKeyValue("SIM088", TorqueRef.y());
-	DB.addKeyValue("SIM089", TorqueRef.z());
+	DB.addKeyValue("SIM094", TorqueRef.x());
+	DB.addKeyValue("SIM095", TorqueRef.y());
+	DB.addKeyValue("SIM096", TorqueRef.z());
 }

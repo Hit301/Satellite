@@ -234,24 +234,33 @@ void CComponet::record(CInfluxDB& DB) {
 	DB.addKeyValue("SIM072", pComponet->MagSensors[0].Data.x());
 	DB.addKeyValue("SIM073", pComponet->MagSensors[0].Data.y());
 	DB.addKeyValue("SIM074", pComponet->MagSensors[0].Data.z());
+	// GNSS
+	DB.addKeyValue("SIM075", pComponet->GNSSs[0].Data.Pos.x());
+	DB.addKeyValue("SIM076", pComponet->GNSSs[0].Data.Pos.y());
+	DB.addKeyValue("SIM077", pComponet->GNSSs[0].Data.Pos.z());
+	DB.addKeyValue("SIM078", pComponet->GNSSs[0].Data.Vel.x());
+	DB.addKeyValue("SIM079", pComponet->GNSSs[0].Data.Vel.y());
+	DB.addKeyValue("SIM080", pComponet->GNSSs[0].Data.Vel.z());
 	// 飞轮1转速、力矩
-	DB.addKeyValue("SIM075", VEL2RPM(pComponet->Wheels[0].Speed));
-	DB.addKeyValue("SIM076", pComponet->Wheels[0].Torque);
+	DB.addKeyValue("SIM081", VEL2RPM(pComponet->Wheels[0].Speed));
+	DB.addKeyValue("SIM082", pComponet->Wheels[0].Torque);
 	// 飞轮2转速、力矩
-	DB.addKeyValue("SIM077", VEL2RPM(pComponet->Wheels[1].Speed));
-	DB.addKeyValue("SIM078", pComponet->Wheels[1].Torque);
+	DB.addKeyValue("SIM083", VEL2RPM(pComponet->Wheels[1].Speed));
+	DB.addKeyValue("SIM084", pComponet->Wheels[1].Torque);
 	// 飞轮3转速、力矩
-	DB.addKeyValue("SIM079", VEL2RPM(pComponet->Wheels[2].Speed));
-	DB.addKeyValue("SIM080", pComponet->Wheels[2].Torque);
+	DB.addKeyValue("SIM085", VEL2RPM(pComponet->Wheels[2].Speed));
+	DB.addKeyValue("SIM086", pComponet->Wheels[2].Torque);
 	// 陀螺数量
-	DB.addKeyValue("SIM081", static_cast<double>(pComponet->GyroNums));
+	DB.addKeyValue("SIM087", static_cast<double>(pComponet->GyroNums));
 	// 星敏数量
-	DB.addKeyValue("SIM082", static_cast<double>(pComponet->StarSensorNums));
+	DB.addKeyValue("SIM088", static_cast<double>(pComponet->StarSensorNums));
 	// 太敏数量
-	DB.addKeyValue("SIM083", static_cast<double>(pComponet->SunSensorNums));
+	DB.addKeyValue("SIM089", static_cast<double>(pComponet->SunSensorNums));
 	// 磁强计数量
-	DB.addKeyValue("SIM084", static_cast<double>(pComponet->MagSensorNums));
+	DB.addKeyValue("SIM090", static_cast<double>(pComponet->MagSensorNums));
+	// GNSS数量
+	DB.addKeyValue("SIM091", static_cast<double>(pComponet->GnssNums));
 	// 飞轮数量
-	DB.addKeyValue("SIM085", static_cast<double>(pComponet->FlywheelNums));
+	DB.addKeyValue("SIM092", static_cast<double>(pComponet->FlywheelNums));
 
 }

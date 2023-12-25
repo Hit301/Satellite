@@ -5,7 +5,7 @@
 int main()
 {
 	// 2023-12-22 11:19:57
-	//CInfluxDB DB("127.0.0.1", 8086, "Satellite_db");
+	CInfluxDB DB("127.0.0.1", 8086, "Satellite_db");
 	double SampleTime{ 0.1 };
 	int SpeedTimes = 1;
 	Satellite Amadeus(SampleTime, SpeedTimes);

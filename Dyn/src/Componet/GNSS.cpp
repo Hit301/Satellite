@@ -20,3 +20,5 @@ void GNSS::Init(RV& InlRV, int64_t timestamp)
 	Data = InlRV;
 	LastRenewTime = timestamp;
 }
+
+
