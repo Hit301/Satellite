@@ -57,6 +57,24 @@
     <ClCompile Include="src\Componet\Componet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Componet\Flywheel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Componet\MagSensor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Componet\StarSensor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Componet\SunSensor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\General\InfluxDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Componet\GNSS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SatelliteMath\Quaternions.h">
@@ -99,6 +117,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\General\AllHead.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Componet\Flywheel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Componet\MagSensor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Componet\StarSensor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Componet\SunSensor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\General\InfluxDB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Componet\GNSS.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -55,10 +55,10 @@ CConfig::CConfig()
 	if (file.is_open())
 	{
 		//索引行
+		int row, col;
 		for (int i = 0; i < rows; i++)
 		{
 			//每行6列数据分别是 r c g h gdot hdot
-			int row, col;
 			file >> row;
 			file >> col;
 			file >> gauss_g(row, col);

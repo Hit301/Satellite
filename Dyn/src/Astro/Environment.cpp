@@ -3,6 +3,7 @@
 #include"Astro/Orbit.h"
 #include"Astro/Attitude.h"
 #include"General/CConfig.h"
+#include"General/InfluxDB.h"
 Environment::Environment()
 {
 	BodyMag << 0, 0, 0;
@@ -56,7 +57,6 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	CConfig* pCfg = CConfig::GetInstance();
 	size_t& Order = pCfg->MagOrder;
 
-
 	//时间戳转年月日
 	YMD m_ymd = UTCTimeStamp2YMD(timestamp);
 	double epoch = DecYear(2020,1,1);
@@ -67,8 +67,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	g = pCfg->gauss_g + pCfg->gauss_gdot * dt_change;
 	h = pCfg->gauss_h + pCfg->gauss_hdot * dt_change;
 
-
-	Eigen::ArrayXXd P(Order +2, Order+2);
+	Eigen::ArrayXXd P(Order + 2, Order + 2);
 	P.setZero();
 	double x = sin(Orbit.LLR.Lat);
 
@@ -166,13 +165,23 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	double BD = X_prime * sin(Orbit.LLR.Lat - Orbit.LLA.Lat) + Z_prime * cos(Orbit.LLR.Lat - Orbit.LLA.Lat);
 
 	NEDMag << BN, BE, BD;
+	NEDMag = NT2T(NEDMag);
 }
 
 void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp)
 {
 	GetNEDMag(Orbit, timestamp);
 	Eigen::Matrix3d Ane = Orbit.NED2ECEF();
-	BodyMag = Ane * NEDMag;
+	Eigen::Vector3d ECEFMag = Ane * NEDMag;
+	//地固系到惯性系
+	Eigen::Matrix3d  Aif = Environment::ECI2ECEF(timestamp);
+	Eigen::Vector3d ECIMag = Aif.inverse() * ECEFMag;\
+	//惯性系到本体系
+	BodyMag = Attitude.Qib.ToDcm() * ECIMag;
 	SunPos(timestamp);
 	SunVecBody = Attitude.Qib.ToDcm() * SunVecInl;
+}
+
+void Environment::record(CInfluxDB& DB) {
+	DB.addKeyValue("SIM002", 5.5);
 }

@@ -1,6 +1,8 @@
 #include"Astro/Attitude.h"
 #include "Astro/Orbit.h"
 #include"General/CConfig.h"
+#include"General/InfluxDB.h"
+
 //姿态运动学计算差分四元数
 #if 0
 Eigen::Vector3d Omega_bRK4(Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Omega_b, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s, double Ts)
@@ -65,7 +67,7 @@ Quat PlstToDeltaQuat(const Eigen::Vector3d Omega_b, double OfstSec)
 CAttitude::CAttitude() :Qib(),Qob(),Aio()
 {
     Omega_b << 0.05, -0.04, 0.1;
-
+    LastOmega_b = Omega_b;
     SatInaMat << 10, 0, 0,
         0, 20, 0,
         0, 0, 30;
@@ -76,18 +78,19 @@ CAttitude::CAttitude() :Qib(),Qob(),Aio()
 int CAttitude::AttitudeDynamicsRk4(double Ts)
 {
     Eigen::Vector3d k1, k2, k3, k4;
-    k1 = AttDynamics(Omega_b, SatInaMat, WheelMomentum_b, TotalTorque);
-    k2 = AttDynamics(Omega_b + k1 * (0.5 * Ts), SatInaMat, WheelMomentum_b, TotalTorque);
-    k3 = AttDynamics(Omega_b + k2 * (0.5 * Ts), SatInaMat, WheelMomentum_b, TotalTorque);
-    k4 = AttDynamics(Omega_b + k3 * Ts, SatInaMat, WheelMomentum_b, TotalTorque);
-    Omega_b += (k1 + k2 * 2 + k3 * 2 + k4) * (Ts / 6);
+    k1 = AttDynamics(LastOmega_b, SatInaMat, WheelMomentum_b, TotalTorque);
+    k2 = AttDynamics(LastOmega_b + k1 * (0.5 * Ts), SatInaMat, WheelMomentum_b, TotalTorque);
+    k3 = AttDynamics(LastOmega_b + k2 * (0.5 * Ts), SatInaMat, WheelMomentum_b, TotalTorque);
+    k4 = AttDynamics(LastOmega_b + k3 * Ts, SatInaMat, WheelMomentum_b, TotalTorque);
+    Omega_b = LastOmega_b + (k1 + k2 * 2 + k3 * 2 + k4) * (Ts / 6);
+    LastOmega_b = Omega_b;
     return 0;
 }
 
 int CAttitude::AttitudeKinematics(double Ts)
 {
     Quat QuatTemp;
-    QuatTemp = PlstToDeltaQuat(Omega_b, Ts);
+    QuatTemp = PlstToDeltaQuat(LastOmega_b, Ts);
     Qib = Qib * QuatTemp;
     return 0;
 }
@@ -104,10 +107,22 @@ void CAttitude::GetAio(COrbit& Orbit)
     Aio.DcmData << xo, yo, zo;
 }
 
-void CAttitude::StateRenew(double Ts, COrbit& Orbit)
+void CAttitude::StateRenew(double Ts, COrbit& Orbit, CComponet* pComponet)
 {
+
     AttitudeKinematics(Ts);
+
+    WheelMomentum_b << 0, 0, 0;
+    TotalTorque << 0, 0, 0;
+    for (size_t i = 0; i < pComponet->FlywheelNums; i++)
+    {
+        //计算飞轮本体系下的动量
+        WheelMomentum_b += pComponet->Wheels[i].InstallVet * pComponet->Wheels[i].Momentum;
+        //计算飞轮本体系下的力矩
+        TotalTorque -= pComponet->Wheels[i].InstallVet * pComponet->Wheels[i].Torque;
+    }
     AttitudeDynamicsRk4(Ts);
+
     GetAio(Orbit);
 
     Quat Qio = Aio.ToQuat();
@@ -118,6 +133,7 @@ void CAttitude::Init(COrbit& Obt)
 {
     CConfig* pCfg = CConfig::GetInstance();
    Omega_b << pCfg->Wx, pCfg->Wy, pCfg->Wz;
+   LastOmega_b = Omega_b;
    Qib.QuatData[0] = pCfg->Q0;
    Qib.QuatData[1] = pCfg->Q1;
    Qib.QuatData[2] = pCfg->Q2;
@@ -127,4 +143,11 @@ void CAttitude::Init(COrbit& Obt)
         pCfg->Jxz, pCfg->Jyz, pCfg->Jzz;
     GetAio(Obt);
     Qob = Aio.ToQuat().QuatInv() * Qib;
+}
+
+void CAttitude::record(CInfluxDB& DB) {
+    DB.addKeyValue("SIM001", 6.6);
+    //SIM001~SIM004 SIM005~SIM009预留 
+    // 物理意义 编号 单位
+    //SELETE SIM001 FROM Satellite_db
 }

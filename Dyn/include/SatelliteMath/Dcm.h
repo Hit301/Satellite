@@ -31,23 +31,23 @@ public:
 	//@brief: 以其他方向余弦矩阵初始化DcmData
 	//@para : _Dcm：另一个方向余弦矩阵
 	//@return : none
-	CDcm(CDcm& _Dcm);
+	CDcm(const CDcm& _Dcm);
 
 	//@brief: 重载赋值运算符
 	//@para : _Dcm：另一个方向余弦矩阵
 	//@return : none
-	CDcm& operator=(CDcm _Dcm);
+	CDcm& operator=(const CDcm _Dcm);
 
 public:
 	//@brief:  方向余弦矩阵转欧拉角
 	//@para : Sequence:转序(查BaseMath)
 	//@return : 指定转序的欧拉角
-	CEulerAgl ToEulerAgl(unsigned Sequence);
+	CEulerAgl ToEulerAgl(unsigned Sequence) const;
 
 	//@brief:  方向余弦矩阵转四元数
 	//@para : none
 	//@return : 转换得到的四元数
-	Quat ToQuat();
+	Quat ToQuat() const;
 
 public:
 	//运算符重载

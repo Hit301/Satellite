@@ -14,7 +14,15 @@ void GyroScope::StateRenew(int64_t NowTime, Eigen::Vector3d Omega_b)
 {
 	if (NowTime - LastRenewTime >= SamplePeriod*1e3)
 	{
-		Data = InstallMatrix * RAD2DEG*Omega_b;
+		Data = InstallMatrix * Omega_b;
+		Data = DEG(Data);
 		LastRenewTime = NowTime;
 	}
+}
+
+void GyroScope::Init(Eigen::Vector3d& Omega_b, int64_t timestamp)
+{
+	LastRenewTime = timestamp;
+	Data = InstallMatrix * Omega_b;
+	Data = DEG(Data);
 }

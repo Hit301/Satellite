@@ -1,13 +1,15 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
+// 2023-12-22 14:44:18
+# include "General/AllHead.h"
 
 class COrbit;
 class CAttitude;
 class Environment
 {
 public:
-	Eigen::Vector3d BodyMag;//本体系地磁场强度nT
-	Eigen::Vector3d NEDMag;//北东地系地磁场强度nT
+	Eigen::Vector3d BodyMag;//本体系地磁场强度T
+	Eigen::Vector3d NEDMag;//北东地系地磁场强度T
 	Eigen::Vector3d SunVecInl;//惯性系太阳矢量
 	Eigen::Vector3d SunVecBody;//本体系太阳矢量
 
@@ -29,4 +31,7 @@ public:
 	void GetNEDMag(const COrbit& Orbit, const int64_t timestamp);
 
 	void StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp);
+
+	// 写入数据库
+	void record(CInfluxDB& DB);
 };

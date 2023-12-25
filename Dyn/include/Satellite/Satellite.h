@@ -4,6 +4,8 @@
 #include "Astro/Environment.h"
 #include "AStro/AttitudeControl.h"
 #include"Componet/Componet.h"
+
+
 class Satellite
 {
 public:
@@ -13,13 +15,16 @@ public:
 	Environment Env;//环境
 	CComponet* pComponet;//单机
 	CAttitudeController AttController;//姿态控制
-
-
+public:
+	double SampleTime;//积分时长，单位s
+	int SpeedTimes;//加速倍率
 public:
 	Satellite();
-
+	Satellite(double Ts, int m_SpeedTimes);
 	~Satellite()=default;
-	void StateRenew(double SampleTime);
+	void StateRenew();
+	// 2023-12-22 11:28:55
+	void dataToDB(CInfluxDB& DB, double Period);
 };
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat);

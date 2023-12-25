@@ -1,7 +1,7 @@
 #pragma once
 #include"SatelliteMath/BaseMath.h"
 #include"General/AllHead.h"
-
+// 2023-12-22 11:19:45
 struct RV
 {
     Eigen::Vector3d Pos;//轨道的位置矢量，单位m
@@ -119,6 +119,9 @@ public:
     void StateRenew(double Ts, const int64_t timestamp);
 
     void Init(int64_t Timestamp);
+
+    // 写入数据库
+    void record(CInfluxDB& DB);
 };
 
 
