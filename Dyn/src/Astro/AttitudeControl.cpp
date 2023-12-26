@@ -5,6 +5,8 @@
 #include"Astro/Attitude.h"
 #include"Componet/Componet.h"
 #include "Astro/Environment.h"
+#include"General/InfluxDB.h"
+
 //初始速率阻尼控制率设计
 CAttitudeController::CAttitudeController() :workmode(EARTHPOINT)
 {
@@ -101,4 +103,14 @@ void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSenso
 		Tcontrol[i] = LIMIT(Tcontrol[i], -MaxTorque, MaxTorque);
 	}
 	TorqueRef = Tcontrol;
+}
+
+void CAttitudeController::record(CInfluxDB& DB)
+{	
+	// 控制模式，InfluxDB中tag标签，存储字符串数据，field字段，存储数值数据
+	DB.addKeyValue("SIM093", workmode);
+	// 控制力矩
+	DB.addKeyValue("SIM094", TorqueRef.x());
+	DB.addKeyValue("SIM095", TorqueRef.y());
+	DB.addKeyValue("SIM096", TorqueRef.z());
 }

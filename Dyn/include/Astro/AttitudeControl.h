@@ -20,7 +20,8 @@ public:
 public:
 	CAttitudeController();
 
-	//根据任务模式计算参考力矩，实际上应该只需要单机信息
+
+	void record(CInfluxDB& DB);
 	Eigen::Vector3d TorqueRefRenew(CComponet* pCom);
 private:
 

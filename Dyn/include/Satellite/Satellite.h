@@ -24,7 +24,8 @@ public:
 	~Satellite()=default;
 	void StateRenew();
 	// 2023-12-22 11:28:55
-	void dataToDB(CInfluxDB& DB, double Period);
+	void data2DB(CInfluxDB& DB, double Period);
+	void record(CInfluxDB& DB);
 };
 
 std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat);
