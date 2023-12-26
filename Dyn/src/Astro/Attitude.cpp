@@ -153,9 +153,9 @@ void CAttitude::record(CInfluxDB& DB) {
     DB.addKeyValue("SIM032", Qib.QuatData[3]);
     // 轨道系到本体系四元数
     DB.addKeyValue("SIM033", Qob.QuatData[0]);
-    DB.addKeyValue("SIM034", Qob.QuatData[0]);
-    DB.addKeyValue("SIM035", Qob.QuatData[0]);
-    DB.addKeyValue("SIM036", Qob.QuatData[0]);
+    DB.addKeyValue("SIM034", Qob.QuatData[1]);
+    DB.addKeyValue("SIM035", Qob.QuatData[2]);
+    DB.addKeyValue("SIM036", Qob.QuatData[3]);
     // 本体系角速度
     DB.addKeyValue("SIM037", Omega_b.x() * RAD2DEG);
     DB.addKeyValue("SIM038", Omega_b.y() * RAD2DEG);
