@@ -1,22 +1,28 @@
 #include"General/InfluxDB.h"
 #include"General/SimTime.h"
-CInfluxDB::CInfluxDB(const std::string& host, int port, const std::string& dbname, const std::string& meas)
-    : dbName(dbname) {
-    setMeasurement(meas);
-    WSADATA wsaData;
-    // 初始化Winsock
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-        std::cerr << "Failed. Error Code : " << WSAGetLastError();
-    }
-    // 创建 socket
-    if ((s = socket(PF_INET, SOCK_DGRAM, 0)) == SOCKET_ERROR) {
-        std::cerr << "socket() failed with error code : " << WSAGetLastError();
-    }
-    // 设置服务器地址
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = inet_addr(host.c_str()); // 本地 InfluxDB 地址
-    serverAddr.sin_port = htons(port);
-    LastRenewTime = GetTimeStampMs();
+#include"General/IniConfig.h"
+CInfluxDB::CInfluxDB()
+{
+	CIniConfig data("Config/Database.ini");
+	setMeasurement(data.ReadString("InfluxDB", "Measurement"));
+	WSADATA wsaData;
+	// 初始化Winsock
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+	{
+		std::cerr << "Failed. Error Code : " << WSAGetLastError();
+		exit(0);
+	}
+	// 创建 socket
+	if ((s = socket(PF_INET, SOCK_DGRAM, 0)) == SOCKET_ERROR)
+	{
+		std::cerr << "socket() failed with error code : " << WSAGetLastError();
+		exit(0);
+	}
+	// 设置服务器地址
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_addr.s_addr = inet_addr(data.ReadString("InfluxDB", "HostName").c_str()); // 本地 InfluxDB 地址
+	serverAddr.sin_port = htons(data.ReadInt("InfluxDB", "Port"));
+	LastRenewTime = GetTimeStampMs();
 }
 
 CInfluxDB::~CInfluxDB()

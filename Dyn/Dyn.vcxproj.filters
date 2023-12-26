@@ -75,6 +75,9 @@
     <ClCompile Include="src\Componet\GNSS.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\General\IniConfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SatelliteMath\Quaternions.h">
@@ -135,6 +138,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Componet\GNSS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\General\IniConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

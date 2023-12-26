@@ -5,7 +5,7 @@
 class CInfluxDB
 {
 public:
-    CInfluxDB(const std::string& host, int port, const std::string& dbname, const std::string& meas);
+    CInfluxDB();
     ~CInfluxDB();
     // 设置measurement
     void setMeasurement(const std::string& measurement);
@@ -26,11 +26,8 @@ private:
     SOCKET s;
     std::string str1; // 存储measurements
     std::string str2; // 存储键值对key ==> value
-    std::string sendBuffer; // 发送缓冲区
     // 配置数据库
     sockaddr_in serverAddr;
-    std::string dbName;
-
     mutable int64_t LastRenewTime;
 };
 

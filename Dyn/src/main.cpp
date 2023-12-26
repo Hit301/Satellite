@@ -1,11 +1,9 @@
 #include"General/SimTime.h"
 #include "Satellite/Satellite.h"
 #include"General/InfluxDB.h"
-
-int main()
+int main(int argc, char* argv[])
 {
-	// 2023-12-22 11:19:57
-	CInfluxDB DB("127.0.0.1", 8089, "Satellite_db", "Amadeus");
+	CInfluxDB DB;
 	double SampleTime{ 0.1 };
 	int SpeedTimes = 1;
 	Satellite Amadeus(SampleTime, SpeedTimes);
@@ -22,6 +20,5 @@ int main()
 		pSimTime->ReleaseSimCountMute();
 		// 2023-12-22 11:20:02
 		Amadeus.data2DB(DB, 1);
-	}
-	
+	}	
 }
