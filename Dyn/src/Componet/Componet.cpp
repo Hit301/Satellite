@@ -222,10 +222,10 @@ void CComponet::record(CInfluxDB& DB) {
 	DB.addKeyValue("SIM063", pComponet->Gyros[0].Data.y() * RAD2DEG);
 	DB.addKeyValue("SIM064", pComponet->Gyros[0].Data.z() * RAD2DEG);
 	// ÐÇÃô±íÍ·
-	DB.addKeyValue("SIM65", pComponet->StarSensors[0].Data.QuatData[0]);
-	DB.addKeyValue("SIM66", pComponet->StarSensors[0].Data.QuatData[1]);
-	DB.addKeyValue("SIM67", pComponet->StarSensors[0].Data.QuatData[2]);
-	DB.addKeyValue("SIM68", pComponet->StarSensors[0].Data.QuatData[3]);
+	DB.addKeyValue("SIM065", pComponet->StarSensors[0].Data.QuatData[0]);
+	DB.addKeyValue("SIM066", pComponet->StarSensors[0].Data.QuatData[1]);
+	DB.addKeyValue("SIM067", pComponet->StarSensors[0].Data.QuatData[2]);
+	DB.addKeyValue("SIM068", pComponet->StarSensors[0].Data.QuatData[3]);
 	// Ì«ÃôÌ«ÑôÊ¸Á¿
 	DB.addKeyValue("SIM069", pComponet->SunSensors[0].Data.x());
 	DB.addKeyValue("SIM070", pComponet->SunSensors[0].Data.y());
