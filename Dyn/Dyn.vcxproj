@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\General\IniConfig.cpp" />
     <ClCompile Include="src\Componet\GNSS.cpp" />
     <ClCompile Include="src\Componet\Componet.cpp" />
     <ClCompile Include="src\Componet\Flywheel.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="include\SatelliteMath\Quaternions.h" />
     <ClInclude Include="include\Componet\StarSensor.h" />
     <ClInclude Include="include\Componet\SunSensor.h" />
+    <ClInclude Include="include\General\IniConfig.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -161,6 +163,7 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)Dyn\deps\MySofa\MySofaDll.dll" "$(OutDir)"
+xcopy /Y /R /I "$(SolutionDir)Dyn\src\Config\" "$(OutDir)Config\"
 
 </Command>
     </PostBuildEvent>

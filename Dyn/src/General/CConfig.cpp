@@ -51,7 +51,7 @@ CConfig::CConfig()
 	gauss_hdot.setZero();
 
 	//打开配置文件读取数据
-	std::ifstream file("src/Config/wmm_2020_data.txt");
+	std::ifstream file("Config/wmm_2020_data.txt");
 	if (file.is_open())
 	{
 		//索引行
@@ -71,6 +71,7 @@ CConfig::CConfig()
 	else
 	{
 		std::cerr << "Unable to open file" << std::endl;
+		exit(0);
 	}
 }
 CConfig* CConfig::GetInstance()
