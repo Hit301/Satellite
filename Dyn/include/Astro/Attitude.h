@@ -5,7 +5,6 @@
 #include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/EulerAgl.h"
 #include "Astro/Orbit.h"
-class COrbit;
 
 class CAttitude
 {
@@ -20,7 +19,6 @@ private:
 	Eigen::Vector3d WheelMomentum_b;//飞轮组在本体系下的角动量，单位Nms
 	Eigen::Vector3d TotalTorque;//Tf：干扰力矩：TB 磁力矩：Tw：飞轮本体系力矩 TotalTorque=TB+Tf-Tw
 public:
-
 	//
 	// brief  : 默认姿态类构造函数
 	//
@@ -36,8 +34,6 @@ public:
 	//
 	int AttitudeKinematics(double Ts);
 
-	void RenewAio(COrbit& Orbit);
-
 	void StateRenew(double Ts, COrbit& Orbit, CComponet* pComponet);
 
 	void Init(COrbit& Obt);
@@ -45,22 +41,10 @@ public:
 	// 写入数据库
 	void record(CInfluxDB& DB);
 
-	static CDcm GetAio(const RV& InlRv)
-	{
-		Eigen::Vector3d Pos = InlRv.Pos;//卫星的位置矢量
-		Eigen::Vector3d Vel = InlRv.Vel;//卫星的速度矢量
-		Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//偏航轴单位矢量
-		Eigen::Vector3d y_tmp = Vel.cross(Pos);
-		Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // 俯仰轴单位矢量
-		Eigen::Vector3d xo = yo.cross(zo);//滚动轴单位矢量
-
-		
-		CDcm Aio;
-		Aio.DcmData << xo.transpose(), yo.transpose(), zo.transpose();
-		return Aio;
-	}
+	static CDcm GetAio(const RV& InlRv);
 private:
 	Eigen::Vector3d LastOmega_b;//上一拍的本体系角速度，单位rad/s
+	void RenewAio(COrbit& Orbit);
 };
 
 

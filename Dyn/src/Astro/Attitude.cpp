@@ -156,3 +156,18 @@ void CAttitude::record(CInfluxDB& DB) {
 
 }
 
+CDcm CAttitude::GetAio(const RV& InlRv)
+{
+    Eigen::Vector3d Pos = InlRv.Pos;//卫星的位置矢量
+    Eigen::Vector3d Vel = InlRv.Vel;//卫星的速度矢量
+    Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//偏航轴单位矢量
+    Eigen::Vector3d y_tmp = Vel.cross(Pos);
+    Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // 俯仰轴单位矢量
+    Eigen::Vector3d xo = yo.cross(zo);//滚动轴单位矢量
+
+
+    CDcm Aio;
+    Aio.DcmData << xo.transpose(), yo.transpose(), zo.transpose();
+    return Aio;
+}
+

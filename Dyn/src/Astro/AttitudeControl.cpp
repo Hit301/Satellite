@@ -1,7 +1,7 @@
 #include "AStro/AttitudeControl.h"
 #include"SatelliteMath/Dcm.h"
 #include"SatelliteMath/Quaternions.h"
-#include"Astro/Orbit.h"
+//#include"Astro/Orbit.h"
 #include"Astro/Attitude.h"
 #include"Componet/Componet.h"
 #include "Astro/Environment.h"
