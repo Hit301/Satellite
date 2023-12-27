@@ -32,7 +32,7 @@ void COrbit::Inl2Fix(const int64_t timestamp)
 	ECEFFix.Pos = Aif * J2000Inertial.Pos;
 	Eigen::Vector3d EarthAngularVelocityFixed;
 	EarthAngularVelocityFixed << 0, 0, EARTH_RATE;
-	ECEFFix.Vel = Aif * J2000Inertial.Vel - EarthAngularVelocityFixed.cross(ECEFFix.Pos) ;
+	ECEFFix.Vel = Aif * J2000Inertial.Vel - EarthAngularVelocityFixed.cross(ECEFFix.Pos);
 }
 
 void COrbit::FixPos2LLA()

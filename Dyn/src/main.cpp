@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 		if (pSimTime->SimCountJudge())
 		{
 			Amadeus.StateRenew();
-			//std::cout << Amadeus;
+			std::cout << Amadeus;
 		}
 		pSimTime->ReleaseSimCountMute();
 		// 2023-12-22 11:20:02

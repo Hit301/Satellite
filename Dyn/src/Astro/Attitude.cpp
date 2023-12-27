@@ -1,5 +1,4 @@
 #include"Astro/Attitude.h"
-#include "Astro/Orbit.h"
 #include"General/CConfig.h"
 #include"General/InfluxDB.h"
 
@@ -95,16 +94,9 @@ int CAttitude::AttitudeKinematics(double Ts)
     return 0;
 }
 
-void CAttitude::GetAio(COrbit& Orbit)
+void CAttitude::RenewAio(COrbit& Orbit)
 {
-    Eigen::Vector3d Pos = Orbit.J2000Inertial.Pos;//卫星的位置矢量
-    Eigen::Vector3d Vel = Orbit.J2000Inertial.Vel;//卫星的速度矢量
-    Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//偏航轴单位矢量
-    Eigen::Vector3d y_tmp = Vel.cross(Pos);
-    Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // 俯仰轴单位矢量
-    Eigen::Vector3d xo = yo.cross(zo);//滚动轴单位矢量
-
-    Aio.DcmData << xo, yo, zo;
+    Aio = CAttitude::GetAio(Orbit.J2000Inertial);
 }
 
 void CAttitude::StateRenew(double Ts, COrbit& Orbit, CComponet* pComponet)
@@ -123,7 +115,7 @@ void CAttitude::StateRenew(double Ts, COrbit& Orbit, CComponet* pComponet)
     }
     AttitudeDynamicsRk4(Ts);
 
-    GetAio(Orbit);
+    RenewAio(Orbit);
 
     Quat Qio = Aio.ToQuat();
     Qob = Qio.QuatInv() * Qib;
@@ -141,7 +133,7 @@ void CAttitude::Init(COrbit& Obt)
    SatInaMat << pCfg->Jxx, pCfg->Jxy, pCfg->Jxz,
         pCfg->Jxy, pCfg->Jyy, pCfg->Jyz,
         pCfg->Jxz, pCfg->Jyz, pCfg->Jzz;
-    GetAio(Obt);
+    RenewAio(Obt);
     Qob = Aio.ToQuat().QuatInv() * Qib;
 }
 
@@ -163,3 +155,4 @@ void CAttitude::record(CInfluxDB& DB) {
 
 
 }
+

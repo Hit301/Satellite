@@ -81,14 +81,7 @@ void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSenso
 	Quat Qib = _Star.Data * _Star.InstallMatrix.ToQuat();
 
 	//计算Aio
-	Eigen::Vector3d Pos = _gnss.Data.Pos;//卫星的位置矢量
-	Eigen::Vector3d Vel = _gnss.Data.Vel;//卫星的速度矢量
-	Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//偏航轴单位矢量
-	Eigen::Vector3d y_tmp = Vel.cross(Pos);
-	Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // 俯仰轴单位矢量
-	Eigen::Vector3d xo = yo.cross(zo);//滚动轴单位矢量
-	CDcm Aio;
-	Aio.DcmData << xo, yo, zo;
+	CDcm Aio = CAttitude::GetAio(_gnss.Data);
 
 	Quat Qoi = Aio.ToQuat().QuatInv();
 	Quat Qob = Qoi * Qib;

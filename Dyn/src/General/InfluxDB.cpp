@@ -34,7 +34,7 @@ CInfluxDB::~CInfluxDB()
 void CInfluxDB::setMeasurement(const std::string& measurement)
 {
     str1.clear();
-    str1 = measurement + " SIM000=0.0";
+    str1 = measurement + " SIM000=1";
     //"measurement,tag1=value1,tag2=value2 field1=value1,field2=value2 timestamp"
 }
 
@@ -59,7 +59,7 @@ void CInfluxDB::sendUdp()
         std::cerr << "sendto() failed with error code : " << WSAGetLastError();
     }
     else {
-        std::cout << "Message sent successfully." << std::endl;
+        //std::cout << "Message sent successfully." << std::endl;
     }
     ResetStr2();
 }
