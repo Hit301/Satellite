@@ -6,7 +6,7 @@ SunSensor::SunSensor()
 		0, 0, 1;
 	Data << 0, 0, 0;
 	LastRenewTime = 0;
-	SamplePeriod = 1;
+	SamplePeriod = 0.1;
 }
 
 void SunSensor::StateRenew(int64_t NowTime, Eigen::Vector3d Sun_b)

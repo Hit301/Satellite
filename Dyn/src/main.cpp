@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
 	Satellite Amadeus(SampleTime, SpeedTimes);
 	CSimTime* pSimTime = CSimTime::GetInstance();
 	pSimTime->InitSimSpeedManage(SampleTime, SpeedTimes);
+	char path1[] = "omega.csv";
 	while (1)
 	{
 		pSimTime->WaitForSimCountMute();

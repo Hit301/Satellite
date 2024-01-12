@@ -41,6 +41,7 @@ void Flywheel::StateRenew(int64_t NowTime, double SampleTime, double Tref)
 	Momentum = J * Speed;
 	//��һ��ת�ٸ���
 	lastspeed = Speed;
+	
 }
 
 void Flywheel::Init(double speed, int64_t timestamp)
