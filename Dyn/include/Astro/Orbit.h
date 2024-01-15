@@ -90,7 +90,7 @@ public:
     //
     // brief  : 使用惯性系RV和二体递推轨道
     //
-    int TwoBod(double Ts);
+    int TwoBodRK4(double Ts);
 
     //@brief: 惯性系位置速度转地固系位置速度
     //@para : timestamp: utc时间戳(ms) deltaUT1:UTC-UT1(s) xp,yp:极移(rad)  rc2t:转移矩阵结果
@@ -122,6 +122,8 @@ public:
 
     // 写入数据库
     void record(CInfluxDB& DB);
+private:
+    Eigen::VectorXd TwoBodAcc(const Eigen::VectorXd& RVState);
 };
 
 
