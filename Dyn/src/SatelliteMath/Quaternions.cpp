@@ -155,27 +155,6 @@ Quat& Quat::operator=(const Quat& _Quat)
 	return *this;
 }
 
-//void Quat::SetByIdx(const int idx, const double val)
-//{
-//	if (idx <= 3 && idx >= 0)
-//	{
-//		QuatData[idx] = val;
-//		QuatRectify();
-//		SelfNormalize();
-//	}
-//	else
-//		printf("四元数索引超出范围 idx:%d val:%f\n", idx, val);
-//}
-//
-//double Quat::GetByIdx(const int idx) const
-//{
-//	if (idx <= 3 && idx >= 0)
-//		return QuatData[idx];
-//	else
-//		printf("四元数索引超出范围 idx:%d,返回0\n", idx);
-//	return 0.0;
-//}
-
 Quat Quat::QuatNormalize() const
 {
 	double w, x, y, z;

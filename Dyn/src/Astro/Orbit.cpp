@@ -4,21 +4,28 @@
 #include"SatelliteMath/Quaternions.h"
 #include"General/CConfig.h"
 #include"General/InfluxDB.h"
-int COrbit::TwoBod(double Ts)
+int COrbit::TwoBodRK4(double Ts)
 {
 	if (IsRV(J2000Inertial) == false)
 	{
 		printf("轨道RV不合法，R:%f(m) V:%f(m/s)\n", J2000Inertial.Pos.norm(), J2000Inertial.Vel.norm());
 		return -1;
 	}
-	else
-	{
-	double tmp = 1/J2000Inertial.Pos.norm();
-	double tmp2 = -EARTH_GRAVITATIONAL * tmp * tmp * tmp;
-	J2000Inertial.Vel += Ts * tmp2 * J2000Inertial.Pos;
-	J2000Inertial.Pos += Ts * J2000Inertial.Vel;
+	Eigen::VectorXd RVState(6, 1);
+	RVState.block<3, 1>(0, 0) = J2000Inertial.Pos;
+	RVState.block<3, 1>(3, 0) = J2000Inertial.Vel;
+
+	Eigen::VectorXd k1(6, 1), k2(6, 1), k3(6, 1), k4(6, 1);
+	k1 = TwoBodAcc(RVState);
+	k2 = TwoBodAcc(RVState + k1 * (0.5 * Ts));
+	k3 = TwoBodAcc(RVState + k2 * (0.5 * Ts));
+	k4 = TwoBodAcc(RVState + k3 * Ts);
+
+	RVState = RVState + (k1 + k2 * 2 + k3 * 2 + k4) * (Ts / 6);
+	J2000Inertial.Pos = RVState.block<3, 1>(0, 0);
+	J2000Inertial.Vel = RVState.block<3, 1>(3, 0);
 	return 0;
-	}
+
 }
 
 void COrbit::Inl2Fix(const int64_t timestamp)
@@ -92,7 +99,7 @@ Eigen::Matrix3d COrbit::NED2ECEF()
 
 void COrbit::StateRenew(double Ts, const int64_t timestamp)
 {
-	TwoBod(Ts);
+	TwoBodRK4(Ts);
 	Inl2Fix(timestamp);
 	FixPos2LLR();
 	FixPos2LLA();
@@ -135,5 +142,27 @@ void COrbit::record(CInfluxDB& DB) {
 	DB.addKeyValue("SIM021", RAD_PI(LLA.Lng) * RAD2DEG);
 	DB.addKeyValue("SIM022", RAD_PI(LLA.Lat) * RAD2DEG);
 	DB.addKeyValue("SIM023", LLA.Alt);
+}
+
+Eigen::VectorXd COrbit::TwoBodAcc(const Eigen::VectorXd& RVState)
+{
+	Eigen::VectorXd RVStateAcc(6,1);
+	RVStateAcc.setZero(6, 1);
+
+	if (RVState.size() != 6)
+	{
+		printf("invalid size in RVState\r\n");
+		return RVStateAcc;
+	}
+
+	Eigen::MatrixXd Accmatrix(6, 6);
+	Accmatrix.setZero();
+	double tmp = 1 / J2000Inertial.Pos.norm();
+	double tmp2 = -EARTH_GRAVITATIONAL * tmp * tmp * tmp;
+	Accmatrix.block<3, 3>(0, 3) = Eigen::Matrix3d::Identity();
+	Accmatrix.block<3, 3>(3, 0) = tmp2*Eigen::Matrix3d::Identity();
+
+	RVStateAcc = Accmatrix * RVState;
+	return RVStateAcc;
 }
 
