@@ -39,13 +39,17 @@ void Environment::SunPos(const int64_t timestamp)
 	//太阳地心距
 	rs = (149.619 - 2.499 * COSD(M) - 0.021 * COSD(2.0 * M)) * 1e9;  //单位为m
 	//23.4393是黄赤交角
-	bs = 23.4393 - 46.815 / 3600 * TJD - 0.00059 / 3600 * TJD * TJD;
+	//bs = 23.4393 - 46.815 / 3600 * TJD - 0.00059 / 3600 * TJD * TJD;
+	bs = 23.43929111;
 	sunpos << rs * COSD(lamM), rs* SIND(lamM), 0;  //单位为m
+	//Rx << 1, 0, 0,
+	//	0, COSD(-23.4393), SIND(-23.4393),
+	//	0, -SIND(-23.4393), COSD(-23.4393);
 	Rx << 1, 0, 0,
 		0, COSD(-bs), SIND(-bs),
 		0, -SIND(-bs), COSD(-bs);
 
-	SunVecInl = Rx * sunpos / rs;//归一化的结果
+	SunVecInl = Rx * sunpos / 1;//归一化的结果
 }
 
 void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)

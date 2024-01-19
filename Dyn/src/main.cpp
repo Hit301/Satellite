@@ -20,5 +20,11 @@ int main(int argc, char* argv[])
 		pSimTime->ReleaseSimCountMute();
 		// 2023-12-22 11:20:02
 		Amadeus.data2DB(DB, 1);
+
+		//Environment Env;
+		//Env.SunVecBody(1687723200000);
+
+		//std::cout << "VSunBody" << Env.SunVecBody(0) << " " << Env.SunVecBody(1) << " " << Env.SunVecBody(2) << std::endl;
 	}	
+
 }

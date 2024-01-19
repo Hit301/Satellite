@@ -8,7 +8,7 @@ Satellite::Satellite() :Orbit(), Attitude(), AttController()
 	CConfig* pCfg = CConfig::GetInstance();
 
 	//时间戳初始化
-	SatelliteTime = pCfg->SatelliteTime;
+	SatelliteTime = 1690689600000;
 
 	//轨道相关初始化
 	Orbit.Init(SatelliteTime);
@@ -20,7 +20,7 @@ Satellite::Satellite() :Orbit(), Attitude(), AttController()
 	Env.StateRenew(Attitude, Orbit, SatelliteTime);
 
 	//控制器设置
-	AttController.workmode = CAttitudeController::EARTHPOINT;
+	AttController.workmode = CAttitudeController::SUNPOINT;
 
 	//单机初始化
 	pComponet = CComponet::GetInstance();
@@ -37,7 +37,7 @@ Satellite::Satellite(double Ts, int m_SpeedTimes):Satellite()
 void Satellite::StateRenew()
 {
 	//时间戳更新
-	SatelliteTime += (int64_t)(SampleTime * 1e3);
+	SatelliteTime= 1690689600000;
 
 	//控制器计算
 	AttController.TorqueRefRenew(pComponet);
@@ -89,7 +89,7 @@ std::ostream& operator<<(std::ostream& _cout, const Satellite& Sat)
 	_cout << "Qib " << Sat.Attitude.Qib;
 	_cout << "Qob " << Sat.Attitude.Qob;
 	//_cout << "TotalTorque(N.m) " << Sat.Attitude.TotalTorque(0) << " " << Sat.Attitude.TotalTorque(1) << " " << Sat.Attitude.TotalTorque(2) << std::endl;
-	//_cout<<"VSunBody"<< Sat.Env.SunVecBody(0)<<" "<< Sat.Env.SunVecBody(1) <<" "<< Sat.Env.SunVecBody(2) << std::endl;
+	_cout<<"VSunInl"<< Sat.Env.SunVecInl(0)<<" "<< Sat.Env.SunVecInl(1) <<" "<< Sat.Env.SunVecInl(2) << std::endl;
 	//_cout << "VSunInl" << Sat.Env.SunVecInl(0) << " " << Sat.Env.SunVecInl(1) << " " << Sat.Env.SunVecInl(2) << std::endl;
 	return _cout;
 }

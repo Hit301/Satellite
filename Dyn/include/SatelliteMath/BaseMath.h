@@ -109,7 +109,7 @@
 //
 // brief  : 时间戳(s)转儒略世纪数
 //
-#define TS2CEN(timestamp)                   ((TS2JD(timestamp)-2451545.0)/36525.0)            //time stamp to JD centry
+#define TS2CEN(timestamp)                   ((TS2JD(timestamp)-2451545.0)/36525.0)             //time stamp to JD centry
 
 //
 // brief  : JD转时间戳(s)
