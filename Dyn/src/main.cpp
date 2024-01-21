@@ -1,6 +1,7 @@
 #include"General/SimTime.h"
 #include "Satellite/Satellite.h"
 #include"General/InfluxDB.h"
+#include "General/IniConfig.h"
 int main(int argc, char* argv[])
 {
 	//CInfluxDB DB;
