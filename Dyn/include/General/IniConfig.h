@@ -19,7 +19,8 @@ public:
 	std::string ReadString(const char* section, const char* item, const char* default_value = "");
 	int ReadInt(const char* section, const char* item, const int& default_value = 0);
 	float ReadFloat(const char* section, const char* item, const float& default_value = 0.0);
-	static Eigen::MatrixXd readMatrixFromString(const std::string& matrixString);
+	Eigen::MatrixXd ReadMatrix(const char* section, const char* item);
+	Eigen::VectorXd ReadVector(const char* section, const char* item);
 private:
 	bool IsSpace(char c);
 	bool IsCommentChar(char c);

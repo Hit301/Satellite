@@ -187,8 +187,9 @@ float CIniConfig::ReadFloat(const char* section, const char* item, const float& 
 	return atof(it_item->second.c_str());
 }
 
-Eigen::MatrixXd CIniConfig::readMatrixFromString(const std::string& matrixString)
+Eigen::MatrixXd CIniConfig::ReadMatrix(const char* section, const char* item)
 {
+	std::string matrixString = ReadString(section, item);
 	std::vector<double> matrixValues;
 	std::vector<int> colCounts;
 	int colCount = 0;
@@ -230,6 +231,30 @@ Eigen::MatrixXd CIniConfig::readMatrixFromString(const std::string& matrixString
 	}
 
 	return matrix;
+}
+
+Eigen::VectorXd CIniConfig::ReadVector(const char* section, const char* item)
+{
+	std::string vectorString = ReadString(section, item);
+	std::vector<double> vectorValues;
+
+	std::stringstream ss(vectorString);
+	std::string cell;
+
+	// 处理每个元素
+	while (std::getline(ss, cell, ',')) {
+		vectorValues.push_back(std::stod(cell));
+	}
+
+	// 转换为Eigen向量
+	int size = vectorValues.size();
+	Eigen::VectorXd vector(size);
+
+	for (int i = 0; i < size; ++i) {
+		vector[i] = vectorValues[i];
+	}
+
+	return vector;
 }
 
 
