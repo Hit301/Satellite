@@ -24,10 +24,13 @@ int main(int argc, char* argv[])
 	//}	
 	printf("%s\r\n", argv[0]);
 	CIniConfig TestCfg;
-	TestCfg.ReadConfig("Config/Database.ini");
-	Eigen::Matrix3d M= TestCfg.ReadMatrix("InfluxDB", "TestMatrix");
-	Eigen::Vector3d V= TestCfg.ReadVector("InfluxDB", "TestVector");
-	std::cout << M;
-	std::cout << V;
+	bool ret = TestCfg.ReadConfig("Config/Database.ini");
+	if(ret)
+	{
+		Eigen::Matrix3d M = TestCfg.ReadMatrix("InfluxDB", "TestMatrix");
+		Eigen::Vector3d V = TestCfg.ReadVector("InfluxDB", "TestVector");
+		std::cout << M<<std::endl;
+		std::cout << V;
+	}
 	return 0;
 }

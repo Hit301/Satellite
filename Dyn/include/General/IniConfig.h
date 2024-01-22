@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include"SatelliteMath/BaseMath.h"
+//*.ini
 class CIniConfig
 {
 public:
