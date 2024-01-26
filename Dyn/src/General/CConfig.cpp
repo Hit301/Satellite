@@ -1,41 +1,46 @@
 #include"General/CConfig.h"
 #include<fstream>
+#include"General/IniConfig.h"
 CConfig::DeleteHelper CConfig::helper;
-
 
 CConfig::CConfig()
 {
-	SatelliteTime = 1640966400000;
+	CIniConfig data("Config/Database.ini");
+	SatelliteTime = data.ReadInt64_t("Satellite", "SatelliteTime");
 
-	Rx = 6678136.9999998566;
-	Ry = 0.0002095685;
-	Rz = -1.3800009224;
+	Rx = data.ReadDouble("J2000Inertial", "Rx");
+	Ry = data.ReadDouble("J2000Inertial", "Ry");
+	Rz = data.ReadDouble("J2000Inertial", "Rz");
 
-	Vx = 0.0007615644;
-	Vy = 6789.5304738682;
-	Vz = 3686.4138485846;
+	Vx = data.ReadDouble("J2000Inertial", "Vx");
+	Vy = data.ReadDouble("J2000Inertial", "Vy");
+	Vz = data.ReadDouble("J2000Inertial", "Vz");
 
-	a = 6678137;
-	e = 0;
-	i = RAD(28.5);
-	RAAN = 0;
-	omega = 0;
-	M = 0;
+	a = data.ReadDouble("OrbitElement", "a");
+	e = data.ReadDouble("OrbitElement", "e");
+	i = data.ReadDouble("OrbitElement", "i");
+	RAAN = data.ReadDouble("OrbitElement", "RAAN");
+	omega = data.ReadDouble("OrbitElement", "omega");
+	M = data.ReadDouble("OrbitElement", "M");
 
-	Wx = 0.05;
-	Wy = -0.04;
-	Wz = 0.01;
+	Wx = data.ReadDouble("Omega_b", "Wx");
+	Wy = data.ReadDouble("Omega_b", "Wy");
+	Wz = data.ReadDouble("Omega_b", "Wz");
 
-	Q0 = 1;
-	Q1 = Q2 = Q3 = 0;
+	Q0 = data.ReadDouble("Qib", "Q0");
+	Q1 = data.ReadDouble("Qib", "Q1");
+	Q2 = data.ReadDouble("Qib", "Q2");
+	Q3 = data.ReadDouble("Qib", "Q3");
 
-	Jxx = 30;
-	Jyy = 40;
-	Jzz = 50;
-	Jxy = Jxz = Jyz = 0;
+	Jxx = data.ReadDouble("SatInaMat", "Jxx");
+	Jyy = data.ReadDouble("SatInaMat", "Jyy");
+	Jzz = data.ReadDouble("SatInaMat", "Jzz");
+	Jxy = data.ReadDouble("SatInaMat", "Jxy");
+	Jxz = data.ReadDouble("SatInaMat", "Jxz");
+	Jyz = data.ReadDouble("SatInaMat", "Jyz");
 
 	//µÿ¥≈œ‡πÿ
-	MagOrder = 12;
+	MagOrder = data.ReadDouble("Mag", "MagOrder");
 	if ((MagOrder < 1) || (MagOrder > 12))
 	{
 		MagOrder = 2;
