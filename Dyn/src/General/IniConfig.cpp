@@ -187,4 +187,74 @@ float CIniConfig::ReadFloat(const char* section, const char* item, const float& 
 	return atof(it_item->second.c_str());
 }
 
+Eigen::MatrixXd CIniConfig::ReadMatrix(const char* section, const char* item)
+{
+	std::string matrixString = ReadString(section, item);
+	std::vector<double> matrixValues;
+	std::vector<int> colCounts;
+	int colCount = 0;
+
+	std::stringstream ss(matrixString);
+	std::string rowString;
+
+	// 处理每一行
+	while (std::getline(ss, rowString, ';')) {
+		std::stringstream rowStream(rowString);
+		std::string cell;
+
+		// 处理每个元素
+		while (std::getline(rowStream, cell, ',')) {
+			matrixValues.push_back(std::stod(cell));
+			colCount++;
+		}
+
+		colCounts.push_back(colCount);
+		colCount = 0;
+	}
+
+	// 检查每行的列数是否相同
+	for (size_t i = 1; i < colCounts.size(); ++i) {
+		if (colCounts[i] != colCounts[0]) {
+			throw std::runtime_error("Matrix rows have varying number of columns");
+		}
+	}
+
+	// 转换为Eigen矩阵
+	int rows = colCounts.size();
+	int cols = colCounts.empty() ? 0 : colCounts[0];
+	Eigen::MatrixXd matrix(rows, cols);
+
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			matrix(i, j) = matrixValues[i * cols + j];
+		}
+	}
+
+	return matrix;
+}
+
+Eigen::VectorXd CIniConfig::ReadVector(const char* section, const char* item)
+{
+	std::string vectorString = ReadString(section, item);
+	std::vector<double> vectorValues;
+
+	std::stringstream ss(vectorString);
+	std::string cell;
+
+	// 处理每个元素
+	while (std::getline(ss, cell, ',')) {
+		vectorValues.push_back(std::stod(cell));
+	}
+
+	// 转换为Eigen向量
+	int size = vectorValues.size();
+	Eigen::VectorXd vector(size);
+
+	for (int i = 0; i < size; ++i) {
+		vector[i] = vectorValues[i];
+	}
+
+	return vector;
+}
+
 
