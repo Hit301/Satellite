@@ -5,7 +5,7 @@ CConfig::DeleteHelper CConfig::helper;
 
 CConfig::CConfig()
 {
-	CIniConfig data("Config/Database.ini");
+	CIniConfig data("Config/Init.ini");
 	SatelliteTime = data.ReadInt64_t("Satellite", "SatelliteTime");
 
 	Rx = data.ReadDouble("J2000Inertial", "Rx");
@@ -18,7 +18,7 @@ CConfig::CConfig()
 
 	a = data.ReadDouble("OrbitElement", "a");
 	e = data.ReadDouble("OrbitElement", "e");
-	i = data.ReadDouble("OrbitElement", "i");
+	i = RAD(data.ReadDouble("OrbitElement", "i"));
 	RAAN = data.ReadDouble("OrbitElement", "RAAN");
 	omega = data.ReadDouble("OrbitElement", "omega");
 	M = data.ReadDouble("OrbitElement", "M");
