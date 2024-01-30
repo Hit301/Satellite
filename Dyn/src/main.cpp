@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 	//	// 2023-12-22 11:20:02
 	//	//Amadeus.data2DB(DB, 1);
 	//}	
-	 printf("%s\r\n", argv[0]);
+	  printf("%s\r\n", argv[0]);
 	CIniConfig TestCfg;
 	bool ret = TestCfg.ReadConfig("Config/Database.ini");
 	if(ret)
