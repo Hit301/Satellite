@@ -4,6 +4,7 @@
 #include "Astro/Environment.h"
 #include "AStro/AttitudeControl.h"
 #include"General/InfluxDB.h"
+#include"General/IniConfig.h"
 
 CComponet::DeleteHelper CComponet::helper;
 
@@ -47,7 +48,7 @@ void CComponet::Init(CAttitude& Att, COrbit& Obt, Environment& Env, CAttitudeCon
 
 	for (size_t i{ 0 }; i < GnssNums; i++)
 	{
-		GNSSs[i].Init(Obt.J2000Inertial, timestamp);
+		GNSSs[i].Init(Obt.ECEFFix, timestamp);
 	}
 }
 
@@ -79,20 +80,20 @@ void CComponet::StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CAttit
 
 	for (size_t i{ 0 }; i < GnssNums; i++)
 	{
-		GNSSs[i].StateRenew(timestamp, Obt.J2000Inertial);
+		GNSSs[i].StateRenew(timestamp, Obt.ECEFFix);
 	}
 }
 
-CComponet::CComponet() :
-	GyroNums(1)
+CComponet::CComponet()
 {
+	CIniConfig Cfg("Config/Componet.ini");
 	//这里读配置文件应该，先走默认配置读各单机数量
-	GyroNums = 1;
-	FlywheelNums = 3;
-	MagSensorNums = 1;
-	SunSensorNums = 1;
-	StarSensorNums = 1;
-	GnssNums = 1;
+	GyroNums = Cfg.ReadInt("Gyro", "Nums");
+	FlywheelNums = Cfg.ReadInt("Flywheel", "Nums");
+	MagSensorNums = Cfg.ReadInt("MagSensor", "Nums");
+	SunSensorNums = Cfg.ReadInt("SunSensor", "Nums");
+	StarSensorNums = Cfg.ReadInt("StarSensor", "Nums");
+	GnssNums = Cfg.ReadInt("Gnss", "Nums");
 	//之后根据单机的参数进行配置，可读一个ini
 	if (GyroNums <= 0)
 	{
@@ -131,55 +132,55 @@ CComponet::CComponet() :
 		MessageBox(NULL, "Gnss数量非法,程序结束", "警告", MB_OKCANCEL);
 		exit(0);
 	}
+
 	Gyros.resize(GyroNums);
 	for (size_t i{ 0 }; i < GyroNums; i++)
 	{
-		//这里要改成配置表类型的
-		Gyros[i].InstallMatrix << Eigen::Matrix3d::Identity();
-		Gyros[i].SamplePeriod = 0.25;
+		std::string GytoStr = "InstallMatrix" + std::to_string(i + 1);
+		Gyros[i].InstallMatrix = Cfg.ReadMatrix("Gyro", GytoStr.data());
+		Gyros[i].SamplePeriod = Cfg.ReadFloat("Gyro", "SamplePeriod");
 	}
+
 	Wheels.resize(FlywheelNums);
 	for (size_t i{ 0 }; i < FlywheelNums; i++)
 	{
-		//这里要改成配置表类型的,暂且定为三正交
-		Wheels[i].InstallVet << Eigen::Vector3d::Identity();
-		//Wheels[i].SamplePeriod = 0.25;
+		std::string FlywheelStr = "InstallVector" + std::to_string(i + 1);
+		Wheels[i].InstallVet << Cfg.ReadVector("Flywheel", FlywheelStr.data());
 	}
-	//这部分是要删除的
-	Wheels[0].InstallVet << 1, 0, 0;
-	Wheels[1].InstallVet << 0, 1, 0;
-	Wheels[2].InstallVet << 0, 0, 1;
 
 	SunSensors.resize(SunSensorNums);
 	for (size_t i{ 0 }; i < SunSensorNums; i++)
 	{
-		//这里要改成配置表类型的
-		SunSensors[i].InstallMatrix << Eigen::Matrix3d::Identity();
-		SunSensors[i].SamplePeriod = 0.25;
+		std::string SunSensorStr = "InstallMatrix" + std::to_string(i + 1);
+		SunSensors[i].InstallMatrix = Cfg.ReadMatrix("SunSensor", SunSensorStr.data());
+		SunSensors[i].SamplePeriod = Cfg.ReadFloat("SunSensor", "SamplePeriod");
 	}
+
 
 	StarSensors.resize(StarSensorNums);
 	for (size_t i{ 0 }; i < StarSensorNums; i++)
 	{
-		//这里要改成配置表类型的
-		StarSensors[i].InstallMatrix.DcmData << Eigen::Matrix3d::Identity();
-		StarSensors[i].SamplePeriod = 0.25;
+		std::string StarSensorStr = "InstallMatrix" + std::to_string(i + 1);
+		StarSensors[i].InstallMatrix.DcmData = Cfg.ReadMatrix("StarSensor", StarSensorStr.data());
+		StarSensors[i].SamplePeriod = Cfg.ReadFloat("StarSensor", "SamplePeriod");
 	}
+
 	
 	MagSensors.resize(MagSensorNums);
 	for (size_t i{ 0 }; i < MagSensorNums; i++)
 	{
-		//这里要改成配置表类型的
-		MagSensors[i].InstallMatrix<< Eigen::Matrix3d::Identity();
-		MagSensors[i].SamplePeriod = 0.25;
+		std::string MagSensorStr = "InstallMatrix" + std::to_string(i + 1);
+		MagSensors[i].InstallMatrix = Cfg.ReadMatrix("MagSensor", MagSensorStr.data());
+		MagSensors[i].SamplePeriod = Cfg.ReadFloat("MagSensor", "SamplePeriod");
 	}
+
 
 	GNSSs.resize(GnssNums);
 	for (size_t i{ 0 }; i < GnssNums; i++)
 	{
-		//这里要改成配置表类型的
-		GNSSs[i].SamplePeriod = 0.25;
+		GNSSs[i].SamplePeriod = Cfg.ReadFloat("Gnss", "SamplePeriod");
 	}
+
 }
 
 CComponet::~CComponet()

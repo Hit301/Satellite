@@ -64,6 +64,13 @@
     <ClInclude Include="include\Componet\SunSensor.h" />
     <ClInclude Include="include\General\IniConfig.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Config\Componet.ini" />
+    <None Include="src\Config\Database.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\Config\wmm_2020_data.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

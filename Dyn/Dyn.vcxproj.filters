@@ -144,4 +144,11 @@
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Config\Componet.ini" />
+    <None Include="src\Config\Database.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\Config\wmm_2020_data.txt" />
+  </ItemGroup>
 </Project>
