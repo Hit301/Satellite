@@ -132,14 +132,12 @@ std::string CIniConfig::ReadString(const char* section, const char* item, const 
 	it = settings_.find(tmp_s);
 	if (it == settings_.end())
 	{
-		//printf("111");
 		return def;
 	}
 	k_v = it->second;
 	it_item = k_v.find(tmp_i);
 	if (it_item == k_v.end())
 	{
-		//printf("222");
 		return def;
 	}
 	return it_item->second;
@@ -164,6 +162,48 @@ int CIniConfig::ReadInt(const char* section, const char* item, const int& defaul
 		return default_value;
 	}
 	return atoi(it_item->second.c_str());
+}
+
+int64_t CIniConfig::ReadInt64_t(const char* section, const char* item, const int& default_value )
+{
+	std::string tmp_s(section);
+	std::string tmp_i(item);
+	std::map<std::string, std::string> k_v;
+	std::map<std::string, std::string>::iterator it_item;
+	std::map<std::string, std::map<std::string, std::string> >::iterator it;
+	it = settings_.find(tmp_s);
+	if (it == settings_.end())
+	{
+		return default_value;
+	}
+	k_v = it->second;
+	it_item = k_v.find(tmp_i);
+	if (it_item == k_v.end())
+	{
+		return default_value;
+	}
+	return _atoi64(it_item->second.c_str());
+}
+
+double CIniConfig::ReadDouble(const char* section, const char* item, const int& default_value)
+{
+	std::string tmp_s(section);
+	std::string tmp_i(item);
+	std::map<std::string, std::string> k_v;
+	std::map<std::string, std::string>::iterator it_item;
+	std::map<std::string, std::map<std::string, std::string> >::iterator it;
+	it = settings_.find(tmp_s);
+	if (it == settings_.end())
+	{
+		return default_value;
+	}
+	k_v = it->second;
+	it_item = k_v.find(tmp_i);
+	if (it_item == k_v.end())
+	{
+		return default_value;
+	}
+	return atof(it_item->second.c_str());
 }
 
 float CIniConfig::ReadFloat(const char* section, const char* item, const float& default_value)
