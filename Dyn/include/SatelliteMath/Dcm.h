@@ -1,20 +1,20 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
+#include"BaseMath.h"
+#include"AllHead.h"
 
 class CDcm
 {
 public:
-	//ÓÃEigenµÄ»°£¬×Ô´ø¾ØÕóµÄ¼ÆËã¹¦ÄÜ
+	//ï¿½ï¿½Eigenï¿½Ä»ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ã¹¦ï¿½ï¿½
 	Eigen::Matrix3d DcmData;
 
 public:
-	//@brief: ÒÔµ¥Î»Õó³õÊ¼»¯DcmData
+	//@brief: ï¿½Ôµï¿½Î»ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½DcmData
 	//@para : none
 	//@return : none
 	CDcm();
 
-	//@brief: ÒÔ¸ø¶¨Öµ³õÊ¼»¯DcmData
+	//@brief: ï¿½Ô¸ï¿½ï¿½ï¿½Öµï¿½ï¿½Ê¼ï¿½ï¿½DcmData
 	//@para : none
 	//@return : none
 	CDcm(double A00, double A01, double A02,
@@ -22,37 +22,37 @@ public:
 		 double A20, double A21, double A22);
 	
 
-	//@brief: ÒÔµ¥ÖáĞı×ª³õÊ¼»¯DcmData
-	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)£º×ªÖá(²éBaseMath)
-	//		  Theta(rad)£º×ª½Ç
+	//@brief: ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ê¼ï¿½ï¿½DcmData
+	//@para : Axis(Dcm_X_AXIS,Dcm_Y_AXIS,Dcm_Z_AXIS)ï¿½ï¿½×ªï¿½ï¿½(ï¿½ï¿½BaseMath)
+	//		  Theta(rad)ï¿½ï¿½×ªï¿½ï¿½
 	//@return : none
 	CDcm(unsigned Axis, double Theta);
 
-	//@brief: ÒÔÆäËû·½ÏòÓàÏÒ¾ØÕó³õÊ¼»¯DcmData
-	//@para : _Dcm£ºÁíÒ»¸ö·½ÏòÓàÏÒ¾ØÕó
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½DcmData
+	//@para : _Dcmï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½
 	//@return : none
 	CDcm(const CDcm& _Dcm);
 
-	//@brief: ÖØÔØ¸³ÖµÔËËã·û
-	//@para : _Dcm£ºÁíÒ»¸ö·½ÏòÓàÏÒ¾ØÕó
+	//@brief: ï¿½ï¿½ï¿½Ø¸ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
+	//@para : _Dcmï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½
 	//@return : none
 	CDcm& operator=(const CDcm _Dcm);
 
 public:
-	//@brief:  ·½ÏòÓàÏÒ¾ØÕó×ªÅ·À­½Ç
-	//@para : Sequence:×ªĞò(²éBaseMath)
-	//@return : Ö¸¶¨×ªĞòµÄÅ·À­½Ç
+	//@brief:  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½×ªÅ·ï¿½ï¿½ï¿½ï¿½
+	//@para : Sequence:×ªï¿½ï¿½(ï¿½ï¿½BaseMath)
+	//@return : Ö¸ï¿½ï¿½×ªï¿½ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½
 	CEulerAgl ToEulerAgl(unsigned Sequence) const;
 
-	//@brief:  ·½ÏòÓàÏÒ¾ØÕó×ªËÄÔªÊı
+	//@brief:  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½×ªï¿½ï¿½Ôªï¿½ï¿½
 	//@para : none
-	//@return : ×ª»»µÃµ½µÄËÄÔªÊı
+	//@return : ×ªï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 	Quat ToQuat() const;
 
 public:
-	//ÔËËã·ûÖØÔØ
-	Eigen::Vector3d operator*(const Eigen::Vector3d& _Vector) const;//·½ÏòÓàÏÒ¾ØÕóºÍÈıÎ¬Ê¸Á¿µÄ³Ë·¨
-	Eigen::Matrix3d operator*(const CDcm& _CDcm) const;//·½ÏòÓàÏÒ¾ØÕóºÍ·½ÏòÓàÏÒ¾ØÕóµÄ³Ë·¨
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Eigen::Vector3d operator*(const Eigen::Vector3d& _Vector) const;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¬Ê¸ï¿½ï¿½ï¿½Ä³Ë·ï¿½
+	Eigen::Matrix3d operator*(const CDcm& _CDcm) const;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½Ä³Ë·ï¿½
 
 
 };

@@ -1,6 +1,14 @@
-#include"General/CConfig.h"
+/*
+ * @Author: Amadeus
+ * @Date: 2024-02-26 08:52:34
+ * @LastEditors: Amadeus
+ * @LastEditTime: 2024-02-26 09:17:49
+ * @FilePath: /Satellite/src/General/CConfig.cpp
+ * @Description: 
+ */
+#include"CConfig.h"
 #include<fstream>
-#include"General/IniConfig.h"
+#include"IniConfig.h"
 CConfig::DeleteHelper CConfig::helper;
 
 CConfig::CConfig()
@@ -39,7 +47,7 @@ CConfig::CConfig()
 	Jxz = data.ReadDouble("SatInaMat", "Jxz");
 	Jyz = data.ReadDouble("SatInaMat", "Jyz");
 
-	//µØ´ÅÏà¹Ø
+	//ï¿½Ø´ï¿½ï¿½ï¿½ï¿½
 	MagOrder = data.ReadDouble("Mag", "MagOrder");
 	if ((MagOrder < 1) || (MagOrder > 12))
 	{
@@ -55,15 +63,15 @@ CConfig::CConfig()
 	gauss_gdot.setZero();
 	gauss_hdot.setZero();
 
-	//´ò¿ªÅäÖÃÎÄ¼þ¶ÁÈ¡Êý¾Ý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 	std::ifstream file("Config/wmm_2020_data.txt");
 	if (file.is_open())
 	{
-		//Ë÷ÒýÐÐ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		int row, col;
 		for (int i = 0; i < rows; i++)
 		{
-			//Ã¿ÐÐ6ÁÐÊý¾Ý·Ö±ðÊÇ r c g h gdot hdot
+			//Ã¿ï¿½ï¿½6ï¿½ï¿½ï¿½ï¿½ï¿½Ý·Ö±ï¿½ï¿½ï¿½ r c g h gdot hdot
 			file >> row;
 			file >> col;
 			file >> gauss_g(row, col);

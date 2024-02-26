@@ -1,14 +1,14 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"SatelliteMath/Quaternions.h"
-#include"SatelliteMath/Dcm.h"
+#include"BaseMath.h"
+#include"Quaternions.h"
+#include"Dcm.h"
 class StarSensor
 {
 public:
-	CDcm InstallMatrix;//安装矩阵,从本体系到测量系
-	Quat Data;//星敏数值
-	int64_t LastRenewTime;//开机时间，utc时间戳单位ms
-	double SamplePeriod;//陀螺采样周期，单位为s
+	CDcm InstallMatrix;//锟斤拷装锟斤拷锟斤拷,锟接憋拷锟斤拷系锟斤拷锟斤拷锟斤拷系
+	Quat Data;//锟斤拷锟斤拷锟斤拷值
+	int64_t LastRenewTime;//锟斤拷锟斤拷时锟戒，utc时锟斤拷锟斤拷锟轿籱s
+	double SamplePeriod;//锟斤拷锟捷诧拷锟斤拷锟斤拷锟节ｏ拷锟斤拷位为s
 public:
 	StarSensor();
 	~StarSensor() {}

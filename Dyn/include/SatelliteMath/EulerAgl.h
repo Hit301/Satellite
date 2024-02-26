@@ -1,6 +1,6 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
+#include"BaseMath.h"
+#include"AllHead.h"
 
 class CEulerAgl
 {
@@ -8,40 +8,40 @@ private:
 	static bool CheckSeq(unsigned Seq);
 public:
 	struct {
-		Eigen::Vector3d Angle;//ÈýÖá½ÇÊý¾Ý(rad)
-		unsigned Seq;//×ªÐò
-	} AglData;//Å·À­½ÇÊý¾Ý
+		Eigen::Vector3d Angle;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(rad)
+		unsigned Seq;//×ªï¿½ï¿½
+	} AglData;//Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 public:
-	//@brief: ÒÔÄ¬ÈÏ×ªÐòºÍ0ÏòÁ¿³õÊ¼»¯
+	//@brief: ï¿½ï¿½Ä¬ï¿½ï¿½×ªï¿½ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 	//@para : none
 	//@return : none
 	CEulerAgl();
 
-	//@para : R1~R3(rad)£ºÈýÖá½Ç¶È
-	//		  Seq£º×ªÐò
+	//@para : R1~R3(rad)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½
+	//		  Seqï¿½ï¿½×ªï¿½ï¿½
 	//@return : none
 	CEulerAgl(double R1, double R2, double R3, unsigned Seq);
 
-	//@brief: ÒÔÆäËûÅ·À­½Ç³õÊ¼»¯
-	//@para : Agl£ºÅ·À­½Ç
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å·ï¿½ï¿½ï¿½Ç³ï¿½Ê¼ï¿½ï¿½
+	//@para : Aglï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½
 	//@return : none
 	CEulerAgl(const CEulerAgl& Agl);
 
-	//@brief: ÖØÔØ¸³ÖµÔËËã·û
-	//@para : Agl£ºÅ·À­½Ç
+	//@brief: ï¿½ï¿½ï¿½Ø¸ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
+	//@para : Aglï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½
 	//@return : none
 	CEulerAgl& operator=(const CEulerAgl Agl);
 
 public:
-	//@brief:  Å·À­½Ç×ª·½ÏòÓàÏÒ¾ØÕó
-	//@para : Sequence:×ªÐò(²éBaseMath)
-	//@return : ·½ÏòÓàÏÒ¾ØÕó
+	//@brief:  Å·ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½
+	//@para : Sequence:×ªï¿½ï¿½(ï¿½ï¿½BaseMath)
+	//@return : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½
 	CDcm ToDcm() const;
 
-	//@brief:  Å·À­½Ç×ªËÄÔªÊý
+	//@brief:  Å·ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ôªï¿½ï¿½
 	//@para :  none
-	//@return : ËÄÔªÊý
+	//@return : ï¿½ï¿½Ôªï¿½ï¿½
 	Quat ToQuat() const;
 };
 

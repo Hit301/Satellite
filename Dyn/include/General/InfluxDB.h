@@ -1,7 +1,30 @@
+/*
+ * @Author: Amadeus
+ * @Date: 2024-02-26 08:53:10
+ * @LastEditors: Amadeus
+ * @LastEditTime: 2024-02-26 09:24:22
+ * @FilePath: /Satellite/include/General/InfluxDB.h
+ * @Description: 
+ */
 #pragma once
-#include<string>
-#include <windows.h>
-#pragma comment(lib,"ws2_32.lib")
+#include <string>
+#include <ctime> // 用于获取时间
+#include <cstring> // 用于memset等函数
+
+// 根据不同的操作系统包含不同的头文件
+#ifdef _WIN32
+    #include<Windows.h>
+    #pragma comment(lib,"ws2_32.lib") // Windows需要的库
+#else
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+    #include <unistd.h> // 提供close函数
+    typedef int SOCKET; // 在非Windows系统中定义SOCKET为int
+    #define closesocket close
+    #define INVALID_SOCKET (-1)
+    #define SOCKET_ERROR   (-1)
+#endif
 class CInfluxDB
 {
 public:

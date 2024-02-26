@@ -1,10 +1,10 @@
-#include "Componet/Componet.h"
-#include"Astro/Attitude.h"
-#include"Astro/Orbit.h"
-#include "Astro/Environment.h"
-#include "AStro/AttitudeControl.h"
-#include"General/InfluxDB.h"
-#include"General/IniConfig.h"
+#include "Componet.h"
+#include"Attitude.h"
+#include"Orbit.h"
+#include "Environment.h"
+#include "AttitudeControl.h"
+#include"InfluxDB.h"
+#include"IniConfig.h"
 
 CComponet::DeleteHelper CComponet::helper;
 
@@ -54,7 +54,7 @@ void CComponet::Init(CAttitude& Att, COrbit& Obt, Environment& Env, CAttitudeCon
 
 void CComponet::StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CAttitudeController& ACtrl, int64_t timestamp, double Ts)
 {
-	//ÍÓÂÝÊý¾Ý¸üÐÂ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½
 	for (size_t i{ 0 }; i < GyroNums; i++)
 	{
 		Gyros[i].StateRenew(timestamp, Att.Omega_b);
@@ -87,49 +87,49 @@ void CComponet::StateRenew(CAttitude& Att, COrbit& Obt, Environment& Env, CAttit
 CComponet::CComponet()
 {
 	CIniConfig Cfg("Config/Componet.ini");
-	//ÕâÀï¶ÁÅäÖÃÎÄ¼þÓ¦¸Ã£¬ÏÈ×ßÄ¬ÈÏÅäÖÃ¶Á¸÷µ¥»úÊýÁ¿
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ó¦ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	GyroNums = Cfg.ReadInt("Gyro", "Nums");
 	FlywheelNums = Cfg.ReadInt("Flywheel", "Nums");
 	MagSensorNums = Cfg.ReadInt("MagSensor", "Nums");
 	SunSensorNums = Cfg.ReadInt("SunSensor", "Nums");
 	StarSensorNums = Cfg.ReadInt("StarSensor", "Nums");
 	GnssNums = Cfg.ReadInt("Gnss", "Nums");
-	//Ö®ºó¸ù¾Ýµ¥»úµÄ²ÎÊý½øÐÐÅäÖÃ£¬¿É¶ÁÒ»¸öini
+	//Ö®ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½É¶ï¿½Ò»ï¿½ï¿½ini
 	if (GyroNums <= 0)
 	{
-		std::cout << "ÍÓÂÝÊýÁ¿·Ç·¨ Öµ= " << GyroNums << "¸ÄÎªÄ¬ÈÏÖµ1" << std::endl;
-		MessageBox(NULL, "ÍÓÂÝÊýÁ¿·Ç·¨,³ÌÐò½áÊø", "¾¯¸æ", MB_OKCANCEL);
+		std::cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ Öµ= " << GyroNums << "ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ1" << std::endl;
+		//MessageBox(NULL, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", MB_OKCANCEL);
 		exit(0);
 	}
 	if (FlywheelNums<= 0)
 	{
-		std::cout << "·ÉÂÖÊýÁ¿·Ç·¨ Öµ= " << FlywheelNums << "¸ÄÎªÄ¬ÈÏÖµ1" << std::endl;
-		MessageBox(NULL, "·ÉÂÖÊýÁ¿·Ç·¨,³ÌÐò½áÊø", "¾¯¸æ", MB_OKCANCEL);
+		std::cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ Öµ= " << FlywheelNums << "ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ1" << std::endl;
+		//MessageBox(NULL, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", MB_OKCANCEL);
 		exit(0);
 	}
 	if (MagSensorNums <= 0)
 	{
-		std::cout << "´ÅÇ¿¼ÆÊýÁ¿·Ç·¨ Öµ= " << GyroNums << "¸ÄÎªÄ¬ÈÏÖµ1" << std::endl;
-		MessageBox(NULL, "´ÅÇ¿¼ÆÊýÁ¿·Ç·¨,³ÌÐò½áÊø", "¾¯¸æ", MB_OKCANCEL);
+		std::cout << "ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ Öµ= " << GyroNums << "ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ1" << std::endl;
+		//MessageBox(NULL, "ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", MB_OKCANCEL);
 		exit(0);
 	}
 
 	if (StarSensorNums <= 0)
 	{
-		std::cout << "ÐÇÃôÊýÁ¿·Ç·¨ Öµ= " << GyroNums << "¸ÄÎªÄ¬ÈÏÖµ1" << std::endl;
-		MessageBox(NULL, "ÐÇÃôÊýÁ¿·Ç·¨,³ÌÐò½áÊø", "¾¯¸æ", MB_OKCANCEL);
+		std::cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ Öµ= " << GyroNums << "ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ1" << std::endl;
+		//MessageBox(NULL, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", MB_OKCANCEL);
 		exit(0);
 	}
 	if (SunSensorNums <= 0)
 	{
-		std::cout << "Ì«ÃôÊýÁ¿·Ç·¨ Öµ= " << GyroNums << "¸ÄÎªÄ¬ÈÏÖµ1" << std::endl;
-		MessageBox(NULL, "Ì«ÃôÊýÁ¿·Ç·¨,³ÌÐò½áÊø", "¾¯¸æ", MB_OKCANCEL);
+		std::cout << "Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ Öµ= " << GyroNums << "ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ1" << std::endl;
+		//MessageBox(NULL, "Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", MB_OKCANCEL);
 		exit(0);
 	}
 	if (GnssNums <= 0)
 	{
-		std::cout << "GnssÊýÁ¿·Ç·¨ Öµ= " << GyroNums << "¸ÄÎªÄ¬ÈÏÖµ1" << std::endl;
-		MessageBox(NULL, "GnssÊýÁ¿·Ç·¨,³ÌÐò½áÊø", "¾¯¸æ", MB_OKCANCEL);
+		std::cout << "Gnssï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ Öµ= " << GyroNums << "ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ1" << std::endl;
+		//MessageBox(NULL, "Gnssï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", MB_OKCANCEL);
 		exit(0);
 	}
 
@@ -202,7 +202,7 @@ Eigen::VectorXd CComponet::WheelsTrefCal(Eigen::Vector3d& TrefBody)
 
 	Eigen::VectorXd WheelTrefs(FlywheelNums);
 
-	//ÕâÀïÒª¼ÇµÃ¼Ó¸ººÅ
+	//ï¿½ï¿½ï¿½ï¿½Òªï¿½ÇµÃ¼Ó¸ï¿½ï¿½ï¿½
 	WheelTrefs = -tmp2 * TrefBody;
 	return WheelTrefs;
 
@@ -216,22 +216,22 @@ void CComponet::ReleaseInstance()
 }
 
 void CComponet::record(CInfluxDB& DB) {
-	// Èç¹ûºóÐø°´ÕÕÊ¦ÐÖ½²µÄ£¬ÓÐºÜ¶àÍÓÂÝ£¬ÓÃÑ­»·È¥addKeyValue
-	// ÎªÁË±£Ö¤ÍÓÂÝ... ...ÐòºÅÁ¬Ðø£¬¿ÉÒÔ¶¨ÒåÒ»¸öÐòºÅ±äÁ¿£¬Ã¿´ÎaddKeyValue¼ÓÒ»£¬ÒÔ±£Ö¤°´´óÀà´æ´¢
-	// ÍÓÂÝ±íÍ·
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¦ï¿½Ö½ï¿½ï¿½Ä£ï¿½ï¿½ÐºÜ¶ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½È¥addKeyValue
+	// Îªï¿½Ë±ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½... ...ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½addKeyValueï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ô±ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢
+	// ï¿½ï¿½ï¿½Ý±ï¿½Í·
 	DB.addKeyValue("SIM062", Gyros[0].Data.x());
 	DB.addKeyValue("SIM063", Gyros[0].Data.y());
 	DB.addKeyValue("SIM064", Gyros[0].Data.z());
-	// ÐÇÃô±íÍ·
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·
 	DB.addKeyValue("SIM065", StarSensors[0].Data.QuatData[0]);
 	DB.addKeyValue("SIM066", StarSensors[0].Data.QuatData[1]);
 	DB.addKeyValue("SIM067", StarSensors[0].Data.QuatData[2]);
 	DB.addKeyValue("SIM068", StarSensors[0].Data.QuatData[3]);
-	// Ì«ÃôÌ«ÑôÊ¸Á¿
+	// Ì«ï¿½ï¿½Ì«ï¿½ï¿½Ê¸ï¿½ï¿½
 	DB.addKeyValue("SIM069", SunSensors[0].Data.x());
 	DB.addKeyValue("SIM070", SunSensors[0].Data.y());
 	DB.addKeyValue("SIM071", SunSensors[0].Data.z());
-	// ´ÅÇ¿¼Æ
+	// ï¿½ï¿½Ç¿ï¿½ï¿½
 	DB.addKeyValue("SIM072", MagSensors[0].Data.x());
 	DB.addKeyValue("SIM073", MagSensors[0].Data.y());
 	DB.addKeyValue("SIM074", MagSensors[0].Data.z());
@@ -242,26 +242,26 @@ void CComponet::record(CInfluxDB& DB) {
 	DB.addKeyValue("SIM078", GNSSs[0].Data.Vel.x());
 	DB.addKeyValue("SIM079", GNSSs[0].Data.Vel.y());
 	DB.addKeyValue("SIM080", GNSSs[0].Data.Vel.z());
-	// ·ÉÂÖ1×ªËÙ¡¢Á¦¾Ø
+	// ï¿½ï¿½ï¿½ï¿½1×ªï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM081", VEL2RPM(Wheels[0].Speed));
 	DB.addKeyValue("SIM082", Wheels[0].Torque);
-	// ·ÉÂÖ2×ªËÙ¡¢Á¦¾Ø
+	// ï¿½ï¿½ï¿½ï¿½2×ªï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM083", VEL2RPM(Wheels[1].Speed));
 	DB.addKeyValue("SIM084", Wheels[1].Torque);
-	// ·ÉÂÖ3×ªËÙ¡¢Á¦¾Ø
+	// ï¿½ï¿½ï¿½ï¿½3×ªï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM085", VEL2RPM(Wheels[2].Speed));
 	DB.addKeyValue("SIM086", Wheels[2].Torque);
-	// ÍÓÂÝÊýÁ¿
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM087", GyroNums);
-	// ÐÇÃôÊýÁ¿
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM088", StarSensorNums);
-	// Ì«ÃôÊýÁ¿
+	// Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM089", SunSensorNums);
-	// ´ÅÇ¿¼ÆÊýÁ¿
+	// ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM090", MagSensorNums);
-	// GNSSÊýÁ¿
+	// GNSSï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM091", GnssNums);
-	// ·ÉÂÖÊýÁ¿
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM092", FlywheelNums);
 
 }

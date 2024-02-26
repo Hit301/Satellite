@@ -1,34 +1,46 @@
-#include"General/InfluxDB.h"
-#include"General/SimTime.h"
-#include"General/IniConfig.h"
+/*
+ * @Author: Amadeus
+ * @Date: 2024-02-26 08:52:34
+ * @LastEditors: Amadeus
+ * @LastEditTime: 2024-02-26 09:24:39
+ * @FilePath: /Satellite/src/General/InfluxDB.cpp
+ * @Description: 
+ */
+#include"InfluxDB.h"
+#include"SimTime.h"
+#include"IniConfig.h"
 CInfluxDB::CInfluxDB()
 {
 	CIniConfig data("Config/Database.ini");
 	setMeasurement(data.ReadString("InfluxDB", "Measurement"));
+    #ifdef _WIN32
 	WSADATA wsaData;
-	// ≥ı ºªØWinsock
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-	{
-		std::cerr << "Failed. Error Code : " << WSAGetLastError();
-		exit(0);
-	}
-	// ¥¥Ω® socket
+        // ÔøΩÔøΩ ºÔøΩÔøΩWinsock
+        if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+        {
+            std::cerr << "Failed. Error Code : " << strerror(errno);
+            exit(0);
+        }
+    #endif
+	// ÔøΩÔøΩÔøΩÔøΩ socket
 	if ((s = socket(PF_INET, SOCK_DGRAM, 0)) == SOCKET_ERROR)
 	{
-		std::cerr << "socket() failed with error code : " << WSAGetLastError();
+		std::cerr << "socket() failed with error code : " << strerror(errno);
 		exit(0);
 	}
-	// …Ë÷√∑˛ŒÒ∆˜µÿ÷∑
+	// ÔøΩÔøΩÔøΩ√∑ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ÷∑
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = inet_addr(data.ReadString("InfluxDB", "HostName").c_str()); // ±æµÿ InfluxDB µÿ÷∑
+	serverAddr.sin_addr.s_addr = inet_addr(data.ReadString("InfluxDB", "HostName").c_str()); // ÔøΩÔøΩÔøΩÔøΩ InfluxDB ÔøΩÔøΩ÷∑
 	serverAddr.sin_port = htons(data.ReadInt("InfluxDB", "Port"));
 	LastRenewTime = GetTimeStampMs();
 }
 
 CInfluxDB::~CInfluxDB()
-{   // Œˆππ∫Ø ˝Ω¯––«Â¿Ì
+{   // ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
     closesocket(s);
-    WSACleanup();
+    #ifdef _WIN32
+        WSACleanup();
+    #endif
 }
 
 void CInfluxDB::setMeasurement(const std::string& measurement)
@@ -56,7 +68,7 @@ void CInfluxDB::printStr2() const
 void CInfluxDB::sendUdp()
 {
     if (sendto(s, str2.c_str(), (int)str2.length(), 0, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
-        std::cerr << "sendto() failed with error code : " << WSAGetLastError();
+        std::cerr << "sendto() failed with error code : " << strerror(errno);
     }
     else {
         //std::cout << "Message sent successfully." << std::endl;

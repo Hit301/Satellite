@@ -1,4 +1,4 @@
-#include"SatelliteMath/BaseMath.h"
+#include"BaseMath.h"
 
 double RAD_2PI(double value)
 {
@@ -68,7 +68,7 @@ double ASIN(double value)
 }
 
 //
-// brief  : ¿ª·½ÔËËã
+// brief  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 double SQRT(double value)
 {
@@ -77,7 +77,7 @@ double SQRT(double value)
 }
 
 //
-// brief  : ÃÝÔËËã
+// brief  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 double POW(double X, double Y)
 {
@@ -94,7 +94,7 @@ double POW(double X, double Y)
 
 double MOD(double X, double Y)
 {
-    if (fpclassify(Y) == FP_ZERO)
+    if (std::fpclassify(Y) == FP_ZERO)
     {
         printf("MOD error X=%E , Y=%E\n", X, Y);
         return 0;
@@ -126,7 +126,7 @@ unsigned MOD_UINT(unsigned X, unsigned Y)
 
 
 //
-// brief  : Çó·´ÕýÇÐÖµ,·µ»Ø»¡¶È
+// brief  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ,ï¿½ï¿½ï¿½Ø»ï¿½ï¿½ï¿½
 //
 double ATAN2(double Y, double X)
 {
@@ -143,7 +143,7 @@ double ATAN2(double Y, double X)
 
 
 //
-// brief  : Çó×ÔÈ»¶ÔÊý
+// brief  : ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
 //
 double LOG(double Value)
 {
@@ -158,7 +158,7 @@ double LOG(double Value)
 }
 
 //
-// brief  : ÇóÒÔ2Îªµ×µÄ¶ÔÊý
+// brief  : ï¿½ï¿½ï¿½ï¿½2Îªï¿½×µÄ¶ï¿½ï¿½ï¿½
 //
 double LOG2(double Value)
 {
@@ -174,7 +174,7 @@ double LOG2(double Value)
 
 
 //
-// brief  : ÇóÒÔ10Îªµ×µÄ¶ÔÊý
+// brief  : ï¿½ï¿½ï¿½ï¿½10Îªï¿½×µÄ¶ï¿½ï¿½ï¿½
 //
 double LOG10(double Value)
 {
@@ -190,7 +190,7 @@ double LOG10(double Value)
 
 
 //
-// brief  : Ë«½×³Ë
+// brief  : Ë«ï¿½×³ï¿½
 //
 double DoubleFactorial(double Value)
 {
@@ -205,7 +205,7 @@ double DoubleFactorial(double Value)
 }
 
 //
-// brief  : ½×³Ë
+// brief  : ï¿½×³ï¿½
 //
 double Factorial(double Value)
 {
@@ -222,7 +222,7 @@ double Factorial(double Value)
 }
 
 //
-// brief  : ÅÐ¶ÏÈòÄê
+// brief  : ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 int LunarMonthDays(int year)
 {
@@ -231,7 +231,7 @@ int LunarMonthDays(int year)
 }
 
 //
-// brief  : ¼ÆËãÐ¡ÊýÄê
+// brief  : ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
 //
 double DecYear(int year, double month, double day)
 {

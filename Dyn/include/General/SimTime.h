@@ -1,8 +1,19 @@
+/*
+ * @Author: Amadeus
+ * @Date: 2024-02-26 08:53:10
+ * @LastEditors: Amadeus
+ * @LastEditTime: 2024-02-26 10:13:27
+ * @FilePath: /Satellite/include/General/SimTime.h
+ * @Description: 
+ */
 #pragma once
-#include<chrono>
 #include <iostream>
-#include<windows.h>
+#ifdef _WIN32
+#include <windows.h>
 #include<process.h>
+#else
+#include <pthread.h>
+#endif
 
 class CSimTime
 {
@@ -13,10 +24,14 @@ public:
 	void InitSimSpeedManage(double SampleTime, int SpeedTimes);
 	bool SimCountJudge();
 private:
-	double SampleTime;//采样时间，单位是s;
-	int SpeedTimes;//加速倍率
+	double SampleTime;//锟斤拷锟斤拷时锟戒，锟斤拷位锟斤拷s;
+	int SpeedTimes;//锟斤拷锟劫憋拷锟斤拷
 	int SimCount;
-	HANDLE hSimCountMute;
+	#ifdef _WIN32
+    HANDLE hSimCountMute;
+#else
+    pthread_mutex_t hSimCountMute;
+#endif
 
 	static inline CSimTime* m_instance{ NULL };
 	CSimTime();
@@ -25,7 +40,12 @@ private:
 	CSimTime& operator=(const CSimTime& _CSimTime) = delete;
 
 	static void ReleaseInstance();
-	friend unsigned __stdcall SimCountManage(void* arg);
+
+#ifdef _WIN32
+    friend unsigned __stdcall SimCountManage(void* arg);
+#else
+    static void* SimCountManage(void* arg);
+#endif
 	class DeleteHelper
 	{
 	public:
@@ -39,6 +59,8 @@ private:
 };
 
 //
-//brief:获取当前系统时间戳，单位ms
+//brief:锟斤拷取锟斤拷前系统时锟斤拷锟斤拷锟斤拷锟轿籱s
 //
 int64_t GetTimeStampMs();
+
+void SleepMs(int64_t milliseconds);

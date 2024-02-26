@@ -1,6 +1,6 @@
-#include"SatelliteMath/Quaternions.h"
-#include"SatelliteMath/Dcm.h"
-#include"SatelliteMath/EulerAgl.h"
+#include"Quaternions.h"
+#include"Dcm.h"
+#include"EulerAgl.h"
 
 void Quat::QuatRectify()
 {
@@ -141,7 +141,7 @@ Quat Quat::operator*(const double val) const
 			val * QuatData[3]);
 	else
 	{
-		printf("±êÁ¿Öµ·Ç·¨ val:%f,·µ»ØÔ­±¾ËÄÔªÊý\n", val);
+		printf("ï¿½ï¿½ï¿½ï¿½Öµï¿½Ç·ï¿½ val:%f,ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½\n", val);
 		return *this;
 	}
 }

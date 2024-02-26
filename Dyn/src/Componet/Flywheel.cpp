@@ -1,4 +1,4 @@
-#include"Componet/Flywheel.h"
+#include"Flywheel.h"
 
 Flywheel::Flywheel()
 {
@@ -27,19 +27,19 @@ void Flywheel::StateRenew(int64_t NowTime, double SampleTime, double Tref)
 	static double lastspeed = 0;
 	static double lastspeedRef=0;
 
-	//¼ÆËã²Î¿¼Á¦¾Ø
+	//ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½
 	TorqueRef = SATURATION(Tref, MaxTref);
-	//¼ÆËã²Î¿¼×ªËÙ
+	//ï¿½ï¿½ï¿½ï¿½Î¿ï¿½×ªï¿½ï¿½
 	SpeedRef = TorqueRef * SampleTime / J + lastspeedRef;
 	lastspeedRef = SpeedRef;
-	//¼ÆËã×ªËÙ
+	//ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
 	Speed = (1 - Kp / tau - Ki * SampleTime / tau) * lastspeed + (Kp / tau + Ki * SampleTime / tau) * lastspeedRef;
 	Speed = SATURATION(Speed, MaxSpeed);
-	//¼ÆËãÁ¦¾Ø
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	Torque = J * (Speed - lastspeed) / SampleTime;
-	//¼ÆËã½Ç¶¯Á¿
+	//ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½ï¿½ï¿½
 	Momentum = J * Speed;
-	//ÉÏÒ»ÅÄ×ªËÙ¸üÐÂ
+	//ï¿½ï¿½Ò»ï¿½ï¿½×ªï¿½Ù¸ï¿½ï¿½ï¿½
 	lastspeed = Speed;
 }
 

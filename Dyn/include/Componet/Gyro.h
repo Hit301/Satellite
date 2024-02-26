@@ -1,15 +1,15 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
+#include"BaseMath.h"
+#include"AllHead.h"
 
 
 class GyroScope
 {
 public:
-	Eigen::Matrix3d InstallMatrix;//安装矩阵,从本体系到测量系
-	Eigen::Vector3d Data;//三表头数值，单位deg/s
-	int64_t LastRenewTime;//上次更新时间,utc时间戳ms
-	double SamplePeriod;//陀螺采样周期，单位为s
+	Eigen::Matrix3d InstallMatrix;//锟斤拷装锟斤拷锟斤拷,锟接憋拷锟斤拷系锟斤拷锟斤拷锟斤拷系
+	Eigen::Vector3d Data;//锟斤拷锟斤拷头锟斤拷值锟斤拷锟斤拷位deg/s
+	int64_t LastRenewTime;//锟较次革拷锟斤拷时锟斤拷,utc时锟斤拷锟絤s
+	double SamplePeriod;//锟斤拷锟捷诧拷锟斤拷锟斤拷锟节ｏ拷锟斤拷位为s
 public:
 	GyroScope();
 

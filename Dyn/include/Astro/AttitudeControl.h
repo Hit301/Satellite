@@ -1,6 +1,6 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
+#include"BaseMath.h"
+#include"AllHead.h"
 
 
 class CAttitudeController
@@ -12,11 +12,11 @@ public:
 		SUNPOINT,
 		EARTHPOINT
 	};
-	Mode workmode;//×ËÌ¬¿ØÖÆÄ£Ê½
-	Eigen::Vector3d TorqueRef;//²Î¿¼Á¦¾ØNm
-	Eigen::Matrix3d Kp;//¿ØÖÆÆ÷ÏµÊý
-	Eigen::Matrix3d Kd;//¿ØÖÆÆ÷ÏµÊý
-	double MaxTorque;//×î´óÁ¦¾Ø
+	Mode workmode;//ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½Ä£Ê½
+	Eigen::Vector3d TorqueRef;//ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½Nm
+	Eigen::Matrix3d Kp;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
+	Eigen::Matrix3d Kd;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
+	double MaxTorque;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 public:
 	CAttitudeController();
 
@@ -25,13 +25,13 @@ public:
 	Eigen::Vector3d TorqueRefRenew(CComponet* pCom);
 private:
 
-	//@brief: ËÙÂÊ×èÄá¿ØÖÆÆ÷
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void RateDamping(const GyroScope& _Gyro);
 
-	//@brief: ¶ÔÈÕ×ËÌ¬¿ØÖÆÆ÷
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	void ToSunControl(const GyroScope& _Gyro, const SunSensor& _Sun);
 
-	//@brief: ¶ÔµØ²¶»ñÓë¶¨Ïò¿ØÖÆÂÊ¿ØÖÆÆ÷
+	//@brief: ï¿½ÔµØ²ï¿½ï¿½ï¿½ï¿½ë¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ï¿½
 	void ToEarthControl(const GyroScope& _Gyro, const StarSensor& _Star, const GNSS& _gnss);
 
 };

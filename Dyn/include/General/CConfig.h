@@ -1,10 +1,10 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"Astro/Attitude.h"
-#include"Astro/Orbit.h"
-#include "Astro/Environment.h"
-#include"Componet/Componet.h"
-#include "AStro/AttitudeControl.h"
+#include"BaseMath.h"
+#include"Attitude.h"
+#include"Orbit.h"
+#include "Environment.h"
+#include"Componet.h"
+#include "AttitudeControl.h"
 
 
 class CConfig
@@ -13,37 +13,37 @@ public:
 	static CConfig* GetInstance();
 
 public:
-	int64_t SatelliteTime;//ÐÇÀú£¬utcÊ±¼ä´Áµ¥Î»ms
+	int64_t SatelliteTime;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½utcÊ±ï¿½ï¿½ï¿½ï¿½ï¿½Î»ms
 
-	//ÕâÀï²»ÓÃEigenÊÇÎªÁË¿Í»§¶ËºÃÅäÖÃ
+	//ï¿½ï¿½ï¿½ï²»ï¿½ï¿½Eigenï¿½ï¿½Îªï¿½Ë¿Í»ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½
 
-	//³õÊ¼¹ìµÀ£¬ÏÈÔÝ¶¨ÊÇ¹ßÐÔÏµµÄ
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¶ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½Ïµï¿½ï¿½
 	double Rx, Ry, Rz;
 	double Vx, Vy, Vz;
 
-	//Áù¸ùÊý
-	double a;               //¹ìµÀ°ë³¤Öá(Semi-major Axis)
-	double e;               //¹ìµÀÆ«ÐÄÂÊ(Eccentricity)
-	double i;               //¹ìµÀÇã½Ç£¨rad£© (Inclination)
-	double RAAN;            //Éý½»µã³à¾­£¨rad£©(RAAN)
-	double omega;           //½üµØµã·ù½Ç£¨rad£©(Arg of Perigee)
-	double M;               //¹ìµÀÆ½½üµã½Ç£¨rad£©(Mean Anomaly)
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	double a;               //ï¿½ï¿½ï¿½ï¿½ë³¤ï¿½ï¿½(Semi-major Axis)
+	double e;               //ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½(Eccentricity)
+	double i;               //ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½ (Inclination)
+	double RAAN;            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à¾­ï¿½ï¿½radï¿½ï¿½(RAAN)
+	double omega;           //ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½(Arg of Perigee)
+	double M;               //ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½(Mean Anomaly)
 
-	//±¾ÌåÏµ½ÇËÙ¶È
+	//ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ù¶ï¿½
 	double Wx, Wy, Wz;
 
-	//ËÄÔªÊý£¬ÔÝ¶¨Qib
+	//ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½Ý¶ï¿½Qib
 	double Q0, Q1, Q2, Q3;
 
-	//¹ßÁ¿¾ØÕó
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	double Jxx, Jxy, Jxz, Jyy, Jyz, Jzz;
 
-	//µ¥»úÅäÖÃ£¬ ÒòÎªµ¥»úÊýÁ¿²»¶¨ËùÒÔÓ¦¸Ã×ßÅäÖÃ±í
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã±ï¿½
 
-	//»·¾³ÅäÖÃ
-	//µØ´Å½×´Î£¬1~12
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ï¿½Ø´Å½×´Î£ï¿½1~12
 	size_t MagOrder;
-	//µØ´Å³¡¸ßË¹ÏµÊý£¬Ò»´ÎÐÔ¶Á½øÀ´·½±ãºóÐøÊ¹ÓÃ
+	//ï¿½Ø´Å³ï¿½ï¿½ï¿½Ë¹Ïµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½
 	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_g;
 	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_h;
 	Eigen::Array<double, Eigen::Dynamic, Eigen::Dynamic> gauss_gdot;

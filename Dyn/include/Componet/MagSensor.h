@@ -1,13 +1,13 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
+#include"BaseMath.h"
 
 class MagSensor
 {
 public:
-	Eigen::Matrix3d InstallMatrix;//安装矩阵,从本体系到测量系
-	Eigen::Vector3d Data;//磁强计数值，单位Gauss
-	int64_t LastRenewTime;//开机时间，utc时间戳单位ms
-	double SamplePeriod;//采样周期，单位为s
+	Eigen::Matrix3d InstallMatrix;//锟斤拷装锟斤拷锟斤拷,锟接憋拷锟斤拷系锟斤拷锟斤拷锟斤拷系
+	Eigen::Vector3d Data;//锟斤拷强锟斤拷锟斤拷值锟斤拷锟斤拷位Gauss
+	int64_t LastRenewTime;//锟斤拷锟斤拷时锟戒，utc时锟斤拷锟斤拷锟轿籱s
+	double SamplePeriod;//锟斤拷锟斤拷锟斤拷锟节ｏ拷锟斤拷位为s
 public:
 	MagSensor();
 public:

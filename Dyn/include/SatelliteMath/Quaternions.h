@@ -1,35 +1,35 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
+#include"BaseMath.h"
+#include"AllHead.h"
 
 class Quat
 {
 private:
-	void QuatRectify();//±êÁ¿ĞŞÕı£¬±£³ÖÎªÕı
-	void SelfNormalize();//×ÔÎÒ¹éÒ»»¯
+	void QuatRectify();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½
+	void SelfNormalize();//ï¿½ï¿½ï¿½Ò¹ï¿½Ò»ï¿½ï¿½
 
 public:
-	double QuatData[4];//JPLËÄÔªÊı£¬Êµ²¿ÔÚÇ°
+	double QuatData[4];//JPLï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Ç°
 
 public:
-	Quat();//Ä¬ÈÏ¹¹Ôìº¯Êı£¬·µ»Øµ¥Î»ËÄÔªÊı
-	Quat(double q0, double q1, double q2, double q3);//ÒÔÖµµÄ·½Ê½ÉèÖÃËÄÔªÊı
-	Quat(double Theta, const Eigen::Vector3d& Axis);//ÓÃ×ª½Ç(rad)ºÍ×ªÖá´´½¨ËÄÔªÊı
-	Quat(const Quat& _Quat);//ÒÔÆäËûËÄÔªÊı½øĞĞ³õÊ¼»¯
+	Quat();//Ä¬ï¿½Ï¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½Î»ï¿½ï¿½Ôªï¿½ï¿½
+	Quat(double q0, double q1, double q2, double q3);//ï¿½ï¿½Öµï¿½Ä·ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+	Quat(double Theta, const Eigen::Vector3d& Axis);//ï¿½ï¿½×ªï¿½ï¿½(rad)ï¿½ï¿½×ªï¿½á´´ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+	Quat(const Quat& _Quat);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½Ğ³ï¿½Ê¼ï¿½ï¿½
 	~Quat()=default;
 
 public:
-	//ÔËËã·ûÖØÔØ
-	Quat operator+(const Quat& _Quat) const;//ËÄÔªÊı¼Ó·¨
-	Quat operator-(const Quat& _Quat) const;//ËÄÔªÊı¼õ·¨
-	Quat operator*(const Quat& _Quat) const;//ËÄÔªÊı³Ë·¨
-	Quat operator*(const double val) const;//ËÄÔªÊı³Ë±êÁ¿
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Quat operator+(const Quat& _Quat) const;//ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ó·ï¿½
+	Quat operator-(const Quat& _Quat) const;//ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Quat operator*(const Quat& _Quat) const;//ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ë·ï¿½
+	Quat operator*(const double val) const;//ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ë±ï¿½ï¿½ï¿½
 	Quat& operator=(const Quat& _Quat);
 public:
-	Quat QuatNormalize() const;//ËÄÔªÊı±ê×¼»¯
-	Quat QuatInv() const;//ËÄÔªÊıÇóÄæ
-	CDcm ToDcm() const;//ËÄÔªÊı×ª·½ÏòÓàÏÒ¾ØÕó
-	CEulerAgl ToEulerAgl(unsigned Seq) const;//ËÄÔªÊı×ªÖ¸¶¨×ªĞòÅ·À­½Ç
+	Quat QuatNormalize() const;//ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½
+	Quat QuatInv() const;//ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	CDcm ToDcm() const;//ï¿½ï¿½Ôªï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½
+	CEulerAgl ToEulerAgl(unsigned Seq) const;//ï¿½ï¿½Ôªï¿½ï¿½×ªÖ¸ï¿½ï¿½×ªï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½
 };
 
 std::ostream& operator<<(std::ostream& _cout, const Quat& _Quat);

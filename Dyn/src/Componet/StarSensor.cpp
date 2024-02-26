@@ -1,4 +1,4 @@
-#include"Componet/StarSensor.h"
+#include"StarSensor.h"
 
 StarSensor::StarSensor() :InstallMatrix(1, 0, 0, 0, 1, 0, 0, 0, 1)
 {

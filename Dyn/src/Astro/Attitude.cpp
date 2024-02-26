@@ -1,8 +1,8 @@
-#include"Astro/Attitude.h"
-#include"General/CConfig.h"
-#include"General/InfluxDB.h"
+#include"Attitude.h"
+#include"CConfig.h"
+#include"InfluxDB.h"
 
-//×ËÌ¬ÔË¶¯Ñ§¼ÆËã²î·ÖËÄÔªÊý
+//ï¿½ï¿½Ì¬ï¿½Ë¶ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 #if 0
 Eigen::Vector3d Omega_bRK4(Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Omega_b, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s, double Ts)
 {
@@ -45,7 +45,7 @@ Quat QibIntegrate(Quat& Quat_k, Eigen::Vector3d& Omega_b, double Ts)
 }
 #endif
 
-//×ËÌ¬¶¯Á¦Ñ§¼ÆËã½ÇËÙ¶È±ä»¯ÂÊ
+//ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È±ä»¯ï¿½ï¿½
 Eigen::Vector3d AttDynamics(Eigen::Vector3d Omega_b, Eigen::Matrix3d& SatInaMat, Eigen::Vector3d& Hw, Eigen::Vector3d& Tau_s)
 {
     Eigen::Vector3d tmp = Omega_b.cross(SatInaMat * Omega_b + Hw);
@@ -54,7 +54,7 @@ Eigen::Vector3d AttDynamics(Eigen::Vector3d Omega_b, Eigen::Matrix3d& SatInaMat,
 }
 
 
-//½ÇËÙ¶ÈºÍÊ±³¤¼ÆËãÎó²îËÄÔªÊý
+//ï¿½ï¿½ï¿½Ù¶Èºï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 Quat PlstToDeltaQuat(const Eigen::Vector3d Omega_b, double OfstSec)
 {
     double PlstVal = Omega_b.norm();
@@ -108,9 +108,9 @@ void CAttitude::StateRenew(double Ts, COrbit& Orbit, CComponet* pComponet)
     TotalTorque << 0, 0, 0;
     for (size_t i = 0; i < pComponet->FlywheelNums; i++)
     {
-        //¼ÆËã·ÉÂÖ±¾ÌåÏµÏÂµÄ¶¯Á¿
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ïµï¿½ÂµÄ¶ï¿½ï¿½ï¿½
         WheelMomentum_b += pComponet->Wheels[i].InstallVet * pComponet->Wheels[i].Momentum;
-        //¼ÆËã·ÉÂÖ±¾ÌåÏµÏÂµÄÁ¦¾Ø
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ïµï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
         TotalTorque -= pComponet->Wheels[i].InstallVet * pComponet->Wheels[i].Torque;
     }
     AttitudeDynamicsRk4(Ts);
@@ -138,17 +138,17 @@ void CAttitude::Init(COrbit& Obt)
 }
 
 void CAttitude::record(CInfluxDB& DB) {
-    // ¹ßÐÔÏµµ½±¾ÌåÏµËÄÔªÊý
+    // ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ôªï¿½ï¿½
     DB.addKeyValue("SIM029", Qib.QuatData[0]);
     DB.addKeyValue("SIM030", Qib.QuatData[1]);
     DB.addKeyValue("SIM031", Qib.QuatData[2]);
     DB.addKeyValue("SIM032", Qib.QuatData[3]);
-    // ¹ìµÀÏµµ½±¾ÌåÏµËÄÔªÊý
+    // ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ôªï¿½ï¿½
     DB.addKeyValue("SIM033", Qob.QuatData[0]);
     DB.addKeyValue("SIM034", Qob.QuatData[1]);
     DB.addKeyValue("SIM035", Qob.QuatData[2]);
     DB.addKeyValue("SIM036", Qob.QuatData[3]);
-    // ±¾ÌåÏµ½ÇËÙ¶È
+    // ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ù¶ï¿½
     DB.addKeyValue("SIM037", Omega_b.x() * RAD2DEG);
     DB.addKeyValue("SIM038", Omega_b.y() * RAD2DEG);
     DB.addKeyValue("SIM039", Omega_b.z() * RAD2DEG);
@@ -158,12 +158,12 @@ void CAttitude::record(CInfluxDB& DB) {
 
 CDcm CAttitude::GetAio(const RV& InlRv)
 {
-    Eigen::Vector3d Pos = InlRv.Pos;//ÎÀÐÇµÄÎ»ÖÃÊ¸Á¿
-    Eigen::Vector3d Vel = InlRv.Vel;//ÎÀÐÇµÄËÙ¶ÈÊ¸Á¿
-    Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//Æ«º½Öáµ¥Î»Ê¸Á¿
+    Eigen::Vector3d Pos = InlRv.Pos;//ï¿½ï¿½ï¿½Çµï¿½Î»ï¿½ï¿½Ê¸ï¿½ï¿½
+    Eigen::Vector3d Vel = InlRv.Vel;//ï¿½ï¿½ï¿½Çµï¿½ï¿½Ù¶ï¿½Ê¸ï¿½ï¿½
+    Eigen::Vector3d zo = Eigen::Vector3d::Zero() - Pos / Pos.norm();//Æ«ï¿½ï¿½ï¿½áµ¥Î»Ê¸ï¿½ï¿½
     Eigen::Vector3d y_tmp = Vel.cross(Pos);
-    Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // ¸©ÑöÖáµ¥Î»Ê¸Á¿
-    Eigen::Vector3d xo = yo.cross(zo);//¹ö¶¯Öáµ¥Î»Ê¸Á¿
+    Eigen::Vector3d yo = y_tmp / y_tmp.norm(); // ï¿½ï¿½ï¿½ï¿½ï¿½áµ¥Î»Ê¸ï¿½ï¿½
+    Eigen::Vector3d xo = yo.cross(zo);//ï¿½ï¿½ï¿½ï¿½ï¿½áµ¥Î»Ê¸ï¿½ï¿½
 
 
     CDcm Aio;

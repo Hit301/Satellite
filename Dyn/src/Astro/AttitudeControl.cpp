@@ -1,13 +1,13 @@
-#include "AStro/AttitudeControl.h"
-#include"SatelliteMath/Dcm.h"
-#include"SatelliteMath/Quaternions.h"
-//#include"Astro/Orbit.h"
-#include"Astro/Attitude.h"
-#include"Componet/Componet.h"
-#include "Astro/Environment.h"
-#include"General/InfluxDB.h"
+#include "AttitudeControl.h"
+#include"Dcm.h"
+#include"Quaternions.h"
+//#include"Orbit.h"
+#include"Attitude.h"
+#include"Componet.h"
+#include "Environment.h"
+#include"InfluxDB.h"
 
-//³õÊ¼ËÙÂÊ×èÄá¿ØÖÆÂÊÉè¼Æ
+//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CAttitudeController::CAttitudeController() :workmode(EARTHPOINT)
 {
 	TorqueRef << 0, 0, 0;
@@ -18,7 +18,7 @@ CAttitudeController::CAttitudeController() :workmode(EARTHPOINT)
 
 Eigen::Vector3d CAttitudeController::TorqueRefRenew(CComponet* pCom)
 {
-	//ÕâÀïÄ¬ÈÏÓÃµÚÒ»¸öµ¥»úÁË£¬ºóÃæÓÐÐèÒª¿ÉÒÔ¸ü¸Ä£¬Êµ¼ÊÉÏÓ¦¸ÃÓÐ¶¨×ËµÄËã·¨£¬ÔÚ¶¨×ËËã·¨ÖÐËã³ö½á¹û
+	//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½Ãµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Ä£ï¿½Êµï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ëµï¿½ï¿½ã·¨ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	switch (workmode)
 	{
 	case RATEDAMP:
@@ -55,18 +55,18 @@ void CAttitudeController::RateDamping(const GyroScope& _Gyro)
 	TorqueRef = Tcontrol;
 }
 
-//¶ÔÈÕ²¶»ñÓë¶¨Ïò¿ØÖÆÂÊÉè¼Æ
+//ï¿½ï¿½ï¿½Õ²ï¿½ï¿½ï¿½ï¿½ë¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CAttitudeController::ToSunControl(const GyroScope& _Gyro, const SunSensor& _Sun)
 {
 	Eigen::Vector3d Wbi = _Gyro.InstallMatrix.inverse() * DEG2RAD * _Gyro.Data;
 
-	//²Î¿¼Á¿
+	//ï¿½Î¿ï¿½ï¿½ï¿½
 	Eigen::Vector3d Wref(0, 0, 0.1 * DEG2RAD);
 	Eigen::Vector3d Rb(0, 0, 1);
 	Eigen::Vector3d _SunPos = _Sun.InstallMatrix.inverse() * _Sun.Data;
-	//¿ØÖÆÁ¦¾Ø¼ÆËã
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½
 	Eigen::Vector3d Tcontrol = -Kp * _SunPos.cross(Rb) + Kd * (Eigen::Vector3d::Zero() - Wbi);
-	//ÏÞ·ù´¦Àí
+	//ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < 3; i++)
 	{
 		Tcontrol[i] = LIMIT(Tcontrol[i], -MaxTorque, MaxTorque);
@@ -74,13 +74,13 @@ void CAttitudeController::ToSunControl(const GyroScope& _Gyro, const SunSensor& 
 	TorqueRef = Tcontrol;
 }
 
-//¶ÔµØ²¶»ñÓë¶¨Ïò¿ØÖÆÂÊÉè¼Æ
+//ï¿½ÔµØ²ï¿½ï¿½ï¿½ï¿½ë¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSensor& _Star, const GNSS& _gnss)
 {
 	Eigen::Vector3d Wbi = _Gyro.InstallMatrix.inverse() * DEG2RAD * _Gyro.Data;
 	Quat Qib = _Star.Data * _Star.InstallMatrix.ToQuat();
 
-	//¼ÆËãAio
+	//ï¿½ï¿½ï¿½ï¿½Aio
 	CDcm Aio = CAttitude::GetAio(_gnss.Data);
 
 	Quat Qoi = Aio.ToQuat().QuatInv();
@@ -88,9 +88,9 @@ void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSenso
 	Eigen::Vector3d ImQob;
 	ImQob << Qob.QuatData[1], Qob.QuatData[2], Qob.QuatData[3];
 
-	//¿ØÖÆÁ¦¾Ø¼ÆËã
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½
 	Eigen::Vector3d Tcontrol = -Kp * ImQob - Kd * Wbi;
-	//ÏÞ·ù´¦Àí
+	//ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < 3; i++)
 	{
 		Tcontrol[i] = LIMIT(Tcontrol[i], -MaxTorque, MaxTorque);
@@ -100,9 +100,9 @@ void CAttitudeController::ToEarthControl(const GyroScope& _Gyro, const StarSenso
 
 void CAttitudeController::record(CInfluxDB& DB)
 {	
-	// ¿ØÖÆÄ£Ê½£¬InfluxDBÖÐtag±êÇ©£¬´æ´¢×Ö·û´®Êý¾Ý£¬field×Ö¶Î£¬´æ´¢ÊýÖµÊý¾Ý
+	// ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½InfluxDBï¿½ï¿½tagï¿½ï¿½Ç©ï¿½ï¿½ï¿½æ´¢ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½fieldï¿½Ö¶Î£ï¿½ï¿½æ´¢ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM093", workmode);
-	// ¿ØÖÆÁ¦¾Ø
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM094", TorqueRef.x());
 	DB.addKeyValue("SIM095", TorqueRef.y());
 	DB.addKeyValue("SIM096", TorqueRef.z());

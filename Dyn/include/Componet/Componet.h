@@ -1,11 +1,11 @@
 #pragma once
-#include "Componet/Gyro.h"
-#include"Componet/Flywheel.h"
-#include"Componet/MagSensor.h"
-#include"Componet/StarSensor.h"
-#include"Componet/SunSensor.h"
-#include "Componet/GNSS.h"
-#include"General/AllHead.h"
+#include "Gyro.h"
+#include"Flywheel.h"
+#include"MagSensor.h"
+#include"StarSensor.h"
+#include"SunSensor.h"
+#include "GNSS.h"
+#include"AllHead.h"
 // 2023-12-22 14:47:10
 
 class CComponet
@@ -50,8 +50,8 @@ private:
 	static DeleteHelper helper;
 };
 
-//ÔÚComponetÀàµÄ¹¹Ôìº¯ÊýÖÐÖÐÍê³É¸÷µ¥»úÊýÁ¿ºÍ²ÎÊýµÄ³õÊ¼»¯
-//ÔÚComponetÀàµÄInitº¯ÊýÖÐÍê³É¸÷µ¥»úÎïÀíÁ¿µÄ³õÊ¼»¯
-//ÔÚComponetÀàµÄStateRenewº¯ÊýÖÐÍê³É¸÷µ¥»úµÄÊý¾Ý¸üÐÂ
+//ï¿½ï¿½Componetï¿½ï¿½Ä¹ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í²ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+//ï¿½ï¿½Componetï¿½ï¿½ï¿½Initï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+//ï¿½ï¿½Componetï¿½ï¿½ï¿½StateRenewï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½ï¿½
 
 

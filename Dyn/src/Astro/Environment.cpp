@@ -1,9 +1,9 @@
-#include "Astro/Environment.h"
-#include"MySofaDll.h"
-#include"Astro/Orbit.h"
-#include"Astro/Attitude.h"
-#include"General/CConfig.h"
-#include"General/InfluxDB.h"
+#include "Environment.h"
+#include"sofaDLL.h"
+#include"Orbit.h"
+#include"Attitude.h"
+#include"CConfig.h"
+#include"InfluxDB.h"
 Environment::Environment()
 {
 	BodyMag << 0, 0, 0;
@@ -29,35 +29,35 @@ void Environment::SunPos(const int64_t timestamp)
 	Eigen::Matrix3d Rx;
 	Eigen::Vector3d sunpos;
 
-	//ÈåÂÔÊÀ¼ÍÊý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	TJD = TS2CEN(timestamp/1000);
-	//TJD = 0.2258; //ÎªÁËÓëMATLAB½á¹û¶Ô±ÈÊ±Ê¹ÓÃ
-	//Ì«ÑôÆ½½üµã½Ç£¬ÕâÀïºöÂÔÁËÈåÂÔÊÀ¼ÍÊýµÄÆ½·½¼°ÒÔÉÏÏî
+	//TJD = 0.2258; //Îªï¿½ï¿½ï¿½ï¿½MATLABï¿½ï¿½ï¿½ï¿½Ô±ï¿½Ê±Ê¹ï¿½ï¿½
+	//Ì«ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	M = 357.5256 + 35999.049 * TJD;
-	//Ì«ÑôÏà¶ÔÓÚµ±ÈÕÆ½´º·ÖµãµÄÕæ½üµã½Ç£¨»ÆµÀ¾­¶È£©
+	//Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½È£ï¿½
 	lamM = 282.94 + M + SEC2DEG * 6892 * SIND(M) + SEC2DEG * 72 * SIND(M);
-	//Ì«ÑôµØÐÄ¾à
-	rs = (149.619 - 2.499 * COSD(M) - 0.021 * COSD(2.0 * M)) * 1e9;  //µ¥Î»Îªm
-	//23.4393ÊÇ»Æ³à½»½Ç
+	//Ì«ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½
+	rs = (149.619 - 2.499 * COSD(M) - 0.021 * COSD(2.0 * M)) * 1e9;  //ï¿½ï¿½Î»Îªm
+	//23.4393ï¿½Ç»Æ³à½»ï¿½ï¿½
 	bs = 23.4393 - 46.815 / 3600 * TJD - 0.00059 / 3600 * TJD * TJD;
-	sunpos << rs * COSD(lamM), rs* SIND(lamM), 0;  //µ¥Î»Îªm
+	sunpos << rs * COSD(lamM), rs* SIND(lamM), 0;  //ï¿½ï¿½Î»Îªm
 	Rx << 1, 0, 0,
 		0, COSD(-bs), SIND(-bs),
 		0, -SIND(-bs), COSD(-bs);
 
-	SunVecInl = Rx * sunpos / rs;//¹éÒ»»¯µÄ½á¹û
+	SunVecInl = Rx * sunpos / rs;//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ä½ï¿½ï¿½
 }
 
 void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 {
-	//@brief: ±±¶«µØÏµµØ´Å³¡
-	//@para : ¹ìµÀÀà¹ìµÀ¸ùÊý-°ë³¤Öá ¹ìµÀÀàLLR
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ø´Å³ï¿½
+	//@para : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ë³¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½LLR
 	//@return : none
 
 	CConfig* pCfg = CConfig::GetInstance();
 	size_t& Order = pCfg->MagOrder;
 
-	//Ê±¼ä´Á×ªÄêÔÂÈÕ
+	//Ê±ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	YMD m_ymd = UTCTimeStamp2YMD(timestamp);
 	double epoch = DecYear(2020,1,1);
 	double dt_change = DecYear(m_ymd.year, m_ymd.month, m_ymd.day) - epoch;
@@ -71,21 +71,21 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 	P.setZero();
 	double x = sin(Orbit.LLR.Lat);
 
-	//¼ÆËãµÛºÏÀÕÈÃµÂº¯Êý
-	//¼ÆËã¶Ô½ÇÏßÉÏÔªËØ
+	//ï¿½ï¿½ï¿½ï¿½Ûºï¿½ï¿½ï¿½ï¿½ÃµÂºï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 	P(0, 0) = 1;
 	for (int n = 1; n < P.rows(); n++)
 	{
 		P(n, n) = (-1)*(2 * n - 1) * POW(1 - x * x, 0.5) * P(n - 1, n - 1);
 	}
 	
-	//¼ÆËãÖ÷¶Ô½ÇÏßÏÂÒ»²ãÔªËØ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ôªï¿½ï¿½
 	for (int n = 0; n < P.rows()-1; n++)
 	{
 		P(n + 1, n) = x * (2 * n + 1) * P(n, n);
 	}
 
-	//¼ÆËã·Ç¶Ô½ÇÏßÔªËØ
+	//ï¿½ï¿½ï¿½ï¿½Ç¶Ô½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 	for (int n = 2; n < P.rows(); n++)
 	{
 		for (int m = 0; m < n - 1; m++)
@@ -94,7 +94,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 		}
 	}
 
-	//¶ÔPÖÐµÄÃ¿Ò»¸öÔªËØ¶¼½øÐÐÊ©ÃÜÌØ°ë¹éÒ»»¯ 
+	//ï¿½ï¿½Pï¿½Ðµï¿½Ã¿Ò»ï¿½ï¿½Ôªï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê©ï¿½ï¿½ï¿½Ø°ï¿½ï¿½Ò»ï¿½ï¿½ 
 	for (int n = 0; n < P.rows(); n++)
 	{
 		for (int m = 0; m < n + 1; m++)
@@ -106,7 +106,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 		}
 	}
 	
-	//¼ÆËãdP
+	//ï¿½ï¿½ï¿½ï¿½dP
 	Eigen::ArrayXXd dP(Order+1, Order+1);
 	dP.setZero();
 	for (int n = 0; n < dP.rows(); n++)
@@ -143,7 +143,7 @@ void Environment::GetNEDMag(const COrbit& Orbit, const int64_t timestamp)
 			tempZ(m) = (g(n, m) * cos(m * (Orbit.LLR.Lng) + h(n, m) * sin(m * (Orbit.LLR.Lng)))) * P(n, m);
 		}
 	
-		//for (int i = 0; i < Order + 1; i++) ÎÒ¸Ð¾õÓ¦¸ÃÐ´³Én+1
+		//for (int i = 0; i < Order + 1; i++) ï¿½Ò¸Ð¾ï¿½Ó¦ï¿½ï¿½Ð´ï¿½ï¿½n+1
 		for (int i = 0; i < n + 1; i++)
 		{
 			sumtempX += tempX(i);
@@ -173,29 +173,29 @@ void Environment::StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t t
 	GetNEDMag(Orbit, timestamp);
 	Eigen::Matrix3d Ane = Orbit.NED2ECEF();
 	Eigen::Vector3d ECEFMag = Ane * NEDMag;
-	//µØ¹ÌÏµµ½¹ßÐÔÏµ
+	//ï¿½Ø¹ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ
 	Eigen::Matrix3d  Aif = Environment::ECI2ECEF(timestamp);
 	Eigen::Vector3d ECIMag = Aif.inverse() * ECEFMag;\
-	//¹ßÐÔÏµµ½±¾ÌåÏµ
+	//ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ
 	BodyMag = Attitude.Qib.ToDcm() * ECIMag;
 	SunPos(timestamp);
 	SunVecBody = Attitude.Qib.ToDcm() * SunVecInl;
 }
 
 void Environment::record(CInfluxDB& DB) {
-	// ¹ßÐÔÏµÌ«ÑôÊ¸Á¿
+	// ï¿½ï¿½ï¿½ï¿½ÏµÌ«ï¿½ï¿½Ê¸ï¿½ï¿½
 	DB.addKeyValue("SIM045", SunVecInl.x());
 	DB.addKeyValue("SIM046", SunVecInl.y());
 	DB.addKeyValue("SIM047", SunVecInl.z());
-	// ±¾ÌåÏµÌ«ÑôÊ¸Á¿
+	// ï¿½ï¿½ï¿½ï¿½ÏµÌ«ï¿½ï¿½Ê¸ï¿½ï¿½
 	DB.addKeyValue("SIM048", SunVecBody.x());
 	DB.addKeyValue("SIM049", SunVecBody.y());
 	DB.addKeyValue("SIM050", SunVecBody.z());
-	// ±±¶«µØÏµµØ´Å³¡Ç¿¶È
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ø´Å³ï¿½Ç¿ï¿½ï¿½
 	DB.addKeyValue("SIM051", T2GAUSS(NEDMag.x()));
 	DB.addKeyValue("SIM052", T2GAUSS(NEDMag.y()));
 	DB.addKeyValue("SIM053", T2GAUSS(NEDMag.z()));
-	// ±¾ÌåÏµµØ´Å³¡Ç¿¶È
+	// ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ø´Å³ï¿½Ç¿ï¿½ï¿½
 	DB.addKeyValue("SIM054", T2GAUSS(BodyMag.x()));
 	DB.addKeyValue("SIM055", T2GAUSS(BodyMag.y()));
 	DB.addKeyValue("SIM056", T2GAUSS(BodyMag.z()));

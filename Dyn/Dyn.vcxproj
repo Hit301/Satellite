@@ -67,6 +67,7 @@
   <ItemGroup>
     <None Include="src\Config\Componet.ini" />
     <None Include="src\Config\Database.ini" />
+    <None Include="src\Config\Init.ini" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\Config\wmm_2020_data.txt" />
@@ -160,8 +161,8 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>deps\MySofa;deps\eigen-3.3.8;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>deps\MySofa;deps\eigen-3.3.8;include;include\Astro;include\Componet;include\General;include\Satellite;include\SatelliteMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,7 +171,7 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /Y "$(SolutionDir)Dyn\deps\MySofa\MySofaDll.dll" "$(OutDir)"
-xcopy /Y /R /I "$(SolutionDir)Dyn\src\Config\" "$(OutDir)Config\"
+xcopy /Y /R /I "$(SolutionDir)Dyn\Config\" "$(OutDir)Config\"
 
 </Command>
     </PostBuildEvent>

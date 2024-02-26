@@ -4,8 +4,7 @@
 #include <stdint.h>
 #include<cmath>
 #include <Eigen/Dense>
-
-//¶¨ÒåÊýÑ§³£Á¿
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½
 #define M_PI   3.14159265358979323846
 #define ZERO        (1e-12)
 #define MATH_E      (2.71828182845904523536)               //e
@@ -32,52 +31,52 @@
 #define J4                                  (-0.00000162336)                  //
 
 //
-// brief  : ´Å¸ÐÓ¦Ç¿¶È¸ßË¹×ªÌØË¹À­
+// brief  : ï¿½Å¸ï¿½Ó¦Ç¿ï¿½È¸ï¿½Ë¹×ªï¿½ï¿½Ë¹ï¿½ï¿½
 //
 #define GAUSS2T(Gauss) ((Gauss)*0.0001)
 
 //
-// brief  : ´Å¸ÐÓ¦Ç¿¶ÈÌØË¹À­×ª¸ßË¹
+// brief  : ï¿½Å¸ï¿½Ó¦Ç¿ï¿½ï¿½ï¿½ï¿½Ë¹ï¿½ï¿½×ªï¿½ï¿½Ë¹
 //
 #define T2GAUSS(t) ((t)*10000.0)
 
 //
-// brief  : ´Å¸ÐÓ¦Ç¿¶ÈnT×ªT
+// brief  : ï¿½Å¸ï¿½Ó¦Ç¿ï¿½ï¿½nT×ªT
 //
 #define NT2T(nt) ((nt)*1.0E-9)
 
 //
-// brief  : ´Å¸ÐÓ¦Ç¿¶ÈT×ªnT
+// brief  : ï¿½Å¸ï¿½Ó¦Ç¿ï¿½ï¿½T×ªnT
 //
 #define T2NT(t) ((t)*1.0E9)
 
 //
-// brief  : »¡¶È×ª½Ç¶È
+// brief  : ï¿½ï¿½ï¿½ï¿½×ªï¿½Ç¶ï¿½
 //
 #define DEG(rad) ((rad)*RAD2DEG)
 
 //
-// brief  : ½Ç¶È×ª»¡¶È
+// brief  : ï¿½Ç¶ï¿½×ªï¿½ï¿½ï¿½ï¿½
 //
 #define RAD(deg) ((deg)*DEG2RAD) 
 
 //
-// brief  : ¼ÆËã½Ç¶ÈµÄsinÖµ
+// brief  : ï¿½ï¿½ï¿½ï¿½Ç¶Èµï¿½sinÖµ
 //
 #define SIND(deg) (sin(RAD(deg)))
 
 //
-// brief  : ¼ÆËã½Ç¶ÈµÄcosÖµ
+// brief  : ï¿½ï¿½ï¿½ï¿½Ç¶Èµï¿½cosÖµ
 //
 #define COSD(deg) (cos(RAD(deg)))
 
 //
-// brief  : ×ªËÙrmp×ª½ÇËÙ¶È
+// brief  : ×ªï¿½ï¿½rmp×ªï¿½ï¿½ï¿½Ù¶ï¿½
 //
 #define RPM2VEL(rpm) ((rpm)*(0.10471975511965977461))             // 2PI/60
 
 //
-// brief  : ½ÇËÙ¶È×ªrmp
+// brief  : ï¿½ï¿½ï¿½Ù¶ï¿½×ªrmp
 //
 #define VEL2RPM(vel) ((vel)*(9.54929658551372014613))             // 60/2PI
 
@@ -92,100 +91,100 @@
 #define JD2MJD(jd)                          ((jd)+2400000.5)                 //JD -> MJD
 
 //
-// brief  : JD¼ÆËã1970ÄêÆðµÄ×ÜÌìÊý
+// brief  : JDï¿½ï¿½ï¿½ï¿½1970ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 #define JD2DAYS(jd)                         ((jd)-2440587.5)                 //Total days from 1970-1-1
 
 //
-// brief  : MJD¼ÆËã1970ÄêÆðµÄ×ÜÌìÊý
+// brief  : MJDï¿½ï¿½ï¿½ï¿½1970ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 #define MJD2DAYS(mjd)                       ((mjd)-40587.0)                  //Total days from 1970-1-1
 
 //
-// brief  : Ê±¼ä´Á(s)×ªJD
+// brief  : Ê±ï¿½ï¿½ï¿½(s)×ªJD
 //
 #define TS2JD(timestamp)                    (((timestamp)-1609459200.0)/86400.0+2459215.5)     //time stamp to JD
 
 //
-// brief  : Ê±¼ä´Á(s)×ªÈåÂÔÊÀ¼ÍÊý
+// brief  : Ê±ï¿½ï¿½ï¿½(s)×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 #define TS2CEN(timestamp)                   ((TS2JD(timestamp)-2451545.0)/36525.0)            //time stamp to JD centry
 
 //
-// brief  : JD×ªÊ±¼ä´Á(s)
+// brief  : JD×ªÊ±ï¿½ï¿½ï¿½(s)
 //
 #define JD2TS(jd)                          (((jd)-2459215.5)*86400.0+1609459200.0)            //JD to time stamp
 
 
 
 //
-// brief  : È¡·ûºÅ
+// brief  : È¡ï¿½ï¿½ï¿½ï¿½
 //
 #define SIGN(v) (v<0?(-1):(1))
 
 //
-// brief  : ±È½ÏÁ½¸ö¸¡µãÊýÊÇ·ñÏàµÈ£¨²îÖµ¼«Ð¡£©
+// brief  : ï¿½È½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½Öµï¿½ï¿½Ð¡ï¿½ï¿½
 //
 #define EQUALS(a,b) (fabs((D64_t)((a)-(b)))<ZERO)
 
 //
-// brief  : ±È½Ïa£¬bµÄ²îÐ¡ÓÚv
+// brief  : ï¿½È½ï¿½aï¿½ï¿½bï¿½Ä²ï¿½Ð¡ï¿½ï¿½v
 //
 #define EQUALSVAL(a,b,v) (fabs((D64_t)((a)-(b)))<fabs((D64_t)(v)))
 
 //
-// brief  : ÅÐ¶ÏÊýÖµÊÇ·ñÎª0
+// brief  : ï¿½Ð¶ï¿½ï¿½ï¿½Öµï¿½Ç·ï¿½Îª0
 //
 #define IS_ZERO(v) (fabs((D64_t)(v))<ZERO)
 
 //
-// brief  : ÅÐ¶ÏË«¾«¶ÈÊý¾ÝÊÇ·ñºÏ·¨
+// brief  : ï¿½Ð¶ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ï·ï¿½
 //
-#define IS_DOUBLE(v) (FP_NORMAL == fpclassify(v) || FP_ZERO == fpclassify(v))
+#define IS_DOUBLE(v) (FP_NORMAL == std::fpclassify(v) || FP_ZERO == std::fpclassify(v))
 
 //
-// brief  : ÅÐ¶Ï¸¡µãÊýÊÇ·ñºÏ·¨
+// brief  : ï¿½Ð¶Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ï·ï¿½
 //
 #define IS_FLOAT(v) IS_DOUBLE(v)
 
 //
-// brief  : È¡Á½Õß½Ï´óÕß
+// brief  : È¡ï¿½ï¿½ï¿½ß½Ï´ï¿½ï¿½ï¿½
 //
 #define MAX(v1,v2) ((v1)>(v2)?(v1):(v2))
 
 //
-// brief  : È¡Á½ÕßµÄ½ÏÐ¡Öµ
+// brief  : È¡ï¿½ï¿½ï¿½ßµÄ½ï¿½Ð¡Öµ
 //
 #define MIN(v1,v2) ((v1)<(v2)?(v1):(v2))
 
 //
-// brief  : ÊýÖµµÄ·åÖµÏÞ·ù
+// brief  : ï¿½ï¿½Öµï¿½Ä·ï¿½Öµï¿½Þ·ï¿½
 //
 #define LIMIT(v,min,max) MAX(MIN(v,max),min)
 
 //
-// brief  :¶Ô³Æ±¥ºÍ
+// brief  :ï¿½Ô³Æ±ï¿½ï¿½ï¿½
 //
 #define SATURATION(v,max) LIMIT(v,-max,max)
 
 //
-// brief  : ÅÐ¶ÏÊÇ·ñÎªNULL
+// brief  : ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ÎªNULL
 //
 #define IS_NULL(v) (NULL==(v))
 
 //
-// brief  : ÅÐ¶ÏÊÇ·ñÎª·ÇNULL
+// brief  : ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½NULL
 //
 #define NOT_NULL(v) (NULL!=(v))
 
 
-//·½ÏòÓàÏÒ¾ØÕó×ªÖá
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½×ªï¿½ï¿½
 #define Dcm_X_AXIS 0U
 #define Dcm_Y_AXIS 1U
 #define Dcm_Z_AXIS 2U
 
 
-//Å·À­½Ç×ªÐò
+//Å·ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
 #define EUL_SQE_ZYX  (0x00U)
 #define EUL_SQE_ZYZ  (0x11U)
 #define EUL_SQE_ZXY  (0x22U)
@@ -201,101 +200,101 @@
 #define EUL_SQE_DEFAULT (0x00U)
 
 //
-// brief  : »¡¶Èµ÷Õûµ½0 ~ 2pi
+// brief  : ï¿½ï¿½ï¿½Èµï¿½ï¿½ï¿½ï¿½ï¿½0 ~ 2pi
 //
 double RAD_2PI(double value);
 
 //
-// brief  : »¡¶È×ª³É-pi ~ pi
+// brief  : ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½-pi ~ pi
 //
 double RAD_PI(double value);
 
 //
-// brief  : ÕûÐÍ³ý0±£»¤
+// brief  : ï¿½ï¿½ï¿½Í³ï¿½0ï¿½ï¿½ï¿½ï¿½
 //
 int PROTECT_INT(int value);
 
 //
-// brief  : ÕûÐÍ³ý0±£»¤
+// brief  : ï¿½ï¿½ï¿½Í³ï¿½0ï¿½ï¿½ï¿½ï¿½
 //
 unsigned PROTECT_UINT(unsigned value);
 
 //
-// brief  : ¸¡µãÐÍ³ý0±£»¤
+// brief  : ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½0ï¿½ï¿½ï¿½ï¿½
 //
 double PROTECT(double value);
 
 //
-// brief  : acosÔËËã£¬¶ÔÊäÈëÖµÏÞ·ù[-1,1]
+// brief  : acosï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Þ·ï¿½[-1,1]
 //
 double ACOS(double value);
 
 //
-// brief  : asinÔËËã£¬¶ÔÊäÈëÖµÏÞ·ù[-1,1]
+// brief  : asinï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Þ·ï¿½[-1,1]
 //
 double ASIN(double value);
 
 //
-// brief  : sqrtÔËËã,ÏÞÖÆ¶¨ÒåÓò
+// brief  : sqrtï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 double SQRT(double value);
 
 //
-// brief  : ÃÝÔËËã
+// brief  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 double POW(double X, double Y);
 
 //
-// brief  : X¶ÔYÈ¡Ä££¨¸¡µãÊý£©
+// brief  : Xï¿½ï¿½YÈ¡Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 double MOD(double X, double Y);
 
 //
-// brief  : X¶ÔYÈ¡Ä££¨Int32£©
+// brief  : Xï¿½ï¿½YÈ¡Ä£ï¿½ï¿½Int32ï¿½ï¿½
 //
 int MOD_INT(int X, int Y);
 
 //
-// brief  : X¶ÔYÈ¡Ä££¨Uint32£©
+// brief  : Xï¿½ï¿½YÈ¡Ä£ï¿½ï¿½Uint32ï¿½ï¿½
 //
 unsigned MOD_UINT(unsigned X, unsigned Y);
 
 //
-// brief  : Çó·´ÕýÇÐÖµ
+// brief  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 //
 double ATAN2(double Y, double X);
 
 //
-// brief  : Çó×ÔÈ»¶ÔÊý
+// brief  : ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
 //
 double LOG(double Value);
 
 //
-// brief  : ÇóÒÔ2Îªµ×µÄ¶ÔÊý
+// brief  : ï¿½ï¿½ï¿½ï¿½2Îªï¿½×µÄ¶ï¿½ï¿½ï¿½
 //
 double LOG2(double Value);
 
 //
-// brief  : ÇóÒÔ10Îªµ×µÄ¶ÔÊý
+// brief  : ï¿½ï¿½ï¿½ï¿½10Îªï¿½×µÄ¶ï¿½ï¿½ï¿½
 //
 double LOG10(double Value);
 
 //
-// brief  : Ë«½×³Ë
+// brief  : Ë«ï¿½×³ï¿½
 //
 double DoubleFactorial(double Value);
 
 //
-// brief  : ½×³Ë
+// brief  : ï¿½×³ï¿½
 //
 double Factorial(double Value);
 
 //
-// brief  : ÅÐ¶ÏÈòÄê
+// brief  : ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 int LunarMonthDays(int year);
 
 //
-// brief  : ¼ÆËãÐ¡ÊýÄê
+// brief  : ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
 //
 double DecYear(int year, double month, double day);

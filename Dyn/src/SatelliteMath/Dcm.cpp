@@ -1,30 +1,22 @@
-#include"SatelliteMath/Dcm.h"
-#include"SatelliteMath/EulerAgl.h"
-#include"SatelliteMath/Quaternions.h"
+#include"Dcm.h"
+#include"EulerAgl.h"
+#include"Quaternions.h"
 
 
 CDcm::CDcm() : DcmData(Eigen::Matrix3d::Identity())
 {
-    // 或者
     // DcmData << 1, 0, 0, 0, 1, 0, 0, 0, 1;
 }
 
 CDcm::CDcm(double A00, double A01, double A02, double A10, double A11, double A12, double A20, double A21, double A22)
 {
-	/*考虑优化形参*/
 	DcmData << A00, A01, A02, 
 		       A10, A11, A12, 
 		       A20, A21, A22;
-
 }
 
 CDcm::CDcm(unsigned Axis, double Theta)
 {
-	//@brief: 以单轴旋转初始化dcmdata
-	//@para : axis(dcm_x_axis,dcm_y_axis,dcm_z_axis)：转轴(查basemath)
-	//		  theta(rad)：转角
-	//@return : none
-	//@remark : 已测试 axis(dcm_x_axis=0?,dcm_y_axis=1?,dcm_z_axis=2?)
 	switch (Axis)
 	{
 	case Dcm_X_AXIS:
@@ -59,21 +51,11 @@ CDcm::CDcm(unsigned Axis, double Theta)
 
 CDcm::CDcm(const CDcm& _Dcm)
 {
-    //@brief: 以其他方向余弦矩阵初始化DcmData，注意这里传入的参数类型，也是CDcm
-    //@para : _Dcm：另一个方向余弦矩阵
-    //@return : none
-    //@remark : 已测试
-    /*引用*/
     DcmData = _Dcm.DcmData;
 }
 
 CDcm& CDcm::operator=(const CDcm _Dcm)
 {
-    //@brief: 重载赋值运算符
-    //@para : _Dcm：另一个方向余弦矩阵
-    //@return : none
-    //@remark : 已测试
-    /*重载赋值运算符 返回当前对象的引用*/
     if(this !=&_Dcm)
     DcmData = _Dcm.DcmData;
     return *this;
@@ -81,10 +63,6 @@ CDcm& CDcm::operator=(const CDcm _Dcm)
 
 CEulerAgl CDcm::ToEulerAgl(unsigned Sequence) const
 {
-    //@brief:  方向余弦矩阵转欧拉角
-    //@para : Sequence:转序(查BaseMath)
-    //@return : 指定转序的欧拉角
-    //@remark : 已测试
     double R1{ 0 }, R2{ 0 }, R3{ 0 };
 
     switch (Sequence)
@@ -184,13 +162,8 @@ CEulerAgl CDcm::ToEulerAgl(unsigned Sequence) const
 
 Quat CDcm::ToQuat() const
 {
-	//@brief:  方向余弦矩阵转四元数
-	//@para : none
-	//@return : 转换得到的四元数
-	//@remark : 已测试
 	double trace = DcmData(0, 0) + DcmData(1, 1) + DcmData(2, 2);
 	double q0{ 1 }, q1{ 0 }, q2{ 0 }, q3{ 0 };
-	/*精简*/
 	if (trace > 0.0)
 	{
 		double sqtrp1 = sqrt(trace + 1.0);

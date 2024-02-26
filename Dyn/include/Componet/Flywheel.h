@@ -1,22 +1,22 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
+#include"BaseMath.h"
 class Flywheel
 {
 public:
-	Eigen::Vector3d InstallVet;//°²×°ÏòÁ¿£¬´Ó±¾ÌåÏµµ½°²×°Ïµ
-	double Speed;//·ÉÂÖ×ªËÙÊýÖµ£¬µ¥Î»rad/s
-	double Torque;//Êµ¼ÊÁ¦¾Ø£¬µ¥Î»Nm
-	double Momentum;//½Ç¶¯Á¿ µ¥Î»Nms
-	int64_t LastRenewTime;//ÉÏ´Î¸üÐÂÊ±¼ä,utcÊ±¼ä´Áms
-	double MaxTref;//×î´ó²Î¿¼Á¦¾ØNm
-	double MaxSpeed;//×î´ó×ªËÙ
-	double SpeedRef;//²Î¿¼×ªËÙrad/s
-	double TorqueRef;//²Î¿¼Á¦¾Øµ¥Î»Nm
+	Eigen::Vector3d InstallVet;//ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó±ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½×°Ïµ
+	double Speed;//ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Î»rad/s
+	double Torque;//Êµï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½Î»Nm
+	double Momentum;//ï¿½Ç¶ï¿½ï¿½ï¿½ ï¿½ï¿½Î»Nms
+	int64_t LastRenewTime;//ï¿½Ï´Î¸ï¿½ï¿½ï¿½Ê±ï¿½ï¿½,utcÊ±ï¿½ï¿½ï¿½ms
+	double MaxTref;//ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½Nm
+	double MaxSpeed;//ï¿½ï¿½ï¿½×ªï¿½ï¿½
+	double SpeedRef;//ï¿½Î¿ï¿½×ªï¿½ï¿½rad/s
+	double TorqueRef;//ï¿½Î¿ï¿½ï¿½ï¿½ï¿½Øµï¿½Î»Nm
 	//
-	double Kp;//·ÉÂÖ¿ØÖÆÆ÷Kp
-	double Ki;//·ÉÂÖ¿ØÖÆÆ÷Ki
-	double tau;//·ÉÂÖÄ£ÐÍÊ±¼ä³£Êý
-	double J;//·ÉÂÖ×ª¶¯¹ßÁ¿ kgm2
+	double Kp;//ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½ï¿½Kp
+	double Ki;//ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½ï¿½Ki
+	double tau;//ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½Ê±ï¿½ä³£ï¿½ï¿½
+	double J;//ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ kgm2
 public:
 	Flywheel();
 	Flywheel(Eigen::Vector3d& InsVet);

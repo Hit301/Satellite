@@ -1,23 +1,23 @@
 #pragma once
-#include"Astro/Attitude.h"
-#include"Astro/Orbit.h"
-#include "Astro/Environment.h"
-#include "AStro/AttitudeControl.h"
-#include"Componet/Componet.h"
+#include"Attitude.h"
+#include"Orbit.h"
+#include "Environment.h"
+#include "AttitudeControl.h"
+#include"Componet.h"
 
 
 class Satellite
 {
 public:
-	int64_t SatelliteTime;//ÐÇÀú£¬utcÊ±¼ä´Áµ¥Î»ms
-	COrbit Orbit;//¹ìµÀ
-	CAttitude Attitude;//×ËÌ¬
-	Environment Env;//»·¾³
-	CComponet* pComponet;//µ¥»ú
-	CAttitudeController AttController;//×ËÌ¬¿ØÖÆ
+	int64_t SatelliteTime;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½utcÊ±ï¿½ï¿½ï¿½ï¿½ï¿½Î»ms
+	COrbit Orbit;//ï¿½ï¿½ï¿½
+	CAttitude Attitude;//ï¿½ï¿½Ì¬
+	Environment Env;//ï¿½ï¿½ï¿½ï¿½
+	CComponet* pComponet;//ï¿½ï¿½ï¿½ï¿½
+	CAttitudeController AttController;//ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 public:
-	double SampleTime;//»ý·ÖÊ±³¤£¬µ¥Î»s
-	int SpeedTimes;//¼ÓËÙ±¶ÂÊ
+	double SampleTime;//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»s
+	int SpeedTimes;//ï¿½ï¿½ï¿½Ù±ï¿½ï¿½ï¿½
 public:
 	Satellite();
 	Satellite(double Ts, int m_SpeedTimes);

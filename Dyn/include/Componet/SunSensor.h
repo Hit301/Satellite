@@ -1,12 +1,12 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
+#include"BaseMath.h"
 class SunSensor
 {
 public:
-	Eigen::Matrix3d InstallMatrix;//安装矩阵,从本体系到测量系
-	Eigen::Vector3d Data;//太敏测量三轴太阳矢量数值
-	int64_t LastRenewTime;//开机时间，utc时间戳单位ms
-	double SamplePeriod;//太敏采样周期，单位为s
+	Eigen::Matrix3d InstallMatrix;//锟斤拷装锟斤拷锟斤拷,锟接憋拷锟斤拷系锟斤拷锟斤拷锟斤拷系
+	Eigen::Vector3d Data;//太锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷太锟斤拷矢锟斤拷锟斤拷值
+	int64_t LastRenewTime;//锟斤拷锟斤拷时锟戒，utc时锟斤拷锟斤拷锟轿籱s
+	double SamplePeriod;//太锟斤拷锟斤拷锟斤拷锟斤拷锟节ｏ拷锟斤拷位为s
 public:
 	SunSensor();
 

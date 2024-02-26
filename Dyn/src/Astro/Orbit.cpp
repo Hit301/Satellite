@@ -1,14 +1,14 @@
-#include "Astro/Orbit.h"
-#include "Astro/Environment.h"
-#include"Astro/Attitude.h"
-#include"SatelliteMath/Quaternions.h"
-#include"General/CConfig.h"
-#include"General/InfluxDB.h"
+#include "Orbit.h"
+#include "Environment.h"
+#include"Attitude.h"
+#include"Quaternions.h"
+#include"CConfig.h"
+#include"InfluxDB.h"
 int COrbit::TwoBodRK4(double Ts)
 {
 	if (IsRV(J2000Inertial) == false)
 	{
-		printf("¹ìµÀRV²»ºÏ·¨£¬R:%f(m) V:%f(m/s)\n", J2000Inertial.Pos.norm(), J2000Inertial.Vel.norm());
+		printf("ï¿½ï¿½ï¿½RVï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½R:%f(m) V:%f(m/s)\n", J2000Inertial.Pos.norm(), J2000Inertial.Vel.norm());
 		return -1;
 	}
 	Eigen::VectorXd RVState(6, 1);
@@ -30,10 +30,10 @@ int COrbit::TwoBodRK4(double Ts)
 
 void COrbit::Inl2Fix(const int64_t timestamp)
 {
-	//@brief: ¹ßÐÔÏµÎ»ÖÃËÙ¶È×ªµØ¹ÌÏµÎ»ÖÃËÙ¶È
-	//@para : timestamp: utcÊ±¼ä´Á(ms) deltaUT1:UTC-UT1(s) xp,yp:¼«ÒÆ(rad)  rc2t:×ªÒÆ¾ØÕó½á¹û
+	//@brief: ï¿½ï¿½ï¿½ï¿½ÏµÎ»ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½Ø¹ï¿½ÏµÎ»ï¿½ï¿½ï¿½Ù¶ï¿½
+	//@para : timestamp: utcÊ±ï¿½ï¿½ï¿½(ms) deltaUT1:UTC-UT1(s) xp,yp:ï¿½ï¿½ï¿½ï¿½(rad)  rc2t:×ªï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ï¿½
 	//@return : none
-	//@remark : ÒÑ²âÊÔ
+	//@remark : ï¿½Ñ²ï¿½ï¿½ï¿½
 	Eigen::Matrix3d Aif;
 	Aif = Environment::ECI2ECEF(timestamp);
 	ECEFFix.Pos = Aif * J2000Inertial.Pos;
@@ -44,10 +44,10 @@ void COrbit::Inl2Fix(const int64_t timestamp)
 
 void COrbit::FixPos2LLA()
 {
-	//@brief: µØ¹ÌÏµ¹ìµÀ¼ÆËãLLA
+	//@brief: ï¿½Ø¹ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LLA
 	//@para : none
 	//@return : none
-	//@remark : ÒÑ²âÊÔ
+	//@remark : ï¿½Ñ²ï¿½ï¿½ï¿½
 	double sqrt_x2y2 = SQRT(ECEFFix.Pos(0) * ECEFFix.Pos(0) + ECEFFix.Pos(1) * ECEFFix.Pos(1));
 	double e2 = 1.0 - (EARTH_POLAR_RADIUS * EARTH_POLAR_RADIUS) / (EARTH_EQUATORIAL_RADIUS * EARTH_EQUATORIAL_RADIUS);
 	double e_2 = (EARTH_EQUATORIAL_RADIUS * EARTH_EQUATORIAL_RADIUS) / (EARTH_POLAR_RADIUS * EARTH_POLAR_RADIUS) - 1.0;
@@ -69,10 +69,10 @@ void COrbit::FixPos2LLA()
 
 void COrbit::FixPos2LLR()
 {
-	//@brief: µØ¹ÌÏµ¹ìµÀ¼ÆËãLLR
+	//@brief: ï¿½Ø¹ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LLR
 	//@para : none
 	//@return : none
-	//@remark : ÒÑ²âÊÔ
+	//@remark : ï¿½Ñ²ï¿½ï¿½ï¿½
 	LLR.Lng = ATAN2(ECEFFix.Pos(1), ECEFFix.Pos(0));
 	LLR.Lat = ATAN2(ECEFFix.Pos(2), SQRT(ECEFFix.Pos(0) * ECEFFix.Pos(0) + ECEFFix.Pos(1) * ECEFFix.Pos(1)));
 	LLR.Rds = ECEFFix.Pos.norm();
@@ -80,10 +80,10 @@ void COrbit::FixPos2LLR()
 
 Eigen::Matrix3d COrbit::NED2ECEF()
 {
-	//@brief: ¼ÆËã±±¶«µØÏµµ½µØ¹ÌÏµµÄ×ªÒÆ¾ØÕó
-	//@para : timestamp: utcÊ±¼ä´Á(ms) deltaUT1:UTC-UT1(s) xp,yp:¼«ÒÆ(rad)  rc2t:×ªÒÆ¾ØÕó½á¹û
+	//@brief: ï¿½ï¿½ï¿½ã±±ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ø¹ï¿½Ïµï¿½ï¿½×ªï¿½Æ¾ï¿½ï¿½ï¿½
+	//@para : timestamp: utcÊ±ï¿½ï¿½ï¿½(ms) deltaUT1:UTC-UT1(s) xp,yp:ï¿½ï¿½ï¿½ï¿½(rad)  rc2t:×ªï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ï¿½
 	//@return : none
-	/*µ¥Î»*/
+	/*ï¿½ï¿½Î»*/
 	Eigen::Matrix3d res;
 	Eigen::Matrix3d temres;
 	double sin_lng = sin(LLR.Lng);
@@ -124,21 +124,21 @@ std::ostream& operator<<(std::ostream& _cout, const RV& j2000)
 }
 
 void COrbit::record(CInfluxDB& DB) {
-	// ¹ßÐÔÏµRV
+	// ï¿½ï¿½ï¿½ï¿½ÏµRV
 	DB.addKeyValue("SIM009", J2000Inertial.Pos.x());
 	DB.addKeyValue("SIM010", J2000Inertial.Pos.y());
 	DB.addKeyValue("SIM011", J2000Inertial.Pos.z());
 	DB.addKeyValue("SIM012", J2000Inertial.Vel.x());
 	DB.addKeyValue("SIM013", J2000Inertial.Vel.y());
 	DB.addKeyValue("SIM014", J2000Inertial.Vel.z());
-	// µØ¹ÌÏµRV
+	// ï¿½Ø¹ï¿½ÏµRV
 	DB.addKeyValue("SIM015", ECEFFix.Pos.x());
 	DB.addKeyValue("SIM016", ECEFFix.Pos.y());
 	DB.addKeyValue("SIM017", ECEFFix.Pos.z());
 	DB.addKeyValue("SIM018", ECEFFix.Vel.x());
 	DB.addKeyValue("SIM019", ECEFFix.Vel.y());
 	DB.addKeyValue("SIM020", ECEFFix.Vel.z());
-	// µØÀí²ÎÊý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DB.addKeyValue("SIM021", RAD_PI(LLA.Lng) * RAD2DEG);
 	DB.addKeyValue("SIM022", RAD_PI(LLA.Lat) * RAD2DEG);
 	DB.addKeyValue("SIM023", LLA.Alt);

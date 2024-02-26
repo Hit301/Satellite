@@ -1,11 +1,11 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
+#include"BaseMath.h"
+#include"AllHead.h"
 // 2023-12-22 11:19:45
 struct RV
 {
-    Eigen::Vector3d Pos;//¹ìµÀµÄÎ»ÖÃÊ¸Á¿£¬µ¥Î»m
-    Eigen::Vector3d Vel;//¹ìµÀµÄËÙ¶ÈÊ¸Á¿£¬µ¥Î»m/s
+    Eigen::Vector3d Pos;//ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»m
+    Eigen::Vector3d Vel;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»m/s
     RV() : Pos(6678136.9999998566, 0.0002095685, -1.3800009224), 
             Vel(0.0007615644, 6789.5304738682, 3686.4138485846) {}
     RV(const Eigen::Vector3d& initialPos, const Eigen::Vector3d& initialVel)
@@ -13,32 +13,32 @@ struct RV
 };
 struct LLA_t
 {
-    double Lng;//µØÀí¾­¶È£¬µ¥Î»»¡¶È
-    double Lat;//µØÀíÎ³¶È£¬µ¥Î»»¡¶È
-    double Alt;//º£°Î¸ß¶È£¬µ¥Î»m
+    double Lng;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+    double Lat;//ï¿½ï¿½ï¿½ï¿½Î³ï¿½È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+    double Alt;//ï¿½ï¿½ï¿½Î¸ß¶È£ï¿½ï¿½ï¿½Î»m
     LLA_t() : Lng(0), Lat(1.3963), Alt(0) {}
 };
 struct LLR_t
 {
-    double Lng;//ÇòÐÄ¾­¶È£¬µ¥Î»»¡¶È
-    double Lat;//ÇòÐÄÎ³¶È£¬µ¥Î»»¡¶È
-    double Rds;//ÇòÐÄ°ë¾¶£¬µ¥Î»m
+    double Lng;//ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+    double Lat;//ï¿½ï¿½ï¿½ï¿½Î³ï¿½È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+    double Rds;//ï¿½ï¿½ï¿½Ä°ë¾¶ï¿½ï¿½ï¿½ï¿½Î»m
     LLR_t() : Lng(0), Lat(1.3951), Rds(6357400) {}
 };
 
 struct OrbitElement
 {
-    double a;               //¹ìµÀ°ë³¤Öá(Semi-major Axis)
-    double e;               //¹ìµÀÆ«ÐÄÂÊ(Eccentricity)
-    double i;               //¹ìµÀÇã½Ç£¨rad£© (Inclination)
-    double RAAN;            //Éý½»µã³à¾­£¨rad£©(RAAN)
-    double omega;           //½üµØµã·ù½Ç£¨rad£©(Arg of Perigee)
-    double M;               //¹ìµÀÆ½½üµã½Ç£¨rad£©(Mean Anomaly)
-    double f;               //Õæ½üµã½Ç£¨rad£©(True Anomaly)
-    double u;               //¹ìµÀ·ù½Ç£¨Î³¶È·ù½Ç£©£¨rad£©(Arg of Latitude)
-    double E;               //¹ìµÀÆ«½üµã½Ç£¨rad£©(Eccentric Anomaly)
-    double w;               //¹ìµÀÆ½¾ù½ÇËÙ¶È£¨rad/s£©(Palstance  2PI/Period)
-    double T;               //¹ìµÀÖÜÆÚ£¨s£©(Period)
+    double a;               //ï¿½ï¿½ï¿½ï¿½ë³¤ï¿½ï¿½(Semi-major Axis)
+    double e;               //ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½(Eccentricity)
+    double i;               //ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½ (Inclination)
+    double RAAN;            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à¾­ï¿½ï¿½radï¿½ï¿½(RAAN)
+    double omega;           //ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½(Arg of Perigee)
+    double M;               //ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½(Mean Anomaly)
+    double f;               //ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½(True Anomaly)
+    double u;               //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½Î³ï¿½È·ï¿½ï¿½Ç£ï¿½ï¿½ï¿½radï¿½ï¿½(Arg of Latitude)
+    double E;               //ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½Ç£ï¿½radï¿½ï¿½(Eccentric Anomaly)
+    double w;               //ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È£ï¿½rad/sï¿½ï¿½(Palstance  2PI/Period)
+    double T;               //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½sï¿½ï¿½(Period)
     OrbitElement():
         a(6678137), e(0), i(RAD(28.5)),
         RAAN(0), omega(0), M(0)
@@ -73,54 +73,54 @@ private:
     }
 
 public:
-    RV J2000Inertial;//¹ßÐÔÏµRV
-    RV ECEFFix;//µØ¹ÌÏµRV
-    OrbitElement OrbitElements;//¹ìµÀ¸ùÊý
-    LLA_t LLA;//¾­Î³¸ß
-    LLR_t LLR;//µØÇò¾­Î³¶ÈºÍ°ë¾¶
+    RV J2000Inertial;//ï¿½ï¿½ï¿½ï¿½ÏµRV
+    RV ECEFFix;//ï¿½Ø¹ï¿½ÏµRV
+    OrbitElement OrbitElements;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    LLA_t LLA;//ï¿½ï¿½Î³ï¿½ï¿½
+    LLR_t LLR;//ï¿½ï¿½ï¿½ï¿½Î³ï¿½ÈºÍ°ë¾¶
 
 
 public:
     COrbit(): J2000Inertial(), OrbitElements(), ECEFFix(), LLA(), LLR()
     {
-        //ÏÈÐ´Ò»¸öÒÔ¹ßÐÔÏµ³õÊ¼»¯µÄ·½Ê½°É
+        //ï¿½ï¿½Ð´Ò»ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ä·ï¿½Ê½ï¿½ï¿½
 
     }
 
     //
-    // brief  : Ê¹ÓÃ¹ßÐÔÏµRVºÍ¶þÌåµÝÍÆ¹ìµÀ
+    // brief  : Ê¹ï¿½Ã¹ï¿½ï¿½ï¿½ÏµRVï¿½Í¶ï¿½ï¿½ï¿½ï¿½ï¿½Æ¹ï¿½ï¿½
     //
     int TwoBodRK4(double Ts);
 
-    //@brief: ¹ßÐÔÏµÎ»ÖÃËÙ¶È×ªµØ¹ÌÏµÎ»ÖÃËÙ¶È
-    //@para : timestamp: utcÊ±¼ä´Á(ms) deltaUT1:UTC-UT1(s) xp,yp:¼«ÒÆ(rad)  rc2t:×ªÒÆ¾ØÕó½á¹û
+    //@brief: ï¿½ï¿½ï¿½ï¿½ÏµÎ»ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½Ø¹ï¿½ÏµÎ»ï¿½ï¿½ï¿½Ù¶ï¿½
+    //@para : timestamp: utcÊ±ï¿½ï¿½ï¿½(ms) deltaUT1:UTC-UT1(s) xp,yp:ï¿½ï¿½ï¿½ï¿½(rad)  rc2t:×ªï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ï¿½
     //@return : none
-    //@remark : ÒÑ²âÊÔ
+    //@remark : ï¿½Ñ²ï¿½ï¿½ï¿½
     void Inl2Fix(const int64_t timestamp);
 
-    //@brief: µØ¹ÌÏµ¹ìµÀ¼ÆËãLLA
+    //@brief: ï¿½Ø¹ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LLA
     //@para : none
     //@return : none
-    //@remark : ÒÑ²âÊÔ
+    //@remark : ï¿½Ñ²ï¿½ï¿½ï¿½
     void FixPos2LLA();
 
-    //@brief: µØ¹ÌÏµ¹ìµÀ¼ÆËãLLR
+    //@brief: ï¿½Ø¹ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LLR
     //@para : none
     //@return : none
-    //@remark : ÒÑ²âÊÔ
+    //@remark : ï¿½Ñ²ï¿½ï¿½ï¿½
     void FixPos2LLR();
 
-    //@brief: ¼ÆËã±±¶«µØÏµµ½µØ¹ÌÏµµÄ×ªÒÆ¾ØÕó
-    //@para : timestamp: utcÊ±¼ä´Á(ms) deltaUT1:UTC-UT1(s) xp,yp:¼«ÒÆ(rad)  rc2t:×ªÒÆ¾ØÕó½á¹û
+    //@brief: ï¿½ï¿½ï¿½ã±±ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ø¹ï¿½Ïµï¿½ï¿½×ªï¿½Æ¾ï¿½ï¿½ï¿½
+    //@para : timestamp: utcÊ±ï¿½ï¿½ï¿½(ms) deltaUT1:UTC-UT1(s) xp,yp:ï¿½ï¿½ï¿½ï¿½(rad)  rc2t:×ªï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ï¿½
     //@return : none
-    //@remark : ¾²Ì¬³ÉÔ±º¯ÊýÖ»ÄÜ·ÃÎÊ¾²Ì¬³ÉÔ±±äÁ¿
+    //@remark : ï¿½ï¿½Ì¬ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ü·ï¿½ï¿½Ê¾ï¿½Ì¬ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½
     Eigen::Matrix3d NED2ECEF();
 
     void StateRenew(double Ts, const int64_t timestamp);
 
     void Init(int64_t Timestamp);
 
-    // Ð´ÈëÊý¾Ý¿â
+    // Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
     void record(CInfluxDB& DB);
 private:
     Eigen::VectorXd TwoBodAcc(const Eigen::VectorXd& RVState);

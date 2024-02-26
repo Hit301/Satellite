@@ -1,14 +1,14 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
-#include "Astro/Orbit.h"
+#include"BaseMath.h"
+#include"AllHead.h"
+#include "Orbit.h"
 
 class GNSS
 {
 public:
-	RV Data;//GNSS数据
-	int64_t LastRenewTime;//上次更新时间,utc时间戳ms
-	double SamplePeriod;//GNSS采样周期，单位为s
+	RV Data;//GNSS锟斤拷锟斤拷
+	int64_t LastRenewTime;//锟较次革拷锟斤拷时锟斤拷,utc时锟斤拷锟絤s
+	double SamplePeriod;//GNSS锟斤拷锟斤拷锟斤拷锟节ｏ拷锟斤拷位为s
 public:
 	GNSS();
 public:

@@ -1,4 +1,4 @@
-#include"Componet/MagSensor.h"
+#include"MagSensor.h"
 MagSensor::MagSensor()
 {
 	InstallMatrix << 1, 0, 0,

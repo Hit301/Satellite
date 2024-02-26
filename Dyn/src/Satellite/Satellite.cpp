@@ -1,7 +1,15 @@
-#include "Satellite/Satellite.h"
-#include"General/CConfig.h"
-#include"General/InfluxDB.h"
-#include"MySofaDll.h"
+/*
+ * @Author: Amadeus
+ * @Date: 2024-02-26 08:52:34
+ * @LastEditors: Amadeus
+ * @LastEditTime: 2024-02-26 09:16:48
+ * @FilePath: /Satellite/src/Satellite/Satellite.cpp
+ * @Description: 
+ */
+#include "Satellite.h"
+#include"CConfig.h"
+#include"InfluxDB.h"
+#include"sofaDLL.h"
 Satellite::Satellite() :Orbit(), Attitude(), AttController()
 {
 	SampleTime = 0.1;

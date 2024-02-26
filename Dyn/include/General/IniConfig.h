@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
-#include"SatelliteMath/BaseMath.h"
+#include"BaseMath.h"
 //*.ini
 class CIniConfig
 {

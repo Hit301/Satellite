@@ -1,4 +1,4 @@
-#include "Componet/GNSS.h"
+#include "GNSS.h"
 
 GNSS::GNSS():Data()
 {

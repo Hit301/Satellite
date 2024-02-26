@@ -1,4 +1,4 @@
-#include"Componet/SunSensor.h"
+#include"SunSensor.h"
 SunSensor::SunSensor()
 {
 	InstallMatrix << 1, 0, 0,

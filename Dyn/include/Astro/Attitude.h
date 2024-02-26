@@ -1,36 +1,36 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
-#include"General/AllHead.h"
-#include"SatelliteMath/Quaternions.h"
-#include"SatelliteMath/Dcm.h"
-#include"SatelliteMath/EulerAgl.h"
-#include "Astro/Orbit.h"
+#include"BaseMath.h"
+#include"AllHead.h"
+#include"Quaternions.h"
+#include"Dcm.h"
+#include"EulerAgl.h"
+#include "Orbit.h"
 
 class CAttitude
 {
 public:
 
-	Eigen::Vector3d Omega_b;//±¾ÌåÏµ½ÇËÙ¶È£¬µ¥Î»rad/s
-	CDcm Aio;//¹ßÐÔÏµ×ª¹ìµÀÏµ×ªÒÆ¾ØÕó
-	Quat Qib;//¹ßÐÔÏµµ½±¾ÌåÏµËÄÔªÊý
-	Quat Qob;//¹ìµÀÏµµ½±¾ÌåÏµËÄÔªÊý
+	Eigen::Vector3d Omega_b;//ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ù¶È£ï¿½ï¿½ï¿½Î»rad/s
+	CDcm Aio;//ï¿½ï¿½ï¿½ï¿½Ïµ×ªï¿½ï¿½ï¿½Ïµ×ªï¿½Æ¾ï¿½ï¿½ï¿½
+	Quat Qib;//ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ôªï¿½ï¿½
+	Quat Qob;//ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ôªï¿½ï¿½
 private:
-	Eigen::Matrix3d SatInaMat;//±¾ÌåÏµ¹ßÁ¿¾ØÕó£¬µ¥Î»kgm2
-	Eigen::Vector3d WheelMomentum_b;//·ÉÂÖ×éÔÚ±¾ÌåÏµÏÂµÄ½Ç¶¯Á¿£¬µ¥Î»Nms
-	Eigen::Vector3d TotalTorque;//Tf£º¸ÉÈÅÁ¦¾Ø£ºTB ´ÅÁ¦¾Ø£ºTw£º·ÉÂÖ±¾ÌåÏµÁ¦¾Ø TotalTorque=TB+Tf-Tw
+	Eigen::Matrix3d SatInaMat;//ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬µï¿½Î»kgm2
+	Eigen::Vector3d WheelMomentum_b;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Ïµï¿½ÂµÄ½Ç¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»Nms
+	Eigen::Vector3d TotalTorque;//Tfï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½TB ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½Twï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ TotalTorque=TB+Tf-Tw
 public:
 	//
-	// brief  : Ä¬ÈÏ×ËÌ¬Àà¹¹Ôìº¯Êý
+	// brief  : Ä¬ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½à¹¹ï¿½ìº¯ï¿½ï¿½
 	//
 	CAttitude();
 
 	//
-	// brief  : ×ËÌ¬¶¯Á¦Ñ§µÝÍÆ½ÇËÙ¶È
+	// brief  : ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Ù¶ï¿½
 	//
 	int AttitudeDynamicsRk4(double Ts);
 
 	//
-	// brief  : ×ËÌ¬ÔË¶¯µÝÍÆËÄÔªÊý
+	// brief  : ï¿½ï¿½Ì¬ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 	//
 	int AttitudeKinematics(double Ts);
 
@@ -38,12 +38,12 @@ public:
 
 	void Init(COrbit& Obt);
 
-	// Ð´ÈëÊý¾Ý¿â
+	// Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
 	void record(CInfluxDB& DB);
 
 	static CDcm GetAio(const RV& InlRv);
 private:
-	Eigen::Vector3d LastOmega_b;//ÉÏÒ»ÅÄµÄ±¾ÌåÏµ½ÇËÙ¶È£¬µ¥Î»rad/s
+	Eigen::Vector3d LastOmega_b;//ï¿½ï¿½Ò»ï¿½ÄµÄ±ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ù¶È£ï¿½ï¿½ï¿½Î»rad/s
 	void RenewAio(COrbit& Orbit);
 };
 

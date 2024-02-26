@@ -147,6 +147,7 @@
   <ItemGroup>
     <None Include="src\Config\Componet.ini" />
     <None Include="src\Config\Database.ini" />
+    <None Include="src\Config\Init.ini" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\Config\wmm_2020_data.txt" />

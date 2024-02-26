@@ -1,10 +1,18 @@
-#include"General/SimTime.h"
-#include "Satellite/Satellite.h"
-#include"General/InfluxDB.h"
-#include "General/IniConfig.h"
+/*
+ * @Author: Amadeus
+ * @Date: 2024-02-26 08:52:36
+ * @LastEditors: Amadeus
+ * @LastEditTime: 2024-02-26 10:29:11
+ * @FilePath: /Satellite/src/main.cpp
+ * @Description: 
+ */
+#include"SimTime.h"
+#include "Satellite.h"
+#include"InfluxDB.h"
+#include "IniConfig.h"
 int main(int argc, char* argv[])
 {
-	//CInfluxDB DB;
+	CInfluxDB DB;
 	double SampleTime{ 0.1 };
 	int SpeedTimes = 1;
 	Satellite Amadeus(SampleTime, SpeedTimes);
@@ -19,8 +27,7 @@ int main(int argc, char* argv[])
 			std::cout << Amadeus;
 		}
 		pSimTime->ReleaseSimCountMute();
-		// 2023-12-22 11:20:02
-		//Amadeus.data2DB(DB, 1);
+		Amadeus.data2DB(DB, 1);
 	}	
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include "General/IniConfig.h"
+#include "IniConfig.h"
 #include <fstream>
 #include <stdlib.h>
 
@@ -88,7 +88,7 @@ bool CIniConfig::AnalyseLine(const std::string& line, std::string& section, std:
 bool CIniConfig::ReadConfig(const std::string& filename)
 {
 	settings_.clear();
-	std::ifstream infile(filename.c_str());//¹¹ÔìÄ¬ÈÏµ÷ÓÃopen,ËùÒÔ¿ÉÒÔ²»µ÷ÓÃopen
+	std::ifstream infile(filename.c_str());//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ïµï¿½ï¿½ï¿½open,ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½open
 	//std::ifstream infile;
 	//infile.open(filename.c_str());
 	//bool ret = infile.is_open()
@@ -182,7 +182,7 @@ int64_t CIniConfig::ReadInt64_t(const char* section, const char* item, const int
 	{
 		return default_value;
 	}
-	return _atoi64(it_item->second.c_str());
+	return std::atoi(it_item->second.c_str());
 }
 
 double CIniConfig::ReadDouble(const char* section, const char* item, const int& default_value)
@@ -237,12 +237,12 @@ Eigen::MatrixXd CIniConfig::ReadMatrix(const char* section, const char* item)
 	std::stringstream ss(matrixString);
 	std::string rowString;
 
-	// ´¦ÀíÃ¿Ò»ÐÐ
+	// ï¿½ï¿½ï¿½ï¿½Ã¿Ò»ï¿½ï¿½
 	while (std::getline(ss, rowString, ';')) {
 		std::stringstream rowStream(rowString);
 		std::string cell;
 
-		// ´¦ÀíÃ¿¸öÔªËØ
+		// ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½Ôªï¿½ï¿½
 		while (std::getline(rowStream, cell, ',')) {
 			matrixValues.push_back(std::stod(cell));
 			colCount++;
@@ -252,14 +252,14 @@ Eigen::MatrixXd CIniConfig::ReadMatrix(const char* section, const char* item)
 		colCount = 0;
 	}
 
-	// ¼ì²éÃ¿ÐÐµÄÁÐÊýÊÇ·ñÏàÍ¬
+	// ï¿½ï¿½ï¿½Ã¿ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Í¬
 	for (size_t i = 1; i < colCounts.size(); ++i) {
 		if (colCounts[i] != colCounts[0]) {
 			throw std::runtime_error("Matrix rows have varying number of columns");
 		}
 	}
 
-	// ×ª»»ÎªEigen¾ØÕó
+	// ×ªï¿½ï¿½ÎªEigenï¿½ï¿½ï¿½ï¿½
 	int rows = colCounts.size();
 	int cols = colCounts.empty() ? 0 : colCounts[0];
 	Eigen::MatrixXd matrix(rows, cols);
@@ -281,12 +281,12 @@ Eigen::VectorXd CIniConfig::ReadVector(const char* section, const char* item)
 	std::stringstream ss(vectorString);
 	std::string cell;
 
-	// ´¦ÀíÃ¿¸öÔªËØ
+	// ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½Ôªï¿½ï¿½
 	while (std::getline(ss, cell, ',')) {
 		vectorValues.push_back(std::stod(cell));
 	}
 
-	// ×ª»»ÎªEigenÏòÁ¿
+	// ×ªï¿½ï¿½ÎªEigenï¿½ï¿½ï¿½ï¿½
 	int size = vectorValues.size();
 	Eigen::VectorXd vector(size);
 

@@ -1,6 +1,6 @@
-#include"SatelliteMath/EulerAgl.h"
-#include"SatelliteMath/Dcm.h"
-#include"SatelliteMath/Quaternions.h"
+#include"EulerAgl.h"
+#include"Dcm.h"
+#include"Quaternions.h"
 
 bool CEulerAgl::CheckSeq(unsigned Seq)
 {
@@ -35,38 +35,38 @@ CEulerAgl::CEulerAgl(double R1, double R2, double R3, unsigned Seq) :CEulerAgl()
 		AglData.Seq = Seq;
 	}
 	else
-		printf("×ªÐò²»ºÏ·¨£¬´´½¨Ä¬ÈÏÅ·À­½Ç\n");
+		printf("×ªï¿½ò²»ºÏ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½\n");
 }
 
 CEulerAgl::CEulerAgl(const CEulerAgl& Agl) :CEulerAgl()
 {
 	if (CheckSeq(Agl.AglData.Seq))
 	{
-		*this = Agl; // ¿½±´Êý¾Ý
+		*this = Agl; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 	else
-		printf("×ªÐò²»ºÏ·¨£¬´´½¨Ä¬ÈÏÅ·À­½Ç\n");
+		printf("×ªï¿½ò²»ºÏ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½\n");
 }
 
 CEulerAgl& CEulerAgl::operator=(const CEulerAgl Agl)
 {
-	// Ê×ÏÈ¼ì²é×Ô¸³Öµ
+	// ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½Ô¸ï¿½Öµ
 	if (this != &Agl) {
-		// ½øÐÐÊµ¼ÊµÄ¸³Öµ²Ù×÷
+		// ï¿½ï¿½ï¿½ï¿½Êµï¿½ÊµÄ¸ï¿½Öµï¿½ï¿½ï¿½ï¿½
 		this->AglData.Angle = Agl.AglData.Angle;
 		this->AglData.Seq = Agl.AglData.Seq;
 	}
 	return *this;
 }
 
-//Í¨¹ý²âÊÔ
+//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CDcm CEulerAgl::ToDcm() const
 {
 	CDcm dcm;
-	//°´ÒÔÏÂÈý¸ö½ÇÐý×ª
-	double psi = AglData.Angle(2); // Æ«º½½Ç 
-	double theta = AglData.Angle(1); // ¸©Ñö½Ç  
-	double phi = AglData.Angle(0); // ¹ö×ª½Ç 
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª
+	double psi = AglData.Angle(2); // Æ«ï¿½ï¿½ï¿½ï¿½ 
+	double theta = AglData.Angle(1); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
+	double phi = AglData.Angle(0); // ï¿½ï¿½×ªï¿½ï¿½ 
 
 	switch (AglData.Seq)
 	{
@@ -312,12 +312,12 @@ CDcm CEulerAgl::ToDcm() const
 	return dcm;
 }
 
-//Í¨¹ý²âÊÔ
+//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 Quat CEulerAgl::ToQuat() const
 {
 	// r fai     p  xita     y pusai  
-	//Çø·Ö×ªÐò
-	//×ªÐò£¨1£¬2£¬3£©
+	//ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
+	//×ªï¿½ï¿½1ï¿½ï¿½2ï¿½ï¿½3ï¿½ï¿½
 	double e1 = AglData.Angle[0] * 0.5;
 	double e2 = AglData.Angle[1] * 0.5;
 	double e3 = AglData.Angle[2] * 0.5;
@@ -353,7 +353,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * s2 * c3 - s1 * c2 * s3;
 		Y = c1 * c2 * s3 + s1 * s2 * c3;
 		Z = c1 * s2 * s3 + s1 * c2 * c3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_ZXZ:
@@ -362,7 +362,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * s2 * c3 + s1 * s2 * s3;
 		Y = s1 * s2 * c3 - c1 * s2 * s3;
 		Z = c1 * c2 * s3 + s1 * c2 * c3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 
 	}break;
@@ -372,7 +372,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * s2 * c3 + s1 * c2 * s3;
 		Y = s1 * c2 * c3 - c1 * s2 * s3;
 		Z = c1 * c2 * s3 - s1 * s2 * c3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_YXY:
@@ -381,7 +381,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * s2 * c3 + s1 * s2 * s3;
 		Y = s1 * c2 * c3 + c1 * c2 * s3;
 		Z = c1 * s2 * s3 - s1 * s2 * c3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_YZX:
@@ -390,7 +390,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * c2 * s3 + s1 * s2 * c3;
 		Y = c1 * s2 * s3 + s1 * c2 * c3;
 		Z = c1 * s2 * c3 - s1 * c2 * s3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_YZY:
@@ -399,7 +399,7 @@ Quat CEulerAgl::ToQuat() const
 		X = s1 * s2 * c3 - c1 * s2 * s3;
 		Y = c1 * c2 * s3 + s1 * c2 * c3;
 		Z = c1 * s2 * c3 + s1 * s2 * s3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_XYZ:
@@ -408,7 +408,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * s2 * s3 + s1 * c2 * c3;
 		Y = c1 * s2 * c3 - s1 * c2 * s3;
 		Z = c1 * c2 * s3 + s1 * s2 * c3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_XYX:
@@ -417,7 +417,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * c2 * s3 + s1 * c2 * c3;
 		Y = c1 * s2 * c3 + s1 * s2 * s3;
 		Z = s1 * s2 * c3 - c1 * s2 * s3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_XZY:
@@ -426,7 +426,7 @@ Quat CEulerAgl::ToQuat() const
 		X = s1 * c2 * c3 - c1 * s2 * s3;
 		Y = c1 * c2 * s3 - s1 * s2 * c3;
 		Z = c1 * s2 * c3 + s1 * c2 * s3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	case EUL_SQE_XZX:
@@ -435,7 +435,7 @@ Quat CEulerAgl::ToQuat() const
 		X = c1 * c2 * s3 + s1 * c2 * c3;
 		Y = c1 * s2 * s3 - s1 * s2 * c3;
 		Z = c1 * s2 * c3 + s1 * s2 * s3;
-		// ·µ»Ø¹¹ÔìµÄËÄÔªÊý
+		// ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 
 	}break;
 	}

@@ -1,37 +1,37 @@
 #pragma once
-#include"SatelliteMath/BaseMath.h"
+#include"BaseMath.h"
 // 2023-12-22 14:44:18
-# include "General/AllHead.h"
+# include "AllHead.h"
 
 class COrbit;
 class CAttitude;
 class Environment
 {
 public:
-	Eigen::Vector3d BodyMag;//±¾ÌåÏµµØ´Å³¡Ç¿¶ÈT
-	Eigen::Vector3d NEDMag;//±±¶«µØÏµµØ´Å³¡Ç¿¶ÈT
-	Eigen::Vector3d SunVecInl;//¹ßÐÔÏµÌ«ÑôÊ¸Á¿
-	Eigen::Vector3d SunVecBody;//±¾ÌåÏµÌ«ÑôÊ¸Á¿
+	Eigen::Vector3d BodyMag;//ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ø´Å³ï¿½Ç¿ï¿½ï¿½T
+	Eigen::Vector3d NEDMag;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ø´Å³ï¿½Ç¿ï¿½ï¿½T
+	Eigen::Vector3d SunVecInl;//ï¿½ï¿½ï¿½ï¿½ÏµÌ«ï¿½ï¿½Ê¸ï¿½ï¿½
+	Eigen::Vector3d SunVecBody;//ï¿½ï¿½ï¿½ï¿½ÏµÌ«ï¿½ï¿½Ê¸ï¿½ï¿½
 
 	Environment();
 
-	//@brief: ¼ÆËã¹ßÐÔÏµ×ªµØ¹ÌÏµµÄ×ªÒÆ¾ØÕó
-	//@para : timestamp: utcÊ±¼ä´Á(ms) deltaUT1:UTC-UT1(s) xp,yp:¼«ÒÆ(rad)  rc2t:×ªÒÆ¾ØÕó½á¹û
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ×ªï¿½Ø¹ï¿½Ïµï¿½ï¿½×ªï¿½Æ¾ï¿½ï¿½ï¿½
+	//@para : timestamp: utcÊ±ï¿½ï¿½ï¿½(ms) deltaUT1:UTC-UT1(s) xp,yp:ï¿½ï¿½ï¿½ï¿½(rad)  rc2t:×ªï¿½Æ¾ï¿½ï¿½ï¿½ï¿½ï¿½
 	//@return : none
 	static Eigen::Matrix3d ECI2ECEF(const int64_t timestamp, const double deltaUT1 = 0, const double xp = 0, const double yp = 0);
 
-	//@brief: ¹ßÐÔÏµÏÂÌ«ÑôÊ¸Á¿µÄ¼ÆËã£¨ÓÃÊ±¼ä´Á×ªÈåÂÔÊÀ¼ÍÊý½øÐÐ½ÓÏÂÀ´µÄ¼ÆËã£©
-	//@para :  timestamp: utcÊ±¼ä´Á(ms)
-	//@return : ¹ßÐÔÏµÌ«ÑôÊ¸Á¿
+	//@brief: ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ì«ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ã£¨ï¿½ï¿½Ê±ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ã£©
+	//@para :  timestamp: utcÊ±ï¿½ï¿½ï¿½(ms)
+	//@return : ï¿½ï¿½ï¿½ï¿½ÏµÌ«ï¿½ï¿½Ê¸ï¿½ï¿½
 	void SunPos(const int64_t timestamp);
 
-	//@brief: ±±¶«µØÏµµØ´Å³¡
-	//@para : ¹ìµÀÀà¹ìµÀ¸ùÊý-°ë³¤Öá ¹ìµÀÀàLLR
+	//@brief: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ø´Å³ï¿½
+	//@para : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ë³¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½LLR
 	//@return : none
 	void GetNEDMag(const COrbit& Orbit, const int64_t timestamp);
 
 	void StateRenew(CAttitude& Attitude, COrbit& Orbit, const int64_t timestamp);
 
-	// Ð´ÈëÊý¾Ý¿â
+	// Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
 	void record(CInfluxDB& DB);
 };
