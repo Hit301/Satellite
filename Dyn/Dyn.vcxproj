@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -40,6 +40,7 @@
     <ClCompile Include="src\Satellite\Satellite.cpp" />
     <ClCompile Include="src\Componet\StarSensor.cpp" />
     <ClCompile Include="src\Componet\SunSensor.cpp" />
+    <ClCompile Include="src\Utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Componet\GNSS.h" />

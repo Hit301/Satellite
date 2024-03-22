@@ -16,5 +16,6 @@ public:
 public:
 	void StateRenew(int64_t NowTime, Eigen::Vector3d Omega_b);
 	void Init(Eigen::Vector3d& Omega_b, int64_t timestamp);
-	void FaultInjection(double FaultSize, FaultTypes FaultType, int64_t InjectGyroHead, int step);
+	void FaultInjection();
+	void setFaultPara(double FaultSizeUp, double FaultSizeLow, int FaultTimeUp, int FaultTimeLow, int FaultType, int FaultGyroHead);
 };

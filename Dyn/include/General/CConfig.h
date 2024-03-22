@@ -6,7 +6,6 @@
 #include"Componet.h"
 #include "AttitudeControl.h"
 
-
 class CConfig
 {
 public:

@@ -91,6 +91,11 @@ CConfig* CConfig::GetInstance()
 {
 	if (m_instance == NULL)
 		m_instance = new CConfig;
+	else
+	{
+		delete m_instance;
+		m_instance = new CConfig;
+	}
 	return m_instance;
 }
 

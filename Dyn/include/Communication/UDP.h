@@ -1,6 +1,10 @@
 #pragma once
+#include <string>
 #include <windows.h>
 #include <winsock.h>
+
+#include "Utils/utils.h"
+
 #pragma comment(lib,"ws2_32.lib")
 
 typedef struct
@@ -22,6 +26,28 @@ typedef struct
 	double SunPointAngle;
 }UDPSendDataStruct;
 
+typedef struct {
+	float faultTimeLow;
+	float faultAttLow;
+	float faultTimeUp;
+	float faultAttUp;
+	int faultType;
+	
+	int gyroGroup;
+	int gyroID;
+
+	int runMode;
+} faultParaStruct;
+
+typedef struct {
+	bool gyroIsChecked;
+	bool starIsChecked;
+	bool sunIsChecked;
+	bool rwIsChecked;
+
+	char path[NAMA_LEN_MAX];
+} saveDataStruct;
+
 class CUDP
 {
 public:
@@ -29,18 +55,22 @@ public:
 
 	void InitSocket();
 
-	// DWORD WINAPI UDPServer(LPVOID lpParameter); // UDP通信
 	int SendUDPData(); // 向串口发送数据
 
 	void SetServerSocket(SOCKET soc);
 
 	UDPSendDataStruct* GetUDPData();
+	faultParaStruct* GetfaultPara();
 	SOCKET* GetSocket();
 	SOCKADDR_IN* GetServerAddr();
 	SOCKADDR_IN* GetRecvAddr();
-	char* GetRecvBuff();
+	// char* GetRecvBuff();
 	int* GetRecvCount();
-
+	bool* GetInjectFlag();
+	float* GetRunTimeTotal();
+	bool* GetRunFlag();
+	bool* GetSaveDataFlag();
+	saveDataStruct* GetSaveData();
 
 private:
 	const char* cp;
@@ -51,9 +81,17 @@ private:
 	SOCKADDR_IN ServerAddr;
 
 	SOCKADDR_IN RecvAddr;
-	char RecvBuff[0X3FFF];
+	// char RecvBuff[0X3FFF];
+
+	faultParaStruct faultPara;
+	saveDataStruct saveData;
 
 	int RecvCount;
+	float runTimeTotal;
+
+	bool injectFlag;
+	bool RunFlag;
+	bool SaveDataFlag;
 
 };
 

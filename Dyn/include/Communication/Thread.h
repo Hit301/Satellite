@@ -8,10 +8,11 @@
 class CCommuThread
 {
 public:
-	CCommuThread(const char* comPara = "COM1", const char* cpPara = "127.0.0.1", u_short portPara = 5010, bool runFlag=false); // 初始化函数
+	CCommuThread(const char* comPara = "COM1", const char* cpPara = "127.0.0.1", 
+				 u_short portPara = 5010, bool UDPStartFlag=true, bool USARTStratFlag=true); // 初始化函数
 	~CCommuThread();
 
-	void ThreadRun(); // 串口和UDP线程运行
+	void ThreadRun(bool udpStart=true, bool usartStart=true); // 串口和UDP线程运行
 
 	CUSART* GetUSART();
 	HANDLE GetMutex();
@@ -26,9 +27,13 @@ public:
 	void IterAdd(int num);
 	int GetIter();
 
+	bool GetUDPStartFlag();
+	bool GetUSARTStartFlag();
+
 private:
 	CUDP* udp;
 	CUSART* usart;
 	int iter;
-	bool RunFlag;
+	bool UDPStartFlag;
+	bool USARTStratFlag;
 };

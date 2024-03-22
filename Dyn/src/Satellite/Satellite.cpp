@@ -29,11 +29,11 @@ Satellite::Satellite() :Orbit(), Attitude(), AttController()
 	Env.StateRenew(Attitude, Orbit, SatelliteTime);
 
 	//控制器设置
-	AttController.workmode = CAttitudeController::SUNPOINT;
+	AttController.workmode = CAttitudeController::RATEDAMP;
 
 	//单机初始化
 	pComponet = CComponet::GetInstance();
-	pComponet->Init(Attitude, Orbit, Env, AttController,SatelliteTime);
+	pComponet->Init(Attitude, Orbit, Env, AttController, SatelliteTime);
 }
 
 Satellite::Satellite(double Ts, int m_SpeedTimes):Satellite()
@@ -62,10 +62,6 @@ void Satellite::StateRenew()
 
 	//单机数据更新
 	pComponet->StateRenew(Attitude, Orbit, Env, AttController, SatelliteTime, SampleTime);
-
-	// 故障注入
-	// pComponet->Gyros[0].FaultInjection(0.5, pComponet->Gyros[0].Abrupt, 3, , (SatelliteTime- 1640966400000)/ (SampleTime*1e3));
-	pComponet->Gyros[0].FaultInjection(0.7, pComponet->Gyros[0].Slow, 3, (SatelliteTime- 1640966400000)/ (SampleTime*1e3));
 }
 
 void Satellite::data2DB(CInfluxDB& DB, double Period)

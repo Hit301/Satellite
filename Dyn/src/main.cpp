@@ -27,6 +27,8 @@ int main(int argc, char* argv[])
 			Amadeus.StateRenew();
 			std::cout << Amadeus;
 		}
+
+
 		pSimTime->ReleaseSimCountMute();
 		Amadeus.data2DB(DB, 1);
 	}	
